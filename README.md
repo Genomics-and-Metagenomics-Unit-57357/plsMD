@@ -2,6 +2,10 @@ plsMD: A plasmid reconstruction tool for short-read assemblies
 -----
 Introduction
 ------------
+Whole genome sequencing (WGS) has become a cornerstone of antimicrobial resistance (AMR) surveillance. However, reconstructing plasmid sequences from short-read WGS data is challenging due to repetitive sequences and assembly fragmentation. 
+plsMD is a tool designed for comprehensive plasmid reconstruction from short-read assemblies, going beyond simple contig binning. It utilizes Unicycler assemblies with established plasmid databases to reconstruct full plasmid sequences, plsMD offers both single and multi-sample analysis, enabling researchers to perform detailed plasmid characterization and phylogenetic investigations.
+
+-------
 Installation
 -----------
 
