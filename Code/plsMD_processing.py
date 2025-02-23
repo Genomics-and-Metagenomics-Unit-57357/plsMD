@@ -1128,7 +1128,7 @@ def main():
 
     args = parser.parse_args()
 
-    directory_path = args.directory
+    directory_path = args.dir
     fasta_directory = os.path.join(directory_path, "unicycler_fasta")
     gene_list_file = os.path.join(directory_path, "plasmid_list.txt")
 
