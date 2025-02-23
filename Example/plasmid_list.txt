@@ -1,0 +1,7 @@
+Col440II_1_pld1
+IncFIB_K__1_pld1
+IncFII_pKP91__1_pld1
+Col_pHAD28__1_pld2
+Col_pHAD28__1_pld1
+GENE_pld1
+IncFIB_pNDM-Mar__1_pld1
