@@ -15,7 +15,7 @@ Download source code and run the scripts.
 plsMD Single modality
 -----------
 --------
-Preprocessing and Annotation
+Preprocessing 
 ------
 ```bash
 plsmd --preprocessing --dir <input_directory> --threads <num_threads> --db <plsdb_path>
@@ -29,15 +29,26 @@ plsmd --preprocessing --dir <input_directory> --threads <num_threads> --db <plsd
 Processing and reconstruction
 ----
 ```bash
-plsMD --process --dir <input_directory>
+plsMD --processing --dir <input_directory>
 ```
 | Option | Description | 
 |---|---|
 | `--dir` | Input directory containing the preprocessed data (output from plsMD --preprocessing) | 
+------
+Annotation
+----
+```bash
+plsMD --annotation --dir <input_directory> --threads <num_threads> --IS_db <IS_db_path>
+```
+| Option | Description | 
+|---|---|
+| `--dir` | Input directory containing the preprocessed data (output from plsMD --preprocessing) | 
+| `--threads` | Number of threads | 
+| `--IS_db` | Insertion Sequences Database path | 
 -------
 plsMD batch modality
 ------
-In addition to the preprocessing and processing scripts, run plsMD_phylogenetics for batch samples modality.
+In addition to the preprocessing and processing steps, run plsMD_phylogenetics for batch samples modality.
 
 ------
 Phylogenetic Analysis
@@ -47,7 +58,7 @@ plsmd --phylogenetics --genes_dir <genes_directory> --min_length <min_length> --
 ```
 | Option | Description | 
 |---|---|
-| `--genes_dir` |Root directory containing gene folders. Each subdirectory should represent a gene family and contain the corresponding sequences | 
+| `--genes_dir` |Root directory containing gene folders. Each subdirectory should represent a plasmid replicon | 
 | `--threads` | Number of threads | 
 | `--min_length` | Minimum sequence length for common sequence search. |
 | `--min_length` | Maximum sequence length for common sequence search. |
@@ -64,5 +75,7 @@ Output folders/files
 | `<input_directory>/nonplasmid_files/` | Contains processed non-plasmid contig files. | `plsMD --processing` |
 | `<input_directory>/nonreplicon_contigs/` | Contains contigs that does not have a  replicon sequence | `plsMD --processing` |
 | `<input_directory>/Processed_ColContigs.txt` | Combined output file for processed Col and Inc plasmids. | `plsMD --processing` |
+|  `<input_directory>/plasmid_files/annotation` | Contains Output from AMRfinder, abricate and blastn (IS). | `plsMD --annotation` |
+|  `<input_directory>/nonplasmid_files/annotation` | Contains Output from AMRfinder, abricate and blastn (IS). | `plsMD --annotation` |
 | `<genes_directory>/phylogenetic_tree/` | Contains the output of the MSA and phylogenetic analysis. | `plsMD --phylogenetics` |
 ----------
