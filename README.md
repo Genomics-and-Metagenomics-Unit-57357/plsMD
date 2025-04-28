@@ -9,8 +9,35 @@ plsMD is a tool designed for comprehensive plasmid reconstruction from short-rea
 Installation
 -----------
 
-Download source code and run the scripts.
+```bash
+git clone https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD.git
+cd plsMD
+```
+Build the Docker Image
+----------
+```bash
+docker build -t plsmd .
+```
+(Optional) Download Databases
+--------
+```bash
+docker build --build-arg DOWNLOAD_DB=true -t plsmd .
+```
+Set Up Command Line Access
+---------
+```bash
+# Make the wrapper executable
+chmod +x plsMD_wrapper.sh
 
+# Create symlink 
+sudo ln -sf $(pwd)/plsMD_wrapper.sh /usr/local/bin/plsMD
+```
+Verify Installation
+---------
+```bash
+plsMD --version
+plsMD --help
+```
 ------------
 plsMD Single modality
 -----------
@@ -18,7 +45,7 @@ plsMD Single modality
 Preprocessing 
 ------
 ```bash
-plsmd --preprocessing --dir <input_directory> --threads <num_threads> --db <plsdb_path>
+plsMD --preprocessing --dir <input_directory> --threads <num_threads> --db <plsdb_path>
 ```
 | Option | Description | 
 |---|---|
@@ -48,13 +75,13 @@ plsMD --annotation --dir <input_directory> --threads <num_threads> --IS_db <IS_d
 -------
 plsMD batch modality
 ------
-In addition to the preprocessing and processing steps, run plsMD_phylogenetics for batch samples modality.
+In addition to the preprocessing and processing steps, run --phylogenetics for batch samples modality.
 
 ------
 Phylogenetic Analysis
 ------
 ```bash
-plsmd --phylogenetics --genes_dir <genes_directory> --min_length <min_length> --max_length <max_length> --threads <threads>
+plsMD --phylogenetics --genes_dir <genes_directory> --min_length <min_length> --max_length <max_length> --threads <threads>
 ```
 | Option | Description | 
 |---|---|
