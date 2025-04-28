@@ -83,7 +83,7 @@ RUN chmod -R +x ${SCRIPT_DIR}/*.sh && \
 
 # Create Main Entrypoint
 RUN printf '#!/bin/bash\n\
-VERSION="v1.0"\n\
+VERSION="1.0"\n\
 \n\
 show_help() {\n\
   cat <<EOF\n\
