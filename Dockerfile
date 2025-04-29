@@ -60,7 +60,7 @@ RUN mkdir -p ${INSTALL_DIR} ${DATA_DIR} ${BLAST_DB_DIR} ${SCRIPT_DIR}
 
 # Build Arguments
 ARG DOWNLOAD_DB=false
-ARG PLSDB_URL=https://ccb-microbe.cs.uni-saarland.de/plsdb/plsdb.fna
+ARG PLSDB_URL=https://ccb-microbe.cs.uni-saarland.de/plsdb2025/download_fasta
 
 # Conditional Database Download
 RUN if [ "${DOWNLOAD_DB}" = "true" ]; then \
