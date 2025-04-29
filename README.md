@@ -13,12 +13,12 @@ Installation
 git clone https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD.git
 cd plsMD
 ```
-Build the Docker Image
+Build the Docker Image (wihtout downloading PLSDB database)
 ----------
 ```bash
 docker build -t plsmd .
 ```
-(Optional) Download Databases
+Build the Docker Image (wihtout downloading PLSDB database)
 --------
 ```bash
 docker build --build-arg DOWNLOAD_DB=true -t plsmd .
