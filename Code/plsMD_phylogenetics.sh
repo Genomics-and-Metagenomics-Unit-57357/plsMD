@@ -4,7 +4,7 @@
 usage() {
     echo "Usage: $0 --genes_dir <genes_directory> --min_length <min_length> --max_length <max_length> --threads <threads>"
     echo "Flags:"
-    echo "  --genes_dir      Root directory containing gene folders"
+    echo "  --genes_dir      Root directory containing plasmid folders"
     echo "  --min_length     Minimum sequence length for common sequence search (default: 10)"
     echo "  --max_length     Maximum sequence length for common sequence search (default: 30)"
     echo "  --threads        Number of threads for MAFFT and IQ-TREE (default: 1)"
@@ -70,7 +70,7 @@ def find_common_sequence(sequences, gene_directory, min_length=10, max_length=30
 
         for seq, rev_comp in sequences:
             substrings = set()
-            for i in range(len(seq) - length + 1):  # More efficient substring generation
+            for i in range(len(seq) - length + 1):
                 substrings.add(seq[i:i+length])
             for i in range(len(rev_comp) - length + 1):
                 substrings.add(rev_comp[i:i+length])
@@ -98,9 +98,9 @@ def find_common_sequence(sequences, gene_directory, min_length=10, max_length=30
 
         if valid_substrings:
             longest_common_sequence = next(iter(valid_substrings))
-            output_dir = gene_directory  # Use the passed-in directory
-            os.makedirs(output_dir, exist_ok=True)  # Create the directory
-            output_file = os.path.join(output_dir, f"{os.path.basename(gene_directory)}_common_seq.txt") # Corrected file name
+            output_dir = gene_directory
+            os.makedirs(output_dir, exist_ok=True)
+            output_file = os.path.join(output_dir, f"{os.path.basename(gene_directory)}_common_seq.txt")
             with open(output_file, 'w') as f:
                 f.write(longest_common_sequence)
             print(f"Longest common sequence found and saved to: {output_file}")
@@ -119,12 +119,12 @@ def rotate_sequences(input_file, output_file, common_seq):
         if common_seq in original:
             idx = original.index(common_seq)
             rotated = original[idx:] + original[:idx]
-        elif common_seq in rev_comp: # Check reverse complement if not found in original
+        elif common_seq in rev_comp:
             idx = rev_comp.index(common_seq)
             rotated = rev_comp[idx:] + rev_comp[:idx]
         else:
-            print(f"Warning: Common sequence not found in {record.id}. Skipping rotation.") # Handle missing common sequence
-            rotated = original # Keep original if common sequence not found
+            print(f"Warning: Common sequence not found in {record.id}. Skipping rotation.")
+            rotated = original
 
         rotated_record = SeqRecord(
             Seq.Seq(rotated),
@@ -136,42 +136,78 @@ def rotate_sequences(input_file, output_file, common_seq):
     with open(output_file, 'w') as f:
         SeqIO.write(rotated_records, f, "fasta")
 
-def concatenate_fasta_files_in_gene_directory(gene_directory, min_length, max_length):
-    """Process gene directory with optimized common sequence search and rotation."""
-    gene_name = os.path.basename(gene_directory)
-    output_fasta = os.path.join(gene_directory, f"{gene_name}_concatenated.fasta")
-
-    # Concatenate files
+def concatenate_fasta_files_in_plasmid_directory(plasmid_directory, min_length, max_length):
+    """Process plasmid directory by concatenating all FASTA files directly in the directory."""
+    plasmid_name = os.path.basename(plasmid_directory)
+    output_fasta = os.path.join(plasmid_directory, f"{plasmid_name}_concatenated.fasta")
+    
+    # Find all FASTA files directly in the plasmid directory
+    fasta_files = [f for f in os.listdir(plasmid_directory) 
+                   if (f.endswith(('.fasta', '.fa', '.fna')) and 
+                       not f.endswith('_extracted.fasta') and
+                       not f.endswith('_rotated.fasta') and
+                       not f.endswith('_concatenated.fasta') and
+                       not f.endswith('_common_seq.txt'))]
+    
+    if not fasta_files:
+        print(f"No FASTA files found in {plasmid_directory}")
+        return
+    
+    print(f"Found {len(fasta_files)} FASTA files in {plasmid_directory}")
+    
+    # Concatenate all FASTA files
     with open(output_fasta, 'w') as out_fh:
-        for fname in os.listdir(gene_directory):
-            if fname.endswith(('.fasta', '.fa', '.fna')): # Add more extensions if needed
-                with open(os.path.join(gene_directory, fname)) as in_fh:
-                    out_fh.write(in_fh.read())
+        for fasta_file in fasta_files:
+            file_path = os.path.join(plasmid_directory, fasta_file)
+            try:
+                # Read and write each sequence individually to preserve headers
+                for record in SeqIO.parse(file_path, "fasta"):
+                    # Use original filename + sequence ID to avoid duplicate IDs
+                    record.id = f"{fasta_file}_{record.id}"
+                    record.description = ""
+                    SeqIO.write(record, out_fh, "fasta")
+            except Exception as e:
+                print(f"Error reading {file_path}: {e}")
+
+    # Check if we actually wrote any sequences
+    if os.path.getsize(output_fasta) == 0:
+        print(f"No valid sequences found in {plasmid_directory}")
+        os.remove(output_fasta)
+        return
 
     # Find common sequence
-    sequences = [(str(r.seq), str(r.seq.reverse_complement()))
-                 for r in SeqIO.parse(output_fasta, "fasta")]
-    common_seq = find_common_sequence(sequences, gene_directory, min_length, max_length)  # Pass gene_directory
+    try:
+        sequences = [(str(r.seq), str(r.seq.reverse_complement()))
+                     for r in SeqIO.parse(output_fasta, "fasta")]
+        
+        if not sequences:
+            print(f"No sequences to process in {plasmid_directory}")
+            return
+            
+        common_seq = find_common_sequence(sequences, plasmid_directory, min_length, max_length)
 
-    if common_seq:
-        # Rotate sequences
-        rotated_fasta = os.path.join(gene_directory, f"{gene_name}_rotated.fasta")
-        rotate_sequences(output_fasta, rotated_fasta, common_seq)
-        print(f"Created rotated sequences at: {rotated_fasta}")
-    else:
-        print(f"No common sequence found for {gene_directory}. Skipping rotation.")
+        if common_seq:
+            # Rotate sequences
+            rotated_fasta = os.path.join(plasmid_directory, f"{plasmid_name}_rotated.fasta")
+            rotate_sequences(output_fasta, rotated_fasta, common_seq)
+            print(f"Created rotated sequences at: {rotated_fasta}")
+        else:
+            print(f"No common sequence found for {plasmid_directory}. Skipping rotation.")
+    except Exception as e:
+        print(f"Error processing {plasmid_directory}: {e}")
 
-
-
-def process_all_gene_directories(root_dir, min_len, max_len):
-    """Process all gene directories in root directory."""
-    for dirpath, dirnames, _ in os.walk(root_dir):
-        for dirname in dirnames:
-            gene_dir = os.path.join(dirpath, dirname)
-            concatenate_fasta_files_in_gene_directory(gene_dir, min_len, max_len)
+def process_all_plasmid_directories(root_dir, min_len, max_len):
+    """Process only the direct subdirectories of root directory (plasmid directories)."""
+    for item in os.listdir(root_dir):
+        plasmid_dir = os.path.join(root_dir, item)
+        if os.path.isdir(plasmid_dir):
+            print(f"Processing plasmid directory: {plasmid_dir}")
+            concatenate_fasta_files_in_plasmid_directory(plasmid_dir, min_len, max_len)
+        else:
+            print(f"Skipping non-directory: {item}")
 
 # Run the script
-process_all_gene_directories(genes_dir, min_length, max_length)
+process_all_plasmid_directories(genes_dir, min_length, max_length)
 EOF_PYTHON
 
 # Bash part: Run MAFFT and IQ-TREE
@@ -181,12 +217,12 @@ mkdir -p "$PHYLO_DIR"
 echo "Created phylogenetic_tree directory at: $PHYLO_DIR"
 echo "Running MAFFT and IQ-TREE..."
 
-for gene_dir in "$GENES_DIR"/*; do
-    if [[ -d "$gene_dir" ]]; then
-        gene_name=$(basename "$gene_dir")
-        rotated_fasta="${gene_dir}/${gene_name}_rotated.fasta"
-        aligned_fasta="${PHYLO_DIR}/${gene_name}_aligned.fasta"
-        tree_output="${PHYLO_DIR}/${gene_name}_tree"
+for plasmid_dir in "$GENES_DIR"/*; do
+    if [[ -d "$plasmid_dir" ]]; then
+        plasmid_name=$(basename "$plasmid_dir")
+        rotated_fasta="${plasmid_dir}/${plasmid_name}_rotated.fasta"
+        aligned_fasta="${PHYLO_DIR}/${plasmid_name}_aligned.fasta"
+        tree_output="${PHYLO_DIR}/${plasmid_name}_tree"
 
         if [[ -f "$rotated_fasta" ]]; then
             # Run MAFFT
@@ -195,9 +231,9 @@ for gene_dir in "$GENES_DIR"/*; do
 
             # Run IQ-TREE
             echo "Running IQ-TREE on $aligned_fasta..."
-            iqtree -s "$aligned_fasta" -m TEST --bb 1000 -T "$THREADS" 
+            iqtree -s "$aligned_fasta" -m TEST -bb 1000 -T "$THREADS" -pre "$tree_output"
         else
-            echo "Rotated FASTA file not found for gene: $gene_name"
+            echo "Rotated FASTA file not found for plasmid: $plasmid_name"
         fi
     fi
 done
