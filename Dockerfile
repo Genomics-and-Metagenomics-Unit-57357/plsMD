@@ -54,7 +54,11 @@ RUN conda install -n plsMD -y \
     ncbi-amrfinderplus \
     && conda clean -afy
 
+
+RUN /opt/conda/envs/plsMD/bin/amrfinder_update --force_update -d /opt/conda/envs/plsMD/share/amrfinderplus/data && \
+    ln -sf /opt/conda/envs/plsMD/share/amrfinderplus/data /opt/conda/envs/plsMD/share/amrfinderplus/data/latest
 # Create necessary directories
+
 RUN mkdir -p ${INSTALL_DIR} ${DATA_DIR} ${BLAST_DB_DIR} ${SCRIPT_DIR} ${ABRICATE_DB_DIR}
 
 # Download and setup custom ABRicate database
