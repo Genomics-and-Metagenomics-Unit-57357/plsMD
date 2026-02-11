@@ -1,17 +1,20 @@
 #!/bin/bash
 
+IS_DB_DEFAULT="${IS_DB_DIR:-/opt/plsMD/data/blastdb/IS}"
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --threads)
       THREADS="$2"
       shift 2
       ;;
-    --IS_db)
-      IS_DB="$2"
-      shift 2
-      ;;
     --dir)
       ROOT_DIR="$2"
+      shift 2
+      ;;
+
+    --IS_db)
+      IS_DB_OVERRIDE="$2"
       shift 2
       ;;
     *)
@@ -21,15 +24,33 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ -z "$THREADS" || -z "$IS_DB" || -z "$ROOT_DIR" ]]; then
-  echo "Usage: $0 --threads <threads> --IS_db <IS_database_path> --dir <root_directory>"
+if [[ -z "$THREADS" || -z "$ROOT_DIR" ]]; then
+  echo "Usage: $0 --threads <threads> --dir <root_directory> [--IS_db <IS_database_path>]"
   exit 1
 fi
+
+
+IS_DB="${IS_DB_OVERRIDE:-$IS_DB_DEFAULT}"
+
+
+if [[ ! -d "$IS_DB" ]]; then
+  echo "Error: IS database directory not found at: $IS_DB"
+  echo "Ensure the database was downloaded during Docker build, or pass --IS_db <path>"
+  exit 1
+fi
+
+
+IS_DB_PREFIX=$(find "$IS_DB" -name "*.nhr" | head -1 | sed 's/\.nhr$//')
+if [[ -z "$IS_DB_PREFIX" ]]; then
+  echo "Error: No BLAST index (.nhr) files found in IS database directory: $IS_DB"
+  exit 1
+fi
+
+echo "Using IS database: $IS_DB_PREFIX"
 
 process_directory() {
   local dir="$1"
   local output_dir="$2"
-
   
   mkdir -p "$output_dir/annotation/AMR"
   mkdir -p "$output_dir/annotation/VF"
@@ -68,7 +89,7 @@ process_directory() {
     if [[ -f "$f" ]]; then
         base_name="${f##*/}"
         base_name="${base_name%.fasta}"
-        blastn -db "$IS_DB" -query "$f" -num_threads "$THREADS" -outfmt 6 > "$output_dir/annotation/IS/${base_name}_IS.txt"
+        blastn -db "$IS_DB_PREFIX" -query "$f" -num_threads "$THREADS" -outfmt 6 > "$output_dir/annotation/IS/${base_name}_IS.txt"
     fi
   done
 }
