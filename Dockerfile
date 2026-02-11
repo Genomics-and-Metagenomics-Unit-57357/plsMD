@@ -12,9 +12,10 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DATA_DIR=/opt/plsMD/data \
     BLAST_DB_DIR=/opt/plsMD/data/blastdb \
     SCRIPT_DIR=/opt/plsMD/scripts \
-    ABRICATE_DB_DIR=/opt/conda/envs/plsMD/db
+    ABRICATE_DB_DIR=/opt/conda/envs/plsMD/db \
+    IS_DB_DIR=/opt/plsMD/data/blastdb/IS
 
-# Install system dependencies
+
 RUN apt-get update -qq && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -23,15 +24,16 @@ RUN apt-get update -qq && \
     build-essential \
     bzip2 \
     tar \
+    unzip \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Miniconda
+
 RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh && \
     /bin/bash miniconda.sh -b -p /opt/conda && \
     rm miniconda.sh && \
     ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh
 
-# Configure conda - Accept ToS and setup channels
+
 RUN conda config --set channel_priority strict && \
     conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
     conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r && \
@@ -41,7 +43,7 @@ RUN conda config --set channel_priority strict && \
     conda update -n base -y conda && \
     conda create -n plsMD -y python=3.9
 
-# Install bioinformatics tools
+
 RUN conda install -n plsMD -y \
     pandas \
     numpy \
@@ -54,21 +56,22 @@ RUN conda install -n plsMD -y \
     ncbi-amrfinderplus \
     && conda clean -afy
 
-
 RUN /opt/conda/envs/plsMD/bin/amrfinder_update --force_update -d /opt/conda/envs/plsMD/share/amrfinderplus/data && \
     ln -sf /opt/conda/envs/plsMD/share/amrfinderplus/data /opt/conda/envs/plsMD/share/amrfinderplus/data/latest
-# Create necessary directories
 
-RUN mkdir -p ${INSTALL_DIR} ${DATA_DIR} ${BLAST_DB_DIR} ${SCRIPT_DIR} ${ABRICATE_DB_DIR}
 
-# Download and setup custom ABRicate database
+RUN mkdir -p ${INSTALL_DIR} ${DATA_DIR} ${BLAST_DB_DIR} ${SCRIPT_DIR} ${ABRICATE_DB_DIR} ${IS_DB_DIR}
+
 ARG GITHUB_REPO=https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD
 RUN wget ${GITHUB_REPO}/raw/main/rep.mob.typer.tar.gz -O /tmp/rep.mob.typer.tar.gz && \
     tar -xzf /tmp/rep.mob.typer.tar.gz -C ${ABRICATE_DB_DIR} && \
     rm /tmp/rep.mob.typer.tar.gz && \
     /opt/conda/envs/plsMD/bin/abricate --setupdb
 
-# Optional: Download PLSDB database
+RUN wget ${GITHUB_REPO}/raw/main/IS.zip -O /tmp/IS.zip && \
+    unzip /tmp/IS.zip -d ${IS_DB_DIR} && \
+    rm /tmp/IS.zip
+
 ARG DOWNLOAD_DB=false
 ARG PLSDB_URL=https://ccb-microbe.cs.uni-saarland.de/plsdb2025/download_fasta
 RUN if [ "${DOWNLOAD_DB}" = "true" ]; then \
@@ -80,12 +83,10 @@ RUN if [ "${DOWNLOAD_DB}" = "true" ]; then \
         -parse_seqids; \
 fi
 
-# Copy scripts
 COPY Code/ ${SCRIPT_DIR}/
 RUN chmod -R +x ${SCRIPT_DIR}/*.sh && \
     chmod +x ${SCRIPT_DIR}/*.py
 
-# Create plsMD wrapper that properly handles paths
 RUN printf '#!/bin/bash\n\
 set -e\n\
 \n\
@@ -111,7 +112,8 @@ case "$1" in\n\
     exec /opt/plsMD/scripts/plsMD_phylogenetics.sh "$@"\n\
     ;;\n\
   --db-path)\n\
-    echo "BLAST DB: /opt/plsMD/data/blastdb/plsdb"\n\
+    echo "BLAST DB:    /opt/plsMD/data/blastdb/plsdb"\n\
+    echo "IS DB:       /opt/plsMD/data/blastdb/IS"\n\
     echo "ABRicate DB: /opt/conda/envs/plsMD/db"\n\
     /opt/conda/envs/plsMD/bin/abricate --list\n\
     ;;\n\
@@ -135,7 +137,7 @@ Commands:\n\
 \n\
 Examples:\n\
   plsMD --preprocessing --dir /data/input\n\
-  plsMD --annotation --input /data/sample.fasta --output /data/results\n\
+  plsMD --annotation --threads 8 --dir /data/results\n\
 \n\
 Note: All paths should be relative to /data or use absolute paths from mounted volumes\n\
 EOF\n\
@@ -147,11 +149,11 @@ EOF\n\
 esac\n' > /usr/local/bin/plsMD && \
     chmod +x /usr/local/bin/plsMD
 
-# Verify installation
 RUN /opt/conda/envs/plsMD/bin/python -c "import pandas, numpy, Bio; print('Dependencies verified')" && \
     /opt/conda/envs/plsMD/bin/abricate --version && \
     /opt/conda/envs/plsMD/bin/amrfinder --version && \
-    /opt/conda/envs/plsMD/bin/abricate --list
+    /opt/conda/envs/plsMD/bin/abricate --list && \
+    ls ${IS_DB_DIR} && echo "IS database verified"
 
 WORKDIR /data
 VOLUME ["/data"]
