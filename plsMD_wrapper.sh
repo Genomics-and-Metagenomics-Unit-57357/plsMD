@@ -9,7 +9,7 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m' 
 
 DEBUG=${DEBUG:-0}
 
@@ -43,7 +43,7 @@ debug_log "Script directory: $SCRIPT_DIR"
 debug_log "Current directory: $CURRENT_DIR"
 debug_log "Arguments: $*"
 
-# Collect all unique directories to mount
+
 declare -A DIRS_TO_MOUNT
 
 DIRS_TO_MOUNT["$CURRENT_DIR"]=1
@@ -52,15 +52,15 @@ debug_log "Will mount current directory: $CURRENT_DIR"
 add_dir_to_mount() {
     local path="$1"
     
-    # Skip if empty
+
     [ -z "$path" ] && return
     
-    # Convert to absolute path if relative
+
     if [[ ! "$path" =~ ^/ ]]; then
         path="$(cd "$(dirname "$path")" 2>/dev/null && pwd)/$(basename "$path")" || path="$CURRENT_DIR/$path"
     fi
     
-    # If it's a file, get its directory; if directory, use as-is
+
     if [ -f "$path" ]; then
         local dir=$(dirname "$path")
         DIRS_TO_MOUNT["$dir"]=1
@@ -69,8 +69,7 @@ add_dir_to_mount() {
         DIRS_TO_MOUNT["$path"]=1
         debug_log "Will mount directory: $path"
     else
-        # Path doesn't exist yet, but might be created (like output dir)
-        # Get parent directory
+
         local parent=$(dirname "$path")
         if [ -d "$parent" ]; then
             DIRS_TO_MOUNT["$parent"]=1
@@ -81,17 +80,15 @@ add_dir_to_mount() {
 
 prev_arg=""
 for arg in "$@"; do
-    # Check if previous arg was a flag that takes a path
-    if [[ "$prev_arg" =~ ^--(dir|input|output|db|path)$ ]]; then
+
+    if [[ "$prev_arg" =~ ^--(dir|input|output|db|path|IS_db)$ ]]; then
         add_dir_to_mount "$arg"
     fi
     
-    # Check for --flag=value format
-    if [[ "$arg" =~ ^--(dir|input|output|db|path)=(.+)$ ]]; then
+    if [[ "$arg" =~ ^--(dir|input|output|db|path|IS_db)=(.+)$ ]]; then
         add_dir_to_mount "${BASH_REMATCH[2]}"
     fi
-    
-    # Check if arg looks like an absolute path (starts with /)
+
     if [[ "$arg" =~ ^/[^-] ]] && [ -e "$arg" ]; then
         add_dir_to_mount "$arg"
     fi
@@ -99,21 +96,17 @@ for arg in "$@"; do
     prev_arg="$arg"
 done
 
-# Build volume mount arguments
 VOLUME_ARGS=()
 
-# Mount current directory to /data
 VOLUME_ARGS+=("-v" "$CURRENT_DIR:/data")
 
-# Mount all collected directories
 for dir in "${!DIRS_TO_MOUNT[@]}"; do
-    # Skip current directory (already mounted to /data)
+
     if [ "$dir" != "$CURRENT_DIR" ]; then
         VOLUME_ARGS+=("-v" "$dir:$dir")
     fi
 done
 
-# Add tmp directory
 VOLUME_ARGS+=("-v" "/tmp:/tmp")
 
 debug_log "Volume mounts: ${VOLUME_ARGS[*]}"
