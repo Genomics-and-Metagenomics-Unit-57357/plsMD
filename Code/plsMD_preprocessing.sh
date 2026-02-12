@@ -1,15 +1,18 @@
 #!/bin/bash
 
+PLSDB_DEFAULT="${BLAST_DB_DIR:-/opt/plsMD/data/blastdb}/plsdb"
+
 usage() {
-    echo "Usage: $0 --dir <input_directory> --threads <num_threads> --db <plsdb_path>"
+    echo "Usage: $0 --dir <input_directory> --threads <num_threads> [--db <plsdb_prefix>]"
     echo "  --dir: Specify the input directory containing fasta files."
     echo "  --threads: Number of threads for abricate and blastn."
-    echo "  --db: Path to the PLSDB database for blastn."
+    echo "  --db: Path to the PLSDB BLAST index prefix."
+    echo "        Optional if PLSDB was downloaded during Docker build (--build-arg DOWNLOAD_DB=true)."
+    echo "        Required if using an external database on the host machine."
     echo "  -h, --help: Display this help message."
     exit 1
 }
 
-# Check for dependencies
 check_dependency() {
     if ! command -v "$1" &> /dev/null; then
         echo "Error: $1 is not installed. Please install it."
@@ -32,7 +35,7 @@ while [[ "$#" -gt 0 ]]; do
             shift 2
             ;;
         --db)
-            plsdb_path="$2"
+            plsdb_override="$2"
             shift 2
             ;;
         -h|--help)
@@ -53,9 +56,35 @@ if [[ -z "$num_threads" || ! "$num_threads" =~ ^[0-9]+$ ]]; then
     echo "Error: Invalid or missing number of threads."
     usage
 fi
-if [[ -z "$plsdb_path" || ! -f "$plsdb_path" ]]; then
-    echo "Error: PLSDB database path not provided or does not exist."
-    usage
+
+
+if [[ -n "$plsdb_override" ]]; then
+
+    plsdb_path="$plsdb_override"
+    if [[ ! -f "${plsdb_path}.nhr" ]]; then
+        echo "Error: PLSDB BLAST index not found at provided path: ${plsdb_path}"
+        echo "Expected file: ${plsdb_path}.nhr"
+        echo "Make sure the path points to the BLAST index prefix, not a directory or fasta file."
+        echo "Example: --db /data/plsdb/plsdb  (where plsdb.nhr, plsdb.nin etc. exist)"
+        exit 1
+    fi
+    echo "Using user-provided PLSDB: $plsdb_path"
+elif [[ -f "${PLSDB_DEFAULT}.nhr" ]]; then
+
+    plsdb_path="$PLSDB_DEFAULT"
+    echo "Using built-in PLSDB: $plsdb_path"
+else
+
+    echo "Error: PLSDB database not found."
+    echo ""
+    echo "Options:"
+    echo "  1. Provide your existing database with --db:"
+    echo "       plsMD --preprocessing --dir <dir> --threads <n> --db /path/to/plsdb"
+    echo "       Note: path must be the BLAST index prefix (e.g. /data/plsdb/plsdb)"
+    echo ""
+    echo "  2. Rebuild the Docker image with the database included:"
+    echo "       docker build --build-arg DOWNLOAD_DB=true -t plsmd ."
+    exit 1
 fi
 
 cd "$input_dir" || { echo "Error: Unable to change to directory $input_dir"; exit 1; }
@@ -65,7 +94,6 @@ if [[ -z "$(find . -maxdepth 1 -name '*.fasta' -print -quit)" ]]; then
     exit 1
 fi
 
-# Create directories for abricate outputs
 mkdir -p plasmidfinder_results rep_typer_results merged_plasmid_results || { echo "Error creating directories"; exit 1; }
 
 echo "Running abricate with plasmidfinder database..."
@@ -264,7 +292,6 @@ for plasmid_file in *.txt; do
         continue
     fi
     
-
     if [[ "$plasmid_file" == *"/"* ]]; then
         continue
     fi
