@@ -1,0 +1,3 @@
+qseqid	sseqid	qstart	qend	sstart	send	evalue	bitscore	pident	qcovs	slen	qlen	q_perc_aligned	overlapped_bases	coverage_percentage	bases_covered	gene_name
+36	CP054324.1	993	2101	1	1109	0.0	2049.0	100.0	100	2113	2101	1.0	0	100.0	2113.0	Col_BS512__1_pld1
+36	CP054324.1	1	992	1110	2113	0.0	1766.0	98.607	100	2113	2101	1.0	0	100.0	2113.0	Col_BS512__1_pld1
