@@ -62,6 +62,7 @@ def process_plsdb_file(file_path, fasta_file):
     logging.info(f"Updated {file_path} with qlen and q_perc_aligned columns.")
 
 def process_directory(directory_path):
+    """Process _PLSDB.txt files; looks for matching _merged.fasta in the same directory."""
     logging.info(f"Processing _PLSDB.txt files in {directory_path}")
     for file in os.listdir(directory_path):
         if file.endswith("_PLSDB.txt"):
@@ -314,9 +315,7 @@ def extract_gene_sample_mapping(input_dir, gene_directories):
     
     for filename in os.listdir(input_dir):
         if filename.endswith("_plasmid.txt"):
-            sample_base = filename.replace('_plasmid.txt', '')
-            sample_parts = sample_base.split('_')
-            sample = sample_parts[0] if len(sample_parts) > 1 else sample_base
+            sample = filename.replace('_plasmid.txt', '')
             
             file_path = os.path.join(input_dir, filename)
             try:
@@ -326,7 +325,9 @@ def extract_gene_sample_mapping(input_dir, gene_directories):
                         parts = line.strip().split('\t')
                         if len(parts) > 5:
                             gene = parts[5].strip()
-                            sanitized_gene = ''.join(char if char.isalnum() else '_' for char in gene)
+                            # Gene names are already sanitized by preprocessing
+                            # Only strip any residual whitespace/pipe artifact from rep.mob.typer
+                            sanitized_gene = re.split(r'\s+\|', gene)[0].strip()
                             if sanitized_gene not in gene_samples:
                                 gene_samples[sanitized_gene] = set()
                             gene_samples[sanitized_gene].add(sample)
@@ -357,7 +358,7 @@ def extract_gene_sample_mapping(input_dir, gene_directories):
                 
                 elif filename.endswith("_overlap_filtered.txt"):
                     base_name = filename.replace('_overlap_filtered.txt', '')
-                    if base_name.startswith(pattern_start):
+                    if base_name == sample:
                         source_file = os.path.join(input_dir, filename)
                         dest_file = os.path.join(sample_dir, f"{sample}_overlap_filtered.txt")
                         shutil.copy2(source_file, dest_file)
@@ -385,7 +386,6 @@ def process_gene_directories(top_level_directory, gene_list):
             logging.info(f"Processing gene directory: {gene_name}")
             for root, dirs, files in os.walk(gene_dir_path):
                 directory_name = os.path.basename(root)
-                # Skip the gene directory itself, only process sample subdirectories
                 if directory_name == gene_name:
                     continue
                     
@@ -394,8 +394,7 @@ def process_gene_directories(top_level_directory, gene_list):
                 overlap_file = next((f for f in files if f.endswith('_overlap_filtered.txt')), None)
                 
                 if not abricate_file or not overlap_file:
-                    logging.warning(f"Required files not found in subdirectory {directory_name}. Looking for: {directory_name}_plasmid.txt and {directory_name}_overlap_filtered.txt")
-                    # List what files are actually present for debugging
+                    logging.warning(f"Required files not found in subdirectory {directory_name}.")
                     actual_files = [f for f in files if f.endswith(('.txt', '.fasta'))]
                     if actual_files:
                         logging.info(f"Files found in {directory_name}: {actual_files}")
@@ -409,10 +408,10 @@ def process_gene_directories(top_level_directory, gene_list):
                 
                 try:
                     abricate_df = pd.read_csv(abricate_path, sep='\t', dtype=str, comment=None)
-                    # Clean up the GENE column
                     abricate_df['GENE'] = abricate_df['GENE'].str.strip()
+                    # Gene names already sanitized by preprocessing; only strip whitespace/pipe artifact
+                    abricate_df['GENE'] = abricate_df['GENE'].str.replace(r'\s+\|.*$', '', regex=True).str.strip()
                     
-                    # Check if the target gene exists in this sample
                     contig_info = abricate_df[abricate_df['GENE'] == gene_name]
                     
                     if contig_info.empty:
@@ -447,7 +446,7 @@ def process_gene_directories(top_level_directory, gene_list):
                             all_plasmids_df = overlap_df[overlap_df['sseqid'].isin(plasmid_ids)]
                             all_plasmids_df['gene_name'] = gene_name
                             all_plasmids_df.to_csv(all_plasmids_output_path, sep='\t', index=False)
-                            logging.info(f"All occurrences of the identified plasmids have been saved to {all_plasmids_output_path} with gene name.")
+                            logging.info(f"All occurrences of the identified plasmids saved to {all_plasmids_output_path}")
                         
                         if os.path.exists(gene_output_path):
                             os.remove(gene_output_path)
@@ -669,7 +668,6 @@ def load_gene_list_from_file(gene_list_file):
 
 def copy_merged_fasta_files(top_level_directory, destination_directory, gene_list):
     logging.info(f"Copying merged fasta files to {destination_directory}")
-    # Ensure destination directory exists
     os.makedirs(destination_directory, exist_ok=True)
     
     for root, dirs, files in os.walk(top_level_directory):
@@ -911,11 +909,10 @@ def process_files_for_col_contigs(file1, file2, output_rows):
 def rename_files_in_gene_directories(extracted_fasta_dir, replicon_dir):
     logging.info(f"Renaming files in gene directories from {extracted_fasta_dir}")
     
-    # Check if directory exists, if not create it
     if not os.path.exists(extracted_fasta_dir):
         logging.warning(f"Extracted FASTA directory {extracted_fasta_dir} does not exist. Creating it.")
         os.makedirs(extracted_fasta_dir, exist_ok=True)
-        return  # No files to process if directory was just created
+        return
     
     for gene_dir in os.listdir(extracted_fasta_dir):
         gene_dir_path = os.path.join(extracted_fasta_dir, gene_dir)
@@ -1005,7 +1002,6 @@ def rename_fasta_headers_in_replicon_dir(replicon_dir):
 def process_directories_for_col_contigs(plasmid_dir, replicon_dir, combined_output_file, extracted_fasta_dir):
     logging.info(f"Processing directories for Col contigs from {plasmid_dir}")
     
-    # Ensure extracted_fasta_dir exists
     os.makedirs(extracted_fasta_dir, exist_ok=True)
     
     output_rows = []
@@ -1015,7 +1011,7 @@ def process_directories_for_col_contigs(plasmid_dir, replicon_dir, combined_outp
     logging.info(f"Found {len(plasmid_files)} plasmid files and {len(replicon_files)} replicon files.")
     
     for file_name, plasmid_path in plasmid_files.items():
-        base_sample_name = file_name.split('_')[0]
+        base_sample_name = file_name.replace('_plasmid.txt', '')
         expected_replicon_file = f"{base_sample_name}_plasmid_replicon_filtered.txt"
         replicon_path = replicon_files.get(expected_replicon_file)
         
@@ -1033,23 +1029,21 @@ def process_directories_for_col_contigs(plasmid_dir, replicon_dir, combined_outp
     rename_files_in_gene_directories(extracted_fasta_dir, replicon_dir)
     rename_fasta_headers_in_replicon_dir(replicon_dir)   
  
-def process_all_circular_contigs(directory_path, fasta_directory):
+def process_all_circular_contigs(directory_path, fasta_directory, output_path=None):
     logging.info(f"Processing all circular contigs from {directory_path}")
-    output_dir = os.path.join(directory_path, "plasmid_files")
+    output_dir = os.path.join(output_path if output_path else directory_path, "plasmid_files")
     os.makedirs(output_dir, exist_ok=True)
 
     for file in os.listdir(directory_path):
         if file.endswith("_overlap_filtered.txt"):
             sample_name = file.replace("_overlap_filtered.txt", "")
             
-            # Find the corresponding Abricate plasmid file
             plasmid_file = None
             for f in os.listdir(directory_path):
                 if f.startswith(sample_name) and f.endswith("_plasmid.txt"):
                     plasmid_file = os.path.join(directory_path, f)
                     break
             
-            # Load replicon information from Abricate file
             contigs_with_replicons = set()
             if plasmid_file and os.path.exists(plasmid_file):
                 try:
@@ -1074,7 +1068,6 @@ def process_all_circular_contigs(directory_path, fasta_directory):
             for record in SeqIO.parse(fasta_file, "fasta"):
                 if "circular=true" in record.description:
                     contig_id = record.id.split()[0]
-                    # Check if this contig has replicons in the Abricate file
                     if contig_id not in contigs_with_replicons:
                         circular_contigs[record.id] = {
                             'number': contig_id,
@@ -1089,14 +1082,12 @@ def process_all_circular_contigs(directory_path, fasta_directory):
             
             logging.info(f"Found {len(circular_contigs)} circular contigs without replicons for {sample_name}: {list(circular_contigs.keys())}")
             
-            # Create entries for circular contigs without alignment data
             circular_entries = []
             for contig_id, contig_info in circular_contigs.items():
                 new_sseqid = f"{sample_name}_circular_{contig_info['number']}"
-                # Create a minimal entry for the circular contig
                 entry = {
                     'qseqid': contig_id,
-                    'sseqid': '-',  # No specific plasmid reference
+                    'sseqid': '-',
                     'qstart': '1',
                     'qend': str(contig_info['length']),
                     'sstart': '-',
@@ -1104,12 +1095,12 @@ def process_all_circular_contigs(directory_path, fasta_directory):
                     'evalue': '-',
                     'bitscore': '-',
                     'pident': '-',
-                    'qcovs': '100',  # 100% coverage since it's the whole contig
+                    'qcovs': '100',
                     'slen': '-',
                     'qlen': str(contig_info['length']),
-                    'q_perc_aligned': '1.0',  # 100% aligned to itself
+                    'q_perc_aligned': '1.0',
                     'overlapped_bases': '0',
-                    'coverage_percentage': '100.00%',  # 100% coverage
+                    'coverage_percentage': '100.00%',
                     'bases_covered': str(contig_info['length']),
                     'new_sseqid': new_sseqid,
                     'x_sseqid': contig_id,
@@ -1117,14 +1108,12 @@ def process_all_circular_contigs(directory_path, fasta_directory):
                 }
                 circular_entries.append(entry)
             
-            # Convert to DataFrame
             circular_df = pd.DataFrame(circular_entries)
             
             replicon_file = os.path.join(output_dir, f"{sample_name}_plasmid_replicon_filtered.txt")
             
             if os.path.exists(replicon_file):
                 existing_df = pd.read_csv(replicon_file, sep="\t")
-                # Remove any existing entries for the same circular contigs to avoid duplicates
                 existing_circular_mask = existing_df['x_sseqid'].isin(circular_contigs.keys())
                 existing_df = existing_df[~existing_circular_mask]
                 combined_df = pd.concat([existing_df, circular_df], ignore_index=True)
@@ -1134,7 +1123,6 @@ def process_all_circular_contigs(directory_path, fasta_directory):
             
             logging.info(f"Added {len(circular_df)} circular contigs (without replicons) to plasmid file for {sample_name}")
             
-            # Also add to the combined FASTA file
             combined_fasta_path = os.path.join(output_dir, f"{sample_name}_plasmid_contigs.fasta")
             
             circular_records = []
@@ -1147,22 +1135,18 @@ def process_all_circular_contigs(directory_path, fasta_directory):
                     circular_records.append(new_record)
             
             if os.path.exists(combined_fasta_path):
-                # Read existing records and remove any with the same new_sseqid to avoid duplicates
                 existing_records = list(SeqIO.parse(combined_fasta_path, "fasta"))
                 existing_ids = {rec.id for rec in existing_records}
-                
-                # Filter out circular records that already exist
                 new_circular_records = [rec for rec in circular_records if rec.id not in existing_ids]
-                
                 if new_circular_records:
                     with open(combined_fasta_path, "a") as combined_fasta:
                         SeqIO.write(new_circular_records, combined_fasta, "fasta")
-                    logging.info(f"Added {len(new_circular_records)} new circular contigs (without replicons) to FASTA file for {sample_name}")
+                    logging.info(f"Added {len(new_circular_records)} new circular contigs to FASTA file for {sample_name}")
                 else:
                     logging.info(f"No new circular contigs to add to FASTA file for {sample_name}")
             else:
                 SeqIO.write(circular_records, combined_fasta_path, "fasta")
-                logging.info(f"Created new FASTA file with {len(circular_records)} circular contigs (without replicons) for {sample_name}")
+                logging.info(f"Created new FASTA file with {len(circular_records)} circular contigs for {sample_name}")
 
 def generate_sample_report(output_directory, sample_name_or_directory):
     if os.path.isdir(sample_name_or_directory):
@@ -1187,19 +1171,13 @@ def generate_sample_report(output_directory, sample_name_or_directory):
         
         replicon_df = pd.read_csv(replicon_contigs_file, sep='\t')
 
-        # Handle circular contigs specially
         if 'new_sseqid' not in replicon_df.columns:
             if 'qseqid' not in replicon_df.columns:
                 return
             replicon_df['new_sseqid'] = replicon_df['qseqid']
 
-        # For circular contigs, we want one entry per circular contig, not per alignment
         circular_mask = replicon_df['gene_name'] == 'circular'
-        
-        # For circular contigs, take the first occurrence (they should all be the same for a given contig)
         circular_df = replicon_df[circular_mask].drop_duplicates('new_sseqid', keep='first')
-        
-        # For non-circular contigs, use the existing logic
         non_circular_df = replicon_df[~circular_mask]
         
         if not non_circular_df.empty:
@@ -1207,14 +1185,12 @@ def generate_sample_report(output_directory, sample_name_or_directory):
         else:
             unique_non_circular_df = pd.DataFrame(columns=['new_sseqid', 'sseqid', 'coverage_percentage'])
         
-        # Combine circular and non-circular entries
         if not circular_df.empty:
             circular_report_df = circular_df[['new_sseqid', 'sseqid', 'coverage_percentage']].copy()
             combined_df = pd.concat([unique_non_circular_df, circular_report_df], ignore_index=True)
         else:
             combined_df = unique_non_circular_df
         
-        # Get contig lengths from FASTA file
         contig_lengths = {}
         if os.path.exists(fasta_file):
             with open(fasta_file, "r") as fasta_handle:
@@ -1236,66 +1212,111 @@ def generate_sample_report(output_directory, sample_name_or_directory):
         logging.error(f"Error generating report for {sample_name}: {e}")
 
 def main():
-    # Set up logging in the input directory
-    directory_path = None
-    if len(sys.argv) > 1 and '--dir' in sys.argv:
-        dir_index = sys.argv.index('--dir') + 1
-        if dir_index < len(sys.argv):
-            directory_path = sys.argv[dir_index]
-    
-    if directory_path:
-        log_file = os.path.join(directory_path, 'log.txt')
-    else:
-        log_file = 'log.txt'
-    
-    setup_logging(log_file)
-    logging.info("Starting plasmid processing pipeline")
-    
     parser = argparse.ArgumentParser(description="Process plasmid and replicon data.")
-    parser.add_argument('--dir', required=True, help="Directory containing the files and output directories.")
+    parser.add_argument('--dir', required=True, help="Directory containing preprocessing outputs (PLSDB files, merged fastas, plasmid lists, etc.).")
+    parser.add_argument('--output', required=True, help="Output directory for all processing results.")
 
     args = parser.parse_args()
 
-    directory_path = args.dir
-    fasta_directory = os.path.join(directory_path, "unicycler_fasta")
-    gene_list_file = os.path.join(directory_path, "plasmid_list.txt")
+    directory_path = os.path.realpath(args.dir)
+    output_path = os.path.realpath(args.output)
 
-    logging.info(f"Working directory: {directory_path}")
-    logging.info(f"FASTA directory: {fasta_directory}")
-    logging.info(f"Gene list file: {gene_list_file}")
+    os.makedirs(output_path, exist_ok=True)
 
-    process_directory(directory_path)
-    process_files_in_directory(directory_path)
-    process_directory_filtered(directory_path)
-    process_circular_contigs(directory_path, directory_path)
-    process_files_coverage(directory_path)
+    log_file = os.path.join(output_path, 'log.txt')
+    setup_logging(log_file)
+    logging.info("Starting plasmid processing pipeline")
+    logging.info(f"Input directory:  {directory_path}")
+    logging.info(f"Output directory: {output_path}")
 
-    gene_directories = os.path.join(directory_path, "gene_directories")
-    extract_gene_sample_mapping(directory_path, gene_directories)
+    # ----------------------------------------------------------------
+    # Stage all preprocessing outputs into output_path so every step
+    # reads AND writes from a single working directory.
+    # ----------------------------------------------------------------
+    logging.info(f"Staging preprocessing outputs from {directory_path} into {output_path}")
+    for fname in os.listdir(directory_path):
+        src = os.path.join(directory_path, fname)
+        dst = os.path.join(output_path, fname)
+        if os.path.isfile(src) and not os.path.exists(dst):
+            if (fname.endswith('_PLSDB.txt') or
+                fname.endswith('_merged.fasta') or
+                fname.endswith('_plasmid.txt') or
+                fname == 'plasmid_list.txt'):
+                shutil.copy2(src, dst)
+                logging.info(f"Staged: {fname}")
+
+    src_unicycler = os.path.join(directory_path, "unicycler_fasta")
+    dst_unicycler = os.path.join(output_path, "unicycler_fasta")
+    if os.path.isdir(src_unicycler) and not os.path.exists(dst_unicycler):
+        shutil.copytree(src_unicycler, dst_unicycler)
+        logging.info("Staged: unicycler_fasta/")
+
+    # Everything from here works exclusively inside output_path
+    working_dir     = output_path
+    fasta_directory = os.path.join(working_dir, "unicycler_fasta")
+    gene_list_file  = os.path.join(working_dir, "plasmid_list.txt")
+
+    gene_directories      = os.path.join(working_dir, "gene_directories")
+    output_directory      = os.path.join(working_dir, "plasmid_files")
+    nonplasmid_output     = os.path.join(working_dir, "nonplasmid_files")
+    destination_directory = os.path.join(working_dir, "extracted_fasta")
+    combined_output_file  = os.path.join(working_dir, "Processed_ColContigs.txt")
+
+    # Phase 1: intermediates (_overlap.txt, _overlap_filtered.txt,
+    # nested_contigs.txt) written into working_dir alongside staged files
+    process_directory(working_dir)
+    process_files_in_directory(working_dir)
+    process_directory_filtered(working_dir)
+    process_circular_contigs(working_dir, working_dir)
+    process_files_coverage(working_dir)
+
+    # Phase 2: all outputs into output_path subdirectories
+    extract_gene_sample_mapping(working_dir, gene_directories)
 
     gene_list = load_gene_list(gene_list_file)
     process_gene_directories(gene_directories, gene_list)
     process_replicon_filtered_files(gene_directories)
 
-    output_directory = os.path.join(directory_path, "plasmid_files")
     concatenate_sample_files(gene_directories, output_directory)
-    process_directories_for_extraction(gene_directories, directory_path)
+    process_directories_for_extraction(gene_directories, working_dir)
     process_directories_for_merging(gene_directories)
 
-    destination_directory = os.path.join(directory_path, "extracted_fasta")
     copy_merged_fasta_files(gene_directories, destination_directory, gene_list)
     concatenate_fasta_files(gene_directories, output_directory)
 
-    process_nonplasmid_contigs(output_directory, fasta_directory, os.path.join(directory_path, "nonplasmid_files"), directory_path)
+    process_nonplasmid_contigs(output_directory, fasta_directory, nonplasmid_output, working_dir)
 
-    combined_output_file = os.path.join(directory_path, "Processed_ColContigs.txt")
-    process_directories_for_col_contigs(directory_path, output_directory, combined_output_file, destination_directory)
+    # Both *_plasmid.txt and *_plasmid_replicon_filtered.txt are now
+    # in working_dir and output_directory respectively
+    process_directories_for_col_contigs(working_dir, output_directory, combined_output_file, destination_directory)
 
-    process_all_circular_contigs(directory_path, fasta_directory)
+    process_all_circular_contigs(working_dir, fasta_directory, working_dir)
 
     generate_sample_report(output_directory, output_directory)
-    
-    logging.info("Plasmid processing pipeline completed successfully")
+
+    # ----------------------------------------------------------------
+    # Cleanup: remove staged copies of preprocessing files.
+    # Originals stay untouched in --dir.
+    # Intermediates (_overlap.txt, _overlap_filtered.txt, nested_contigs.txt)
+    # are kept as they are generated by this script.
+    # ----------------------------------------------------------------
+    logging.info("Cleaning up staged preprocessing files from output directory...")
+    for fname in os.listdir(working_dir):
+        fpath = os.path.join(working_dir, fname)
+        if os.path.isfile(fpath) and (
+            fname.endswith('_PLSDB.txt') or
+            fname.endswith('_merged.fasta') or
+            fname.endswith('_plasmid.txt') or
+            fname == 'plasmid_list.txt'
+        ):
+            os.remove(fpath)
+            logging.info(f"Removed staged file: {fname}")
+
+    if os.path.isdir(dst_unicycler):
+        shutil.rmtree(dst_unicycler)
+        logging.info("Removed staged directory: unicycler_fasta/")
+
+    logging.info(f"Plasmid processing pipeline completed successfully. All outputs in: {output_path}")
 
 if __name__ == "__main__":
     main()

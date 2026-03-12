@@ -3,8 +3,9 @@
 PLSDB_DEFAULT="${BLAST_DB_DIR:-/opt/plsMD/data/blastdb}/plsdb"
 
 usage() {
-    echo "Usage: $0 --dir <input_directory> --threads <num_threads> [--db <plsdb_prefix>]"
+    echo "Usage: $0 --dir <input_directory> --output <output_directory> --threads <num_threads> [--db <plsdb_prefix>]"
     echo "  --dir: Specify the input directory containing fasta files."
+    echo "  --output: Specify the output directory for all results."
     echo "  --threads: Number of threads for abricate and blastn."
     echo "  --db: Path to the PLSDB BLAST index prefix."
     echo "        Optional if PLSDB was downloaded during Docker build (--build-arg DOWNLOAD_DB=true)."
@@ -30,6 +31,10 @@ while [[ "$#" -gt 0 ]]; do
             input_dir="$2"
             shift 2
             ;;
+        --output)
+            output_dir="$2"
+            shift 2
+            ;;
         --threads)
             num_threads="$2"
             shift 2
@@ -52,14 +57,21 @@ if [[ -z "$input_dir" || ! -d "$input_dir" ]]; then
     echo "Error: Input directory not provided or does not exist."
     usage
 fi
+if [[ -z "$output_dir" ]]; then
+    echo "Error: Output directory not provided."
+    usage
+fi
 if [[ -z "$num_threads" || ! "$num_threads" =~ ^[0-9]+$ ]]; then
     echo "Error: Invalid or missing number of threads."
     usage
 fi
 
+# Create output directory if it doesn't exist
+mkdir -p "$output_dir" || { echo "Error: Unable to create output directory $output_dir"; exit 1; }
+output_dir="$(realpath "$output_dir")"
+input_dir="$(realpath "$input_dir")"
 
 if [[ -n "$plsdb_override" ]]; then
-
     plsdb_path="$plsdb_override"
     if [[ ! -f "${plsdb_path}.nhr" ]]; then
         echo "Error: PLSDB BLAST index not found at provided path: ${plsdb_path}"
@@ -70,16 +82,14 @@ if [[ -n "$plsdb_override" ]]; then
     fi
     echo "Using user-provided PLSDB: $plsdb_path"
 elif [[ -f "${PLSDB_DEFAULT}.nhr" ]]; then
-
     plsdb_path="$PLSDB_DEFAULT"
     echo "Using built-in PLSDB: $plsdb_path"
 else
-
     echo "Error: PLSDB database not found."
     echo ""
     echo "Options:"
     echo "  1. Provide your existing database with --db:"
-    echo "       plsMD --preprocessing --dir <dir> --threads <n> --db /path/to/plsdb"
+    echo "       plsMD --preprocessing --dir <dir> --output <out> --threads <n> --db /path/to/plsdb"
     echo "       Note: path must be the BLAST index prefix (e.g. /data/plsdb/plsdb)"
     echo ""
     echo "  2. Rebuild the Docker image with the database included:"
@@ -87,33 +97,36 @@ else
     exit 1
 fi
 
-cd "$input_dir" || { echo "Error: Unable to change to directory $input_dir"; exit 1; }
-
-if [[ -z "$(find . -maxdepth 1 -name '*.fasta' -print -quit)" ]]; then
+# Verify input directory has fasta files
+if [[ -z "$(find "$input_dir" -maxdepth 1 -name '*.fasta' -print -quit)" ]]; then
     echo "Error: No .fasta files found in $input_dir"
     exit 1
 fi
 
-mkdir -p plasmidfinder_results rep_typer_results merged_plasmid_results || { echo "Error creating directories"; exit 1; }
+# Create output subdirectories
+mkdir -p "$output_dir/plasmidfinder_results" \
+         "$output_dir/rep_typer_results" \
+         "$output_dir/merged_plasmid_results" \
+         "$output_dir/unicycler_fasta" || { echo "Error creating directories"; exit 1; }
 
 echo "Running abricate with plasmidfinder database..."
-for f in *.fasta; do
+for f in "$input_dir"/*.fasta; do
     base_name=$(basename "$f" .fasta)
-    abricate --db plasmidfinder "$f" --threads "$num_threads" > "plasmidfinder_results/${base_name}.txt" || { echo "Error: abricate plasmidfinder failed for $f"; exit 1; }
+    abricate --db plasmidfinder "$f" --threads "$num_threads" > "$output_dir/plasmidfinder_results/${base_name}.txt" || { echo "Error: abricate plasmidfinder failed for $f"; exit 1; }
 done
 
 echo "Running abricate with rep.mob.typer database..."
-for f in *.fasta; do
+for f in "$input_dir"/*.fasta; do
     base_name=$(basename "$f" .fasta)
-    abricate --db rep.mob.typer "$f" --threads "$num_threads" > "rep_typer_results/${base_name}.txt" || { echo "Error: abricate rep.mob.typer failed for $f"; exit 1; }
+    abricate --db rep.mob.typer "$f" --threads "$num_threads" > "$output_dir/rep_typer_results/${base_name}.txt" || { echo "Error: abricate rep.mob.typer failed for $f"; exit 1; }
 done
 
 
 process_sample() {
     local sample_name="$1"
-    local plasmidfinder_file="plasmidfinder_results/${sample_name}.txt"
-    local reptyper_file="rep_typer_results/${sample_name}.txt"
-    local output_file="merged_plasmid_results/${sample_name}_plasmid.txt"
+    local plasmidfinder_file="$output_dir/plasmidfinder_results/${sample_name}.txt"
+    local reptyper_file="$output_dir/rep_typer_results/${sample_name}.txt"
+    local output_file="$output_dir/merged_plasmid_results/${sample_name}_plasmid.txt"
     
     if [[ ! -f "$plasmidfinder_file" ]]; then
         echo "Warning: PlasmidFinder file not found: $plasmidfinder_file"
@@ -193,7 +206,6 @@ process_sample() {
         IFS=$'\t' read -r -a fields <<< "$line"
         if [[ ${#fields[@]} -ge 2 ]]; then
             contig="${fields[1]}"
-            # Only add if contig is NOT in plasmidfinder
             if [[ -z "${pf_contigs[$contig]}" ]]; then
                 echo "$line" >> "$output_temp"
             else
@@ -223,9 +235,8 @@ process_sample() {
     echo "Processed $sample_name: $pf_count from plasmidfinder + $rt_kept from rep.typer = $total_plasmids total"
 }
 
-echo "Merging plasmidfinder and rep.mob.typer results (simplified approach)..."
-# Main processing loop for merging
-for pf_file in plasmidfinder_results/*.txt; do
+echo "Merging plasmidfinder and rep.mob.typer results..."
+for pf_file in "$output_dir/plasmidfinder_results"/*.txt; do
     if [[ -f "$pf_file" ]]; then
         sample_name=$(basename "$pf_file" .txt)
         echo "Processing sample: $sample_name"
@@ -233,26 +244,26 @@ for pf_file in plasmidfinder_results/*.txt; do
     fi
 done
 
-for rt_file in rep_typer_results/*.txt; do
+for rt_file in "$output_dir/rep_typer_results"/*.txt; do
     if [[ -f "$rt_file" ]]; then
         sample_name=$(basename "$rt_file" .txt)
-        pf_file="plasmidfinder_results/${sample_name}.txt"
+        pf_file="$output_dir/plasmidfinder_results/${sample_name}.txt"
         
         if [[ ! -f "$pf_file" ]]; then
             echo "Processing rep.typer-only sample: $sample_name"
-            head -n 1 "$rt_file" > "merged_plasmid_results/${sample_name}.txt"
-            tail -n +2 "$rt_file" | sort -k1,1 -k3,3n >> "merged_plasmid_results/${sample_name}.txt"
+            head -n 1 "$rt_file" > "$output_dir/merged_plasmid_results/${sample_name}.txt"
+            tail -n +2 "$rt_file" | sort -k1,1 -k3,3n >> "$output_dir/merged_plasmid_results/${sample_name}.txt"
             local entry_count=$(tail -n +2 "$rt_file" | wc -l)
             echo "  -> Copied rep.typer only file: $entry_count entries"
         fi
     fi
 done
 
-echo "Copying merged plasmid results to root directory..."
-cp merged_plasmid_results/*.txt . || { echo "Error copying merged results"; exit 1; }
+echo "Copying merged plasmid results to output directory..."
+cp "$output_dir/merged_plasmid_results/"*.txt "$output_dir/" || { echo "Error copying merged results"; exit 1; }
 
 echo "Reversing and merging fasta files..."
-for file in *.fasta; do
+for file in "$input_dir"/*.fasta; do
     base_name=$(basename "$file" .fasta)
     reverse_file=$(mktemp) || { echo "Error: Failed to create temporary file"; exit 1; }
     merged_file=$(mktemp) || { echo "Error: Failed to create temporary file"; rm -f "$reverse_file"; exit 1; }
@@ -260,21 +271,21 @@ for file in *.fasta; do
     seqtk seq -r "$file" | awk '/^>/ {gsub(/^>([^ ]+)/, ">"substr($1,2)"_R"); print} !/^>/ {print}' > "$reverse_file" || { echo "Error: seqtk failed for $file"; rm -f "$reverse_file" "$merged_file"; exit 1; }
     cat "$file" "$reverse_file" > "$merged_file" || { echo "Error: cat failed for $file"; rm -f "$reverse_file" "$merged_file"; exit 1; }
 
-    mv "$merged_file" "${base_name}_merged.fasta" || { echo "Error: mv failed for $file"; rm -f "$reverse_file" "$merged_file"; exit 1; }
+    mv "$merged_file" "$output_dir/${base_name}_merged.fasta" || { echo "Error: mv failed for $file"; rm -f "$reverse_file" "$merged_file"; exit 1; }
     rm -f "$reverse_file"
 
     echo "Processed $file: Created ${base_name}_merged.fasta"
 done
 
 echo "Running blastn on merged fasta files..."
-for f in *_merged.fasta; do
+for f in "$output_dir"/*_merged.fasta; do
     base_name=$(basename "$f" _merged.fasta)
-    blastn -query "$f" -task blastn -db "$plsdb_path" -out "${base_name}_PLSDB.txt" -num_threads "$num_threads" -perc_identity 90 -qcov_hsp_perc 30 -outfmt '6 qseqid sseqid qstart qend sstart send evalue bitscore pident qcovs slen' || { echo "Error: blastn failed for $f"; exit 1; }
+    blastn -query "$f" -task blastn -db "$plsdb_path" -out "$output_dir/${base_name}_PLSDB.txt" -num_threads "$num_threads" -perc_identity 90 -qcov_hsp_perc 30 -outfmt '6 qseqid sseqid qstart qend sstart send evalue bitscore pident qcovs slen' || { echo "Error: blastn failed for $f"; exit 1; }
 done
 
 echo "Adding headers to BLASTn output files..."
 header="qseqid\tsseqid\tqstart\tqend\tsstart\tsend\tevalue\tbitscore\tpident\tqcovs\tslen"
-for file in *_PLSDB.txt; do
+for file in "$output_dir"/*_PLSDB.txt; do
     if [[ -f "$file" ]]; then
         tmp_file=$(mktemp) || { echo "Error creating temp file"; exit 1; }
         echo -e "$header" > "$tmp_file"
@@ -286,16 +297,17 @@ done
 echo "Modifying plasmid names in merged plasmid results..."
 declare -A plasmid_map=()
 
-for plasmid_file in *.txt; do
+for plasmid_file in "$output_dir"/*.txt; do
     # Skip BLAST output files
     if [[ "$plasmid_file" == *"_PLSDB.txt" ]]; then
         continue
     fi
-    
-    if [[ "$plasmid_file" == *"/"* ]]; then
+
+    # Skip any path that contains a directory separator (shouldn't happen but safety check)
+    if [[ "$(basename "$plasmid_file")" == *"/"* ]]; then
         continue
     fi
-    
+
     declare -A plasmid_count=()
     temp_file=$(mktemp) || { echo "Error creating temp file"; exit 1; }
 
@@ -307,9 +319,12 @@ for plasmid_file in *.txt; do
             continue
         fi
 
-        plasmid=$(echo "$line" | awk '{print $6}')
+        # Use tab delimiter to get exact GENE field (field 6)
+        plasmid=$(echo "$line" | awk -F'\t' '{print $6}')
         if [[ -n "$plasmid" ]]; then
-            modified_plasmid=$(echo "$plasmid" | sed 's/[()\/-]/_/g')
+            modified_plasmid=$(echo "$plasmid" | sed 's/[()\/:;|, -]/_/g')
+            # Strip any leading/trailing underscores left after substitution
+            modified_plasmid=$(echo "$modified_plasmid" | sed 's/^_*//;s/_*$//')
             if [[ -n "${plasmid_count[$modified_plasmid]}" ]]; then
                 plasmid_count[$modified_plasmid]=$((plasmid_count[$modified_plasmid] + 1))
                 modified_plasmid="${modified_plasmid}_pld${plasmid_count[$modified_plasmid]}"
@@ -318,8 +333,8 @@ for plasmid_file in *.txt; do
                 modified_plasmid="${modified_plasmid}_pld1"
             fi
             plasmid_map["$modified_plasmid"]=1
-            escaped_original_plasmid=$(printf '%s' "$plasmid" | sed -e 's/[]\/$*.^|[]/\\&/g')
-            echo "$line" | sed "s~\t$plasmid\t~\t$modified_plasmid\t~g" >> "$temp_file" || { echo "Error in sed substitution"; exit 1; }
+            # Use awk with tab delimiter for exact field 6 replacement
+            echo "$line" | awk -F'\t' -v old="$plasmid" -v new="$modified_plasmid" 'BEGIN{OFS="\t"} {if ($6 == old) $6 = new; print}' >> "$temp_file" || { echo "Error in awk substitution"; exit 1; }
         else
             echo "$line" >> "$temp_file"
         fi
@@ -328,7 +343,7 @@ for plasmid_file in *.txt; do
     mv "$temp_file" "$plasmid_file" || { echo "Error: mv failed"; exit 1; }
 done
 
-output_plasmid_list="plasmid_list.txt"
+output_plasmid_list="$output_dir/plasmid_list.txt"
 > "$output_plasmid_list"
 for plasmid in "${!plasmid_map[@]}"; do
     echo "$plasmid" >> "$output_plasmid_list"
@@ -336,11 +351,9 @@ done
 
 echo "Plasmid list extracted to $output_plasmid_list."
 
-mkdir -p unicycler_fasta || { echo "Error creating directory"; exit 1; }
-for file in *.fasta; do
-    if [[ "$file" != *_merged.fasta ]]; then
-        mv "$file" unicycler_fasta/ || { echo "Error moving file"; exit 1; }
-    fi
+# Copy original fasta files to unicycler_fasta in output dir
+for file in "$input_dir"/*.fasta; do
+    cp "$file" "$output_dir/unicycler_fasta/" || { echo "Error copying fasta file $file"; exit 1; }
 done
 
-echo "plsMD-preprocessing is complete"
+echo "plsMD-preprocessing is complete. All outputs written to: $output_dir"
