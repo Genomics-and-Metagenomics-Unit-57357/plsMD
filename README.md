@@ -4,40 +4,102 @@ Introduction
 ------------
 Whole genome sequencing (WGS) has become a cornerstone of antimicrobial resistance (AMR) surveillance. However, reconstructing plasmid sequences from short-read WGS data is challenging due to repetitive sequences and assembly fragmentation. 
 plsMD is a tool designed for comprehensive plasmid reconstruction from short-read assemblies, going beyond simple contig binning. It utilizes Unicycler assemblies with established plasmid databases to reconstruct full plasmid sequences, plsMD offers both single and multi-sample analysis, enabling researchers to perform detailed plasmid characterization and phylogenetic investigations.
+## Installation
 
--------
-Installation
------------
+### Prerequisites
 
+No manual dependency installation is required. All dependencies are bundled and
+pre-configured inside the Docker image within a dedicated `plsMD` conda environment.
+
+#### Bioinformatics Tools
+
+| Tool | Version | Usage |
+|------|---------|-------|
+| [BLAST](https://blast.ncbi.nlm.nih.gov/Blast.cgi) | 2.13.0 | Sequence alignment against PLSDB plasmid database |
+| [Abricate](https://github.com/tseemann/abricate) | latest | Replicon typing and AMR gene detection |
+| [AMRFinderPlus](https://github.com/ncbi/amr) | latest | AMR gene annotation |
+| [MAFFT](https://mafft.cbrc.jp/alignment/software/) | latest | Multiple sequence alignment for phylogenetics |
+| [IQ-TREE](http://www.iqtree.org/) | latest | Phylogenetic tree construction |
+| [seqtk](https://github.com/lh3/seqtk) | latest | FASTA/FASTQ sequence processing |
+| **rep.mob.typer sequences** | — | Replicon typing sequences, pre-configured in image |
+| **IS sequences** | — | Insertion sequence database, pre-configured in image |
+
+#### Python Libraries
+
+| Library | Usage |
+|---------|-------|
+| [pandas](https://pandas.pydata.org/) | Data processing and tabular file handling |
+| [numpy](https://numpy.org/) | Numerical operations |
+| [Biopython](https://biopython.org/) | FASTA parsing and sequence manipulation |
+
+> All tools above are installed and made compatible within the Docker image.
+> The only requirement on your system is **Docker**.
+
+---
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD.git
 cd plsMD
 ```
-Build the Docker Image (without downloading PLSDB database)
-----------
+
+---
+
+### 2. Build the Docker Image
+
+Choose **one** of the following options depending on whether you already have the
+PLSDB database:
+
+**Option A — You already have the PLSDB database** *(recommended if you have it locally)*
 ```bash
 docker build -t plsmd .
 ```
-Build the Docker Image (with downloading PLSDB database)
---------
+
+> The database will **not** be downloaded during the build. You will reference your
+> existing PLSDB database manually when running the pipeline using the `--db` flag:
+>
+> ```bash
+> plsMD --preprocessing --db /path/to/your/plsdb ...
+> ```
+
+**Option B — You do not have the PLSDB database** *(downloads automatically during build)*
 ```bash
 docker build --build-arg DOWNLOAD_DB=true -t plsmd .
 ```
-Set Up Command Line Access
----------
+
+> Requires an active internet connection during the build and may take longer
+> depending on your download speed.
+
+---
+
+### 3. Set Up Command Line Access
+
+Make the wrapper script executable and create a system-wide symlink so you can
+run `plsMD` from anywhere on your system:
 ```bash
 # Make the wrapper executable
 chmod +x plsMD_wrapper.sh
 
-# Create symlink 
+# Create a symlink in your PATH
 sudo ln -sf $(pwd)/plsMD_wrapper.sh /usr/local/bin/plsMD
 ```
-Verify Installation
----------
+
+> **Important:** Run these commands from inside the `plsMD/` directory,
+> otherwise `$(pwd)` will point to the wrong location.
+
+---
+
+### 4. Verify Installation
+
+Confirm that plsMD is correctly installed and accessible:
 ```bash
 plsMD --version
 plsMD --help
 ```
+
+You should see the version number and a list of available options.
+If you get a `command not found` error, check that `/usr/local/bin` is in your `$PATH`.
+
 ------------
 plsMD Single modality
 -----------
