@@ -1,0 +1,59 @@
+# plsMD Step-by-step Tutorial
+
+## Objective
+
+The objective of this tutorial is to illustrate a complete **plsMD pipeline** for short-read whole genome sequencing bacterial samples.
+
+---
+
+## plsMD Pipeline Overview
+
+The plsMD pipeline is divided into the following steps:
+
+- **Preprocessing** – Identifies plasmid replicons to be used as seeds and generates plasmid alignments.
+- **Processing** – Uses the seeds and plasmid alignments to create reconstructed plasmids.
+- **Single Modality** – Reconstructed plasmids are annotated for AMR genes, VF genes, and ISs.
+- **Batch Modality** – Reconstructed plasmids with the same replicon type are grouped together for phylogenetic analysis.
+
+---
+
+## Setting Up plsMD
+
+1. **Install plsMD**
+```bash
+   pip install plsMD
+```
+
+2. **Download tutorial example files**
+```bash
+   wget https://example.com/tutorial-files.zip
+```
+
+---
+
+## Step 1: Preprocessing
+
+Run the preprocessing step to identify plasmid replicons and generate plasmid alignments.
+```bash
+plsMD --preprocessing \
+  --dir <input_directory> \
+  --output <output_directory> \
+  [--db <plsdb_path>] \
+  --threads <num_threads>
+```
+
+### Preprocessing Output Structure
+```
+Preprocessing_output/
+├── Sample_plasmid.txt
+├── Sample_PLSDB.txt
+├── Sample_merged.fasta
+└── Unicycler_fasta/
+    └── Sample.fasta
+```
+
+### Output Description
+
+- The FASTA assembly is run on **PlasmidFinder** (`plasmidfinder_results/`) and **rep.mob.typer** (`rep_typer_results/`).
+- Both outputs are combined, with redundant genes removed, producing `Sample_plasmid.txt`.
+- All contigs are reversed, `_R` is appended to the contig name, and merged with the original contigs into `sample_merged.fasta`.
