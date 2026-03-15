@@ -37,6 +37,7 @@ This folder contains scripts and example results to validate plsMD reconstructio
 ---
 
 ### Folder Structure
+```
 Validation/
   ├── README.md
   ├── scripts/
@@ -49,3 +50,4 @@ Validation/
   ├── recall_precision.tsv
   ├── sensitivity_specificity.tsv
   └── synteny_comparison.tsv
+```
