@@ -31,12 +31,14 @@ The plsMD pipeline is divided into the following steps:
 
 1. **Install plsMD**
 ```bash
-pip install plsMD
+**Install plsMD** — Follow the [Installation guide](../README.md#installation) in the main README.md
+
 ```
 
 2. **Download tutorial example files**
 ```bash
-wget https://example.com/tutorial-files.zip
+git clone https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD.git
+cd "plsMD/Step-By-Step Tutorial/SRR18543877"
 ```
 
 ---
