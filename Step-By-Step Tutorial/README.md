@@ -30,10 +30,7 @@ The plsMD pipeline is divided into the following steps:
 ## Setting Up plsMD
 
 1. **Install plsMD**
-```bash
-**Install plsMD** — Follow the [Installation guide](../README.md#installation) in the main README.md
-
-```
+Follow the [Installation guide](../README.md#installation) in the main README.md
 
 2. **Download tutorial example files**
 ```bash
