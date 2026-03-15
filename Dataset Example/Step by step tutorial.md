@@ -126,15 +126,17 @@ Processing_output/
 
   7. Trimmed sequences are **merged together** into a full reconstructed plasmid
      → `Col440I_1_pld1/SRR18543877_NZ_CP143284.1.fasta`
+     The FASTA name (NZ_CP143284.1) is the reference plasmid used as a guide.
 
-  8. All `SRR18543877_replicon_filtered.txt` files across all gene directories concatenated for that sample `plasmid_files/SRR18543877_plasmid_replicon_filtered.txt`.
+  9. All `SRR18543877_replicon_filtered.txt` files across all gene directories concatenated for that sample `plasmid_files/SRR18543877_plasmid_replicon_filtered.txt`. 
  
-  9. FASTA file with all reconstructed plasmid sequences for that sample `plasmid_files/SRR18543877_plasmid_contigs.fasta`.
+  10. FASTA file with all reconstructed plasmid sequences for that sample `plasmid_files/SRR18543877_plasmid_contigs.fasta`.
+      In this step, contigs that are tagged as circular in the original unicycler assembly are included regardless of the inclusion of a replicon.
  
-  10. Reports for each sample are generated for all reconstructed plasmids. `plasmid_files/SRR18543877_report.tsv`.
+  11. Reports for each sample are generated for all reconstructed plasmids and circular non-replicon plasmids. `plasmid_files/SRR18543877_report.tsv`.
  
  
-  11. All contigs from the original assembly that were not identified as plasmid-associated are extracted `nonplasmid_files/SRR18543877_nonplasmid_contigs.fasta`.
+  12. All contigs from the original assembly that were not identified as plasmid-associated are extracted `nonplasmid_files/SRR18543877_nonplasmid_contigs.fasta`.
  
   --
 
@@ -163,7 +165,7 @@ Annotation_output/
 ```
 --
 
-## Step 4: Phylogentic analysis  
+## Step 4: Phylogenetic analysis  
 If multiple samples are processed together, this step allows the phylogenetic analysis of plasmids from different samples harboring the same replicon type.
 The user manually needs to copy the desired extracted plasmid directories into a new directory `input_directory`
 ```
