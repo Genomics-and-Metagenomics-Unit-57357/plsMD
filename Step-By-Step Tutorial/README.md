@@ -1,5 +1,15 @@
 # plsMD Step-by-step Tutorial
 
+## Table of Contents
+
+- [Objective](#objective)
+- [plsMD Pipeline Overview](#plsmd-pipeline-overview)
+- [Setting Up plsMD](#setting-up-plsmd)
+- [Step 1: Preprocessing](#step-1-preprocessing)
+- [Step 2: Processing](#step-2-processing)
+- [Step 3: Annotation](#step-3-annotation)
+- [Step 4: Phylogenetic Analysis](#step-4-phylogenetic-analysis)
+
 ## Objective
 
 The objective of this tutorial is to illustrate a complete **plsMD pipeline** for short-read whole genome sequencing bacterial samples.
