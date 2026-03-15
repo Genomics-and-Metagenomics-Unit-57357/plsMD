@@ -167,7 +167,7 @@ Annotation_output/
 
 ## Step 4: Phylogenetic analysis  
 If multiple samples are processed together, this step allows the phylogenetic analysis of plasmids from different samples harboring the same replicon type.
-The user manually needs to copy the desired extracted plasmid directories into a new directory `input_directory`
+The user manually needs to copy the desired extracted plasmid directories into a new directory `input_directory`.
 ```
 ├── extracted_fasta
     └── Col440I_1_pld1/   →    ├── new_directory/
