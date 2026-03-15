@@ -168,3 +168,14 @@ Output folders/files
 |  `<input_directory>/nonplasmid_files/annotation` | Contains Output from AMRfinder, abricate and blastn (IS). | `plsMD --annotation` |
 | `<genes_directory>/phylogenetic_tree/` | Contains the output of the MSA and phylogenetic analysis. | `plsMD --phylogenetics` |
 ----------
+## Citations
+
+If you use plsMD in your research, please cite the following tools:
+
+- **BLAST+** — Camacho et al. (2009) *BMC Bioinformatics* 10:421. https://doi.org/10.1186/1471-2105-10-421
+- **Abricate** — Seemann T. GitHub. https://github.com/tseemann/abricate
+- **AMRFinderPlus** — Feldgarden et al. (2021) *Sci Rep* 11:12728. https://doi.org/10.1038/s41598-021-91456-0
+- **MAFFT** — Katoh & Standley (2013) *Mol Biol Evol* 30:772–780. https://doi.org/10.1093/molbev/mst010
+- **IQ-TREE** — Nguyen et al. (2015) *Mol Biol Evol* 32(1):268–274. https://doi.org/10.1093/molbev/msu300
+- **ISFinder** — Siguier et al. (2006) *Nucleic Acids Res* 34:D32–D36. https://www.ncbi.nlm.nih.gov/pubmed/16381877 — Database: http://www-is.biotoul.fr
+- **mob-suite** — Robertson & Nash (2018) *Microbial Genomics* 4(8):e000206. https://doi.org/10.1099/mgen.0.000206
