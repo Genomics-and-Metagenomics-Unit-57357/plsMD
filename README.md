@@ -11,7 +11,6 @@ plsMD is a tool designed for comprehensive plasmid reconstruction from short-rea
 No manual dependency installation is required. All dependencies are bundled and
 pre-configured inside the Docker image within a dedicated `plsMD` conda environment.
 
-#### Bioinformatics Tools
 
 | Tool | Version | Usage |
 |------|---------|-------|
@@ -25,12 +24,9 @@ pre-configured inside the Docker image within a dedicated `plsMD` conda environm
 | **IS sequences** | — | Insertion sequence database, pre-configured in image |
 
 #### Python Libraries
-
-| Library | Usage |
-|---------|-------|
-| [pandas](https://pandas.pydata.org/) | Data processing and tabular file handling |
-| [numpy](https://numpy.org/) | Numerical operations |
-| [Biopython](https://biopython.org/) | FASTA parsing and sequence manipulation |
+- [pandas](https://pandas.pydata.org/)
+- [numpy](https://numpy.org/)
+- [Biopython](https://biopython.org/)
 
 > All tools above are installed and made compatible within the Docker image.
 > The only requirement on your system is **Docker**.
