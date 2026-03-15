@@ -129,14 +129,10 @@ plsMD --annotation --dir <input_directory> --output <annotation_output> --thread
 | `--dir` | Input directory containing the processed data(plasmid_files/nonplasmid_files) (output from plsMD --processing) | 
 | `--dir` | Input directory containing the preprocessed data (output from plsMD --preprocessing) | 
 | `--threads` | Number of threads | 
--------
-plsMD batch modality
+------
+Phylogenetic Analysis - Batch Modality
 ------
 In addition to the preprocessing and processing steps, run --phylogenetics for batch samples modality.
-
-------
-Phylogenetic Analysis
-------
 ```bash
 plsMD --phylogenetics --genes_dir <genes_directory> --output <phylogenetics_output> --min_length <min_length> --max_length <max_length> --threads <threads>
 ```
