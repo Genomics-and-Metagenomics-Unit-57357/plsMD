@@ -167,12 +167,12 @@ Output directories/files
 | `<processing_output>/nonplasmid_files/` | Non-plasmid contigs per sample | `plsMD --processing` |
 | `<annotation_output>/` | AMRFinderPlus, Abricate (VFDB, PlasmidFinder) and BLASTn (IS) results for plasmid and non-plasmid sequences | `plsMD --annotation` |
 | `<phylogenetics_output>/phylogenetic_tree/` | MSA and phylogenetic analysis output | `plsMD --phylogenetics` |
-| `<phylogenetics_output>/rotated_sequences/` | Concatenated and rotationally corrected sequences | `plsMD --phylogenetics` |
+| `<phylogenetics_output>/rotated_sequences/` | Concatenated and rotated sequences | `plsMD --phylogenetics` |
 ----------
 ## Citations
 
 If you use plsMD in your research, please cite the following tools:
-- **plsMD** — Lotfi M, Jalal D, et al. **GitHub**. https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD
+- **plsMD** — Lotfi M, Jalal D, et al. bioRxiv 2025.03.17.643493; doi: https://doi.org/10.1101/2025.03.17.643493 **GitHub**. https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD, 
 - **BLAST+** — Camacho et al. (2009) *BMC Bioinformatics* 10:421. https://doi.org/10.1186/1471-2105-10-421
 - **Abricate** — Seemann T. GitHub. https://github.com/tseemann/abricate
 - **AMRFinderPlus** — Feldgarden et al. (2021) *Sci Rep* 11:12728. https://doi.org/10.1038/s41598-021-91456-0
