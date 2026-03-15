@@ -128,7 +128,7 @@ Processing_output/
      → `Col440I_1_pld1/SRR18543877_NZ_CP143284.1.fasta`
      The FASTA name (NZ_CP143284.1) is the reference plasmid used as a guide.
 
-  9. All `SRR18543877_replicon_filtered.txt` files across all gene directories concatenated for that sample `plasmid_files/SRR18543877_plasmid_replicon_filtered.txt`. 
+  9. All `SRR18543877_replicon_filtered.txt` files across all gene directories concatenated for that sample `plasmid_files/SRR18543877_plasmid_replicon_filtered.txt`. In this step, plasmid names are renamed to include the replicon name instead of the name of the reference plasmid used.
  
   10. FASTA file with all reconstructed plasmid sequences for that sample `plasmid_files/SRR18543877_plasmid_contigs.fasta`.
       In this step, contigs that are tagged as circular in the original unicycler assembly are included regardless of the inclusion of a replicon.
