@@ -1,0 +1,2 @@
+qseqid	sseqid	sample_name	coverage_percentage	bases_covered	qsseqid_aligned	sum_qsseqid_aligned	sum_qlen	q_prec_cov
+SRR18543877_IncR	gb|CP144991.1|	SRR18543877	1.08%	55690.0	1406	21901	324804	6.7428
