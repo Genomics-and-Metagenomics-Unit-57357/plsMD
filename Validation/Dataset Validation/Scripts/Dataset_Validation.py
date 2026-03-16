@@ -12,9 +12,9 @@ Usage:
 
 Pipeline steps:
     1. Run blastn
-    2. Calculate subject coverage percentage and bases covered  (new_cov)
-    3. Calculate query-side aligned bases per contig             (q_prec_cov_alt)
-    4. Add qlen, sum_qlen, q_prec_cov, contig_cov, circular     (multi_qlen_cov)
+    2. Calculate subject coverage percentage and bases covered  
+    3. Calculate query-side aligned bases per contig          
+    4. Add qlen, sum_qlen, q_prec_cov, contig_cov, circular
 """
 
 import os
@@ -46,7 +46,6 @@ def calculate_coverage_percentage(merged_intervals, subject_length):
 
 
 def calculate_fasta_sum(fasta_file):
-    """Total number of sequence bases in a FASTA file (headers excluded)."""
     if not os.path.isfile(fasta_file):
         print(f"  [WARNING] FASTA file not found: {fasta_file}")
         return 0
@@ -60,11 +59,6 @@ def calculate_fasta_sum(fasta_file):
 
 
 def get_contig_info(fasta_file):
-    """
-    Parse a FASTA file and return:
-        { contig_id: (length, circular_flag) }
-    circular_flag is "true" when the header contains 'circular=true'.
-    """
     contig_info = {}
     if not os.path.isfile(fasta_file):
         print(f"  [WARNING] FASTA file not found: {fasta_file}")
