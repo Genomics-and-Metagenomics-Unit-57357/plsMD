@@ -90,16 +90,16 @@ Processing_output/
     └── IncFII_1_pKP91_pld1/SRR18543877_IncFII_1_pKP91_pld1.fasta
     └── IncR_1_pld1/SRR18543877_IncR_1_pld1.fasta
 ├── gene_directories
-    └── Col440I_1_pld1/
+    └── IncFII_1_pKP91_pld1/
         └── SRR18543877_plasmid.txt 
         └── SRR18543877_overlap_filtered.txt
         └── SRR18543877_replicon_contigs.txt
         └── SRR18543877_replicon_filtered.txt
         └── SRR18543877_extracted.fasta   
-        └── SRR18543877_NZ_CP143284.1.fasta 
+        └── SRR18543877_NZ_CP143284.1.fasta
+    └── Col440I_1_pld1/
     └── Col440I_1_pld2/
     └── IncFIB_K__1_Kpn3_pld1/
-    └── IncFII_1_pKP91_pld1/
     └── IncR_1_pld1/
 ├── plasmid_files/
     └── SRR18543877_plasmid_contigs.fasta
