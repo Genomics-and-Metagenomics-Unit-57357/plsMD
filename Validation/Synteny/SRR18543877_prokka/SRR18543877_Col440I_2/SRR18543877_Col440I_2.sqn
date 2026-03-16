@@ -1,0 +1,513 @@
+Seq-entry ::= set {
+  class genbank ,
+  seq-set {
+    set {
+      class nuc-prot ,
+      descr {
+        source {
+          org {
+            taxname "Genus species" ,
+            orgname {
+              mod {
+                {
+                  subtype strain ,
+                  subname "strain" } } ,
+              gcode 11 } } } ,
+        comment "Annotated using prokka 1.14.6 from
+ https://github.com/tseemann/prokka" ,
+        user {
+          type
+            str "NcbiCleanup" ,
+          data {
+            {
+              label
+                str "method" ,
+              data
+                str "SeriousSeqEntryCleanup" } ,
+            {
+              label
+                str "version" ,
+              data
+                int 8 } ,
+            {
+              label
+                str "month" ,
+              data
+                int 11 } ,
+            {
+              label
+                str "day" ,
+              data
+                int 13 } ,
+            {
+              label
+                str "year" ,
+              data
+                int 2025 } } } ,
+        create-date
+          std {
+            year 2025 ,
+            month 11 ,
+            day 13 } } ,
+      seq-set {
+        seq {
+          id {
+            local
+              str "SRR18543877_Col440I_2" } ,
+          descr {
+            molinfo {
+              biomol genomic } } ,
+          inst {
+            repr raw ,
+            mol dna ,
+            length 3549 ,
+            seq-data
+              iupacna "CTCACGGCCACGCAATAAATTGCGTCCCCGTTCACCGTTTTCGGATCAGAAGAAC
+GCCGGAAACAGGACTTACCCTGGCTGAATGGCGTGAATTTCCGCGCTATGCACTTGCGCGCATACTCATGCATGCCGT
+AAAAACAGAGCCTGCGCGTTTCTGGCGGGTTTTCGGGTGGTTTGTTGCCTGTTTTACCGGTTTCCCGTCAGAAACGTC
+CTGAGGCCGTTTTAGCGGTGCGTACAATTAAGGGATTATGGTAAATGGTGACTTGGTTAATCATAAACATCCTGGGGG
+ATGGCATACACCAGTTGGATATCCGGTGCATCGTTGAGCCATCGACCTGATTTTTTCATTAAGTAGCCACCAATTTCT
+TCGGTAGTCAGCCGGGCATGAAACAATGCTTCATCATTGAACCAGCAGTCAGGGTGATAGATGAGATCCAGTGGGTTT
+GCCTTGAAATTAATCTCCAGTAACTGGAGTGCATAGCTGTGGTCAGATGCACTACCTTCTGCTTTGCGTATGAAGTTG
+ATAACGTCGTTCAGTTCTTTCCATGTAAAGTCATCGAGGTATTTTTCCTGATTAAGCGCCATCCTGGTGAAATCTAGT
+GCACTTGACGCACCTGGTGCAAACGGACCACTGACGCTAAGCGGGCCGGTACCACTACCGGAGCGTATTCTGCATACC
+GGTGATCAGATTTCGGCGCCACAGGCTACAGATAAAACCGTGACGCCGGTAGCGGATGACCTCGATTTTGACGATATT
+ATTCTGGTGTTTCCTCCGGAATCCGGCCTAAAACCGCTGTATGTGATGTACCGTAGCCCTCGTAACATGCCCGGTACA
+GTGAGCGGCAAAGGGCAGAACGTTGGCAATAACTGGATGGGGGGGGCCAGTACCGGGGATGGTGCTCCTGTTCCTTCC
+CAGATTGCGGATAAATTACGCGGGAAGACTTTCGGTAGTTTTGATTCTTTCCGTCGGGCGTTCTGGAAAGCGGTTGCT
+GACGATTCTGCACTGAGCAAGCAATTTAGTGAAGCTGATATTAATCAGATGAAAGCTGGAAGGGCACCTACTGCGGAC
+TTTTTAGAATCAGTAGGGAAACGTGTTAAAATTGAATTACACCACGAAAAAGAAATATCTCAAGGAGGGGCTGTTATG
+GATGTCGATAACATTAAGGCGCTAACACCTAAAAATCATATTGAGACACATAAAGGAAAATAAAATGGCTGGTAATAA
+AATTTCAGATTTTACGGAAGAAGAATTTACTGCTTTTGTTAGTAAAATAATCGCTGCTGATTTTCCAACTGACAAAGA
+GAACGATGATGCTATTTATTCGTTCGCCCAACTAACAGAGCATCCTGCTGGTTGGAACCTCATCTTCAAGCCTAAGGT
+AGGCGAAGATTCTTCGGCGAAAGGAATTGTTAAAACCGTAAAGGAATGGCGAGCTGCTAACGGTAAGCCAGGTTTTAA
+AAAAGCGTGATTGAATTTGCGGGTTCAAGTTATGAGCCCGCTCATTTGTAACTCTGGATTTGAAGAATAATTACTAGA
+TATCCATTTGCCTAGAATAATAAAAATAAAAGGTGATATATGAAAAAATTACTTTTCCTAGGGGTTGTTACCGTTTCT
+GTGGTTCTGGCAGCATGTCAGGTCAATAATGTTCGAGACACCGGAGGTGGGGCTGTTTCACCTTCATCGACGGTGACC
+GGAGTCACGCTTGATAGCGGTACGAACGGCAATCCGTAAAGGATCTTCTTGAGATCCCATTTGGATCGTCGTAATCTC
+TTGCTCTGTAAACGAAAAAACCGCCTTGCAGGGCGGTTTTTCCGAAGGTTCAAACACTTGCAGGTGATTGAACCAAGG
+TAACTGGCTTGGAGGAGCGCAGTCACCAAAACTTGTTCTTTCAGTTTAGCCTTAACAGGCGCATGACTTCAAGACCAA
+CTCCTCTAAATCCGTTACCAGTGGCTGCTGCCAGTGGCGCTTTGTCGTGTCTTTCCGGGTTGGACTCAAGATGATAGT
+TACCGGATAAGACGCAGCAGTCGGACTGAACGGGGGGTTCGTGCATACAGTCCAGCTTGGAGCGAACTGCCTACCCGG
+AACTGAGTGTCAGGCGTGGAATGAGACAAACGCGGCCATAACAGCGGAATGACACCGGTAAACCGAATGGCAGGAACA
+GGAGAGCGCACGAGGGAGCCATCAGGGGGAAACGCCTGGTATCTTTATAGTCCTGTCGGGTTTCGCCACCACTGATTT
+GAGCGTCAAATTCTGTGATGCTTGTCAGGGGGGCGGAGCCTATGGAAAAACGGCCGCTGTGCTGCCTTCTCCCTCTCC
+GAGCTGTCTGCTCTATGTCGTTATGTGCGCGTTGCGACCGCTCGCCGCAGCCGAACGGCAGGAGCGTAGCGACTGAGT
+GAGCGAGGAAGCGGAAAAGAGATCTGTCTGACATTGAGCACTGACGCTCTGAGGCCCTTTATGACGAAACAACAGAAA
+ACAGCGCTGAACATGGCTAAATTCATCCAGAATCAGTCTCTGCTCCTGCTGGAGAAGCTTAACGAGCTTGATCTCGAT
+GTTGAGGCCGACCTTTGTGAGAAACTCCACGATGATGCGGAGCATCTTTTCCGTACACTGTCCTCGAGACTGGATGAA
+TTACAGGATGGTAATTGATGGCCAGAGTGTCTATTAGTGAAGCGGCACGGCTTGTTAAGGTTAGCCGTCCCACAATTT
+ACAAGATGATTAACAGTGGGAAGTTAAGTTACACCTCTGTTGTAAAGCACGGGAAGGCTATTAAAGTTATTGATACTT
+CAGAGCTTATTAGAGTGTTTGGTTCTCTTGATGGTGTCATCGATACTGTAAAATATGATGTAAAAAGTGACGCAGAAT
+CTACAAGTATTAACAGCGTTGGTTTACATGATTTACAACATAGAATCGCTCTACTTGAAGCTGAAAACGATGGTCTTA
+AAGGGGCTGTTAAGGCTCGAGATGAGCATATTGATTCCCTTCGTCAGGCTATGCAGCTTCTGGAGCACAAGCGCGAGC
+CTTCTTCACCACCCCATTCCCCGTGGTGGAAATTCTGGAAAAAATCCTGATCCTGCCATGCTTGAGTTTTCCTCTCCG
+GCCATCCCAGGGAGTTCCTGAACCTTCCCAAAAATCGCCAGATCTCTGAACGCTCCTCACGACTAAAAATACCCACAC
+ACTACGCAAAATTAAAATTTTGCAGATTCCTTATTTAAAACAATTGGTTAATGAAAAATTAATGTGCAGTGATGTGTT
+ACAAAGTGCAGATCCAAGTCGTGGACGACTCTATGGCGAATCGTTTACGAATTGCCCACGATTCATATGTGAATCACG
+CTTTATTATCATGTTGTTATGATGAATCGACTCTTGATTCAATTCATCAATTTGGGCGTTTTTTGTTCATGGTGACTC
+TTGATTCAATTCACGATTCGAATCGCCGGTGAATCGTGTGGTGAGTCGTCCGGCGACTTGCCATAACGTGATTGCCGG
+CCGTCGACGAACCCGATTCCTGAACGTGCTGAAAACCGGTTTTCCGGCTGCGCCGGCAACGC" } } ,
+        seq {
+          id {
+            local
+              str "SRR18543877_Col440I_2_1" } ,
+          descr {
+            title "hypothetical protein MBLHKBAE_00001 [Genus species]" ,
+            molinfo {
+              biomol peptide ,
+              tech concept-trans } } ,
+          inst {
+            repr raw ,
+            mol aa ,
+            length 105 ,
+            seq-data
+              ncbieaa "MALNQEKYLDDFTWKELNDVINFIRKAEGSASDHSYALQLLEINFKANPLDLIYH
+PDCWFNDEALFHARLTTEEIGGYLMKKSGRWLNDAPDIQLVYAIPQDVYD" } ,
+          annot {
+            {
+              data
+                ftable {
+                  {
+                    id
+                      local
+                        id 7 ,
+                    data
+                      prot {
+                        name {
+                          "hypothetical protein" } } ,
+                    location
+                      int {
+                        from 0 ,
+                        to 104 ,
+                        id
+                          local
+                            str "SRR18543877_Col440I_2_1" } } } } } } ,
+        seq {
+          id {
+            local
+              str "SRR18543877_Col440I_2_2" } ,
+          descr {
+            title "hypothetical protein MBLHKBAE_00002 [Genus species]" ,
+            molinfo {
+              biomol peptide ,
+              tech concept-trans } } ,
+          inst {
+            repr raw ,
+            mol aa ,
+            length 206 ,
+            seq-data
+              ncbieaa "MKSSALDAPGANGPLTLSGPVPLPERILHTGDQISAPQATDKTVTPVADDLDFDD
+IILVFPPESGLKPLYVMYRSPRNMPGTVSGKGQNVGNNWMGGASTGDGAPVPSQIADKLRGKTFGSFDSFRRAFWKAV
+ADDSALSKQFSEADINQMKAGRAPTADFLESVGKRVKIELHHEKEISQGGAVMDVDNIKALTPKNHIETHKGK" } ,
+          annot {
+            {
+              data
+                ftable {
+                  {
+                    id
+                      local
+                        id 8 ,
+                    data
+                      prot {
+                        name {
+                          "hypothetical protein" } } ,
+                    location
+                      int {
+                        from 0 ,
+                        to 205 ,
+                        id
+                          local
+                            str "SRR18543877_Col440I_2_2" } } } } } } ,
+        seq {
+          id {
+            local
+              str "SRR18543877_Col440I_2_3" } ,
+          descr {
+            title "Colicin-E9 immunity protein [Genus species]" ,
+            molinfo {
+              biomol peptide ,
+              tech concept-trans } } ,
+          inst {
+            repr raw ,
+            mol aa ,
+            length 85 ,
+            seq-data
+              ncbieaa "MAGNKISDFTEEEFTAFVSKIIAADFPTDKENDDAIYSFAQLTEHPAGWNLIFKP
+KVGEDSSAKGIVKTVKEWRAANGKPGFKKA" } ,
+          annot {
+            {
+              data
+                ftable {
+                  {
+                    id
+                      local
+                        id 9 ,
+                    data
+                      prot {
+                        name {
+                          "Colicin-E9 immunity protein" } } ,
+                    location
+                      int {
+                        from 0 ,
+                        to 84 ,
+                        id
+                          local
+                            str "SRR18543877_Col440I_2_3" } } } } } } ,
+        seq {
+          id {
+            local
+              str "SRR18543877_Col440I_2_4" } ,
+          descr {
+            title "hypothetical protein MBLHKBAE_00004 [Genus species]" ,
+            molinfo {
+              biomol peptide ,
+              tech concept-trans } } ,
+          inst {
+            repr raw ,
+            mol aa ,
+            length 51 ,
+            seq-data
+              ncbieaa "MKKLLFLGVVTVSVVLAACQVNNVRDTGGGAVSPSSTVTGVTLDSGTNGNP" } ,
+          annot {
+            {
+              data
+                ftable {
+                  {
+                    id
+                      local
+                        id 10 ,
+                    data
+                      prot {
+                        name {
+                          "hypothetical protein" } } ,
+                    location
+                      int {
+                        from 0 ,
+                        to 50 ,
+                        id
+                          local
+                            str "SRR18543877_Col440I_2_4" } } } } } } ,
+        seq {
+          id {
+            local
+              str "SRR18543877_Col440I_2_5" } ,
+          descr {
+            title "Regulatory protein rop [Genus species]" ,
+            molinfo {
+              biomol peptide ,
+              tech concept-trans } } ,
+          inst {
+            repr raw ,
+            mol aa ,
+            length 63 ,
+            seq-data
+              ncbieaa "MTKQQKTALNMAKFIQNQSLLLLEKLNELDLDVEADLCEKLHDDAEHLFRTLSSR
+LDELQDGN" } ,
+          annot {
+            {
+              data
+                ftable {
+                  {
+                    id
+                      local
+                        id 11 ,
+                    data
+                      prot {
+                        name {
+                          "Regulatory protein rop" } } ,
+                    location
+                      int {
+                        from 0 ,
+                        to 62 ,
+                        id
+                          local
+                            str "SRR18543877_Col440I_2_5" } } } } } } ,
+        seq {
+          id {
+            local
+              str "SRR18543877_Col440I_2_6" } ,
+          descr {
+            title "hypothetical protein MBLHKBAE_00006 [Genus species]" ,
+            molinfo {
+              biomol peptide ,
+              tech concept-trans } } ,
+          inst {
+            repr raw ,
+            mol aa ,
+            length 140 ,
+            seq-data
+              ncbieaa "MARVSISEAARLVKVSRPTIYKMINSGKLSYTSVVKHGKAIKVIDTSELIRVFGS
+LDGVIDTVKYDVKSDAESTSINSVGLHDLQHRIALLEAENDGLKGAVKARDEHIDSLRQAMQLLEHKREPSSPPHSPW
+WKFWKKS" } ,
+          annot {
+            {
+              data
+                ftable {
+                  {
+                    id
+                      local
+                        id 12 ,
+                    data
+                      prot {
+                        name {
+                          "hypothetical protein" } } ,
+                    location
+                      int {
+                        from 0 ,
+                        to 139 ,
+                        id
+                          local
+                            str "SRR18543877_Col440I_2_6" } } } } } } } ,
+      annot {
+        {
+          data
+            ftable {
+              {
+                id
+                  local
+                    id 1 ,
+                data
+                  cdregion {
+                    frame one ,
+                    code {
+                      id 11 } } ,
+                product
+                  whole
+                    local
+                      str "SRR18543877_Col440I_2_1" ,
+                location
+                  int {
+                    from 267 ,
+                    to 584 ,
+                    strand minus ,
+                    id
+                      local
+                        str "SRR18543877_Col440I_2" } ,
+                qual {
+                  {
+                    qual "inference" ,
+                    val "ab initio prediction:Prodigal:002006" } } ,
+                xref {
+                  {
+                    data
+                      gene {
+                        locus-tag "MBLHKBAE_00001" } } } } ,
+              {
+                id
+                  local
+                    id 2 ,
+                data
+                  cdregion {
+                    frame one ,
+                    code {
+                      id 11 } } ,
+                product
+                  whole
+                    local
+                      str "SRR18543877_Col440I_2_2" ,
+                location
+                  int {
+                    from 589 ,
+                    to 1209 ,
+                    strand plus ,
+                    id
+                      local
+                        str "SRR18543877_Col440I_2" } ,
+                qual {
+                  {
+                    qual "inference" ,
+                    val "ab initio prediction:Prodigal:002006" } } ,
+                xref {
+                  {
+                    data
+                      gene {
+                        locus-tag "MBLHKBAE_00002" } } } } ,
+              {
+                id
+                  local
+                    id 3 ,
+                data
+                  cdregion {
+                    frame one ,
+                    code {
+                      id 11 } } ,
+                product
+                  whole
+                    local
+                      str "SRR18543877_Col440I_2_3" ,
+                location
+                  int {
+                    from 1211 ,
+                    to 1468 ,
+                    strand plus ,
+                    id
+                      local
+                        str "SRR18543877_Col440I_2" } ,
+                qual {
+                  {
+                    qual "inference" ,
+                    val "ab initio prediction:Prodigal:002006" } ,
+                  {
+                    qual "inference" ,
+                    val "similar to AA sequence:UniProtKB:P13479" } } ,
+                xref {
+                  {
+                    data
+                      gene {
+                        locus "imm" ,
+                        locus-tag "MBLHKBAE_00003" } } } } ,
+              {
+                id
+                  local
+                    id 4 ,
+                data
+                  cdregion {
+                    frame one ,
+                    code {
+                      id 11 } } ,
+                product
+                  whole
+                    local
+                      str "SRR18543877_Col440I_2_4" ,
+                location
+                  int {
+                    from 1576 ,
+                    to 1731 ,
+                    strand plus ,
+                    id
+                      local
+                        str "SRR18543877_Col440I_2" } ,
+                qual {
+                  {
+                    qual "inference" ,
+                    val "ab initio prediction:Prodigal:002006" } } ,
+                xref {
+                  {
+                    data
+                      gene {
+                        locus-tag "MBLHKBAE_00004" } } } } ,
+              {
+                id
+                  local
+                    id 5 ,
+                data
+                  cdregion {
+                    frame one ,
+                    code {
+                      id 11 } } ,
+                product
+                  whole
+                    local
+                      str "SRR18543877_Col440I_2_5" ,
+                location
+                  int {
+                    from 2455 ,
+                    to 2646 ,
+                    strand plus ,
+                    id
+                      local
+                        str "SRR18543877_Col440I_2" } ,
+                qual {
+                  {
+                    qual "inference" ,
+                    val "ab initio prediction:Prodigal:002006" } ,
+                  {
+                    qual "inference" ,
+                    val "similar to AA sequence:UniProtKB:P03051" } } ,
+                xref {
+                  {
+                    data
+                      gene {
+                        locus "rop" ,
+                        locus-tag "MBLHKBAE_00005" } } } } ,
+              {
+                id
+                  local
+                    id 6 ,
+                data
+                  cdregion {
+                    frame one ,
+                    code {
+                      id 11 } } ,
+                product
+                  whole
+                    local
+                      str "SRR18543877_Col440I_2_6" ,
+                location
+                  int {
+                    from 2646 ,
+                    to 3068 ,
+                    strand plus ,
+                    id
+                      local
+                        str "SRR18543877_Col440I_2" } ,
+                qual {
+                  {
+                    qual "inference" ,
+                    val "ab initio prediction:Prodigal:002006" } } ,
+                xref {
+                  {
+                    data
+                      gene {
+                        locus-tag "MBLHKBAE_00006" } } } } } } } } } }

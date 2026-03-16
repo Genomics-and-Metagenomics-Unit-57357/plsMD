@@ -1,0 +1,4 @@
+qseqid	sseqid	qstart	qend	sstart	send	evalue	bitscore	pident	qcovs	slen	qlen	q_perc_aligned	overlapped_bases	coverage_percentage	bases_covered	gene_name
+85_R	NZ_CP143284.1	2151	3389	1	1239	0.0	2199.0	99.354	37	4163	3389	0.3655945706698141	0	94.4	3930.0	Col440I_1_pld1
+198	NZ_CP143284.1	1	160	1240	1399	5.3e-76	289.0	100.0	100	4163	160	1.0	0	94.4	3930.0	Col440I_1_pld1
+82_R	NZ_CP143284.1	498	3075	1633	4163	0.0	4165.0	95.664	60	4163	4304	0.5989776951672863	0	94.4	3930.0	Col440I_1_pld1

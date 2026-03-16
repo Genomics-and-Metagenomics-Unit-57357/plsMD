@@ -1,0 +1,52 @@
+>Feature SRR18543877_Col440I
+585	268	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NIPMEMNO_00001
+			product	hypothetical protein
+590	1210	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NIPMEMNO_00002
+			product	hypothetical protein
+1212	1469	CDS
+			gene	imm
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P13479
+			locus_tag	NIPMEMNO_00003
+			product	Colicin-E9 immunity protein
+1577	1732	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NIPMEMNO_00004
+			product	hypothetical protein
+2456	2647	CDS
+			gene	rop_1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P03051
+			locus_tag	NIPMEMNO_00005
+			product	Regulatory protein rop
+2647	3069	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NIPMEMNO_00006
+			product	hypothetical protein
+4360	4127	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NIPMEMNO_00007
+			product	hypothetical protein
+4722	4495	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NIPMEMNO_00008
+			product	hypothetical protein
+4928	5191	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS1222
+			locus_tag	NIPMEMNO_00009
+			product	IS3 family transposase IS1222
+6941	7132	CDS
+			gene	rop_2
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P03051
+			locus_tag	NIPMEMNO_00010
+			product	Regulatory protein rop
+7132	7533	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NIPMEMNO_00011
+			product	hypothetical protein

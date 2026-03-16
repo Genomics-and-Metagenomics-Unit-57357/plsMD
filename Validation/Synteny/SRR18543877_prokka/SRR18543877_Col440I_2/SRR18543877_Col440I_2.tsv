@@ -1,0 +1,7 @@
+locus_tag	ftype	length_bp	gene	EC_number	COG	product
+MBLHKBAE_00001	CDS	318				hypothetical protein
+MBLHKBAE_00002	CDS	621				hypothetical protein
+MBLHKBAE_00003	CDS	258	imm			Colicin-E9 immunity protein
+MBLHKBAE_00004	CDS	156				hypothetical protein
+MBLHKBAE_00005	CDS	192	rop			Regulatory protein rop
+MBLHKBAE_00006	CDS	423				hypothetical protein

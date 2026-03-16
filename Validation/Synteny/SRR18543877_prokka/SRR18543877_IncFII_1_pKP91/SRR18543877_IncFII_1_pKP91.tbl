@@ -1,0 +1,1293 @@
+>Feature SRR18543877_IncFII_1_pKP91
+32	895	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00001
+			product	hypothetical protein
+956	1642	CDS
+			EC_number	3.4.24.-
+			db_xref	COG:COG0465
+			gene	ftsH_1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P71408
+			locus_tag	ICPICNDC_00002
+			product	ATP-dependent zinc metalloprotease FtsH
+1591	1782	CDS
+			EC_number	3.4.24.-
+			gene	ftsH_2
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01458
+			locus_tag	ICPICNDC_00003
+			product	ATP-dependent zinc metalloprotease FtsH
+1870	2298	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00004
+			product	hypothetical protein
+2351	3265	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00005
+			product	hypothetical protein
+3368	4255	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00006
+			product	hypothetical protein
+4345	4956	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00007
+			product	hypothetical protein
+5036	6181	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00008
+			product	hypothetical protein
+6171	6611	CDS
+			EC_number	1.8.1.8
+			db_xref	COG:COG0526
+			gene	trxC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0AGG4
+			locus_tag	ICPICNDC_00009
+			product	Thioredoxin 2
+6615	8330	CDS
+			db_xref	COG:COG0475
+			gene	kefC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P03819
+			locus_tag	ICPICNDC_00010
+			product	Glutathione-regulated potassium-efflux system protein KefC
+8327	8824	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00011
+			product	hypothetical protein
+8802	9803	CDS
+			EC_number	3.4.24.-
+			db_xref	COG:COG0501
+			gene	htpX_1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P9WHS5
+			locus_tag	ICPICNDC_00012
+			product	Protease HtpX 
+9791	10942	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00013
+			product	hypothetical protein
+11556	11167	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISThi1
+			locus_tag	ICPICNDC_00014
+			product	IS5 family transposase ISThi1
+11787	12023	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00015
+			product	hypothetical protein
+12237	12533	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00016
+			product	hypothetical protein
+14928	12409	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:Tn5403
+			locus_tag	ICPICNDC_00017
+			product	Tn3 family transposase
+15023	15628	CDS
+			EC_number	3.1.22.-
+			db_xref	COG:COG1961
+			gene	pinR
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0ADI0
+			locus_tag	ICPICNDC_00018
+			product	Serine recombinase PinR
+15730	16443	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS1663
+			locus_tag	ICPICNDC_00019
+			product	IS110 family transposase IS1663
+18082	17579	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00020
+			product	hypothetical protein
+19079	18753	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00021
+			product	hypothetical protein
+20056	19160	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00022
+			product	hypothetical protein
+21297	20221	CDS
+			EC_number	3.5.2.3
+			db_xref	COG:COG0418
+			gene	pyrC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:B1IV40
+			locus_tag	ICPICNDC_00023
+			product	Dihydroorotase
+22550	21294	CDS
+			EC_number	3.5.1.87
+			gene	hyuC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q01264
+			locus_tag	ICPICNDC_00024
+			product	N-carbamoyl-L-amino-acid hydrolase
+23528	22587	CDS
+			EC_number	1.3.1.14
+			db_xref	COG:COG0167
+			gene	pyrD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:A4J560
+			locus_tag	ICPICNDC_00025
+			product	Dihydroorotate dehydrogenase B (NAD(+)), catalytic subunit
+24369	23521	CDS
+			db_xref	COG:COG0543
+			gene	pyrK
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:A4J559
+			locus_tag	ICPICNDC_00026
+			product	Dihydroorotate dehydrogenase B (NAD(+)), electron transfer subunit
+24387	24722	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00027
+			product	hypothetical protein
+24734	25990	CDS
+			gene	yjhB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P39352
+			locus_tag	ICPICNDC_00028
+			product	Putative metabolite transport protein YjhB
+26203	27468	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00029
+			product	hypothetical protein
+28917	28138	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISSen3
+			locus_tag	ICPICNDC_00030
+			product	IS21 family transposase ISSen3
+29939	28917	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00031
+			product	hypothetical protein
+30386	30003	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISEsa2
+			locus_tag	ICPICNDC_00032
+			product	IS110 family transposase ISEsa2
+30714	30872	CDS
+			EC_number	4.2.1.24
+			db_xref	COG:COG0113
+			gene	hemB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0ACB2
+			locus_tag	ICPICNDC_00033
+			product	Delta-aminolevulinic acid dehydratase
+31650	30913	CDS
+			EC_number	3.1.3.27
+			db_xref	COG:COG0671
+			gene	pgpB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0A924
+			locus_tag	ICPICNDC_00034
+			product	Phosphatidylglycerophosphatase B
+31841	31647	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00035
+			product	hypothetical protein
+32282	31959	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00036
+			product	IS5 family transposase IS903
+32471	33202	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00037
+			product	hypothetical protein
+34032	33616	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00038
+			product	hypothetical protein
+34417	34614	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00039
+			product	IS5 family transposase IS903
+35589	34762	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00040
+			product	hypothetical protein
+37072	35591	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00041
+			product	hypothetical protein
+39336	38479	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00042
+			product	hypothetical protein
+39900	39622	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00043
+			product	hypothetical protein
+40781	40221	CDS
+			EC_number	2.7.8.-
+			gene	clsB
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01917
+			locus_tag	ICPICNDC_00044
+			product	Cardiolipin synthase B
+41666	41289	CDS
+			db_xref	COG:COG1662
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn14
+			locus_tag	ICPICNDC_00045
+			product	IS1 family transposase ISKpn14
+41986	41711	CDS
+			db_xref	COG:COG1662
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn14
+			locus_tag	ICPICNDC_00046
+			product	IS1 family transposase ISKpn14
+44268	42226	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00047
+			product	hypothetical protein
+45712	44261	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00048
+			product	hypothetical protein
+46921	46166	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00049
+			product	hypothetical protein
+50202	46918	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00050
+			product	hypothetical protein
+50938	50255	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00051
+			product	hypothetical protein
+52185	50935	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00052
+			product	hypothetical protein
+53698	52175	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00053
+			product	hypothetical protein
+53939	54346	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00054
+			product	hypothetical protein
+54505	54197	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00055
+			product	hypothetical protein
+55427	54831	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00056
+			product	hypothetical protein
+55578	55790	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00057
+			product	hypothetical protein
+55741	56253	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00058
+			product	IS5 family transposase IS903
+56340	56663	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00059
+			product	IS5 family transposase IS903
+57261	56848	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00060
+			product	hypothetical protein
+58310	57897	CDS
+			db_xref	COG:COG5499
+			gene	higA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P67703
+			locus_tag	ICPICNDC_00061
+			product	Antitoxin HigA
+58589	58311	CDS
+			db_xref	COG:COG1396
+			gene	higA1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P9WJA7
+			locus_tag	ICPICNDC_00062
+			product	Antitoxin HigA1
+58899	58579	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00063
+			product	hypothetical protein
+59204	58980	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00064
+			product	hypothetical protein
+59427	59215	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00065
+			product	hypothetical protein
+59844	59488	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00066
+			product	hypothetical protein
+61002	60685	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00067
+			product	hypothetical protein
+61367	61017	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00068
+			product	hypothetical protein
+61636	61364	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00069
+			product	hypothetical protein
+62540	62334	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00070
+			product	hypothetical protein
+62836	62549	CDS
+			EC_number	3.1.-.-
+			db_xref	COG:COG2026
+			gene	relE_1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0C077
+			locus_tag	ICPICNDC_00071
+			product	mRNA interferase toxin RelE
+63075	62836	CDS
+			db_xref	COG:COG3077
+			gene	relB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0C079
+			locus_tag	ICPICNDC_00072
+			product	Antitoxin RelB
+63326	63691	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00073
+			product	hypothetical protein
+63735	64472	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00074
+			product	hypothetical protein
+64486	65175	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00075
+			product	hypothetical protein
+65679	65206	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00076
+			product	hypothetical protein
+66585	65695	CDS
+			db_xref	COG:COG2059
+			gene	srpC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q55027
+			locus_tag	ICPICNDC_00077
+			product	putative chromate transport protein
+67516	66539	CDS
+			gene	chrB1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P17552
+			locus_tag	ICPICNDC_00078
+			product	Protein ChrB
+67863	68108	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00079
+			product	hypothetical protein
+68125	68448	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00080
+			product	IS5 family transposase IS903
+68925	69347	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn38
+			locus_tag	ICPICNDC_00081
+			product	IS3 family transposase ISKpn38
+69472	69822	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn38
+			locus_tag	ICPICNDC_00082
+			product	IS3 family transposase ISKpn38
+70000	69812	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00083
+			product	hypothetical protein
+70094	71014	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00084
+			product	hypothetical protein
+71068	71826	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00085
+			product	hypothetical protein
+72060	73358	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00086
+			product	hypothetical protein
+73464	73733	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00087
+			product	hypothetical protein
+73746	74876	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00088
+			product	hypothetical protein
+75050	75460	CDS
+			db_xref	COG:COG3111
+			gene	ygiW
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0ADU5
+			locus_tag	ICPICNDC_00089
+			product	Protein YgiW
+77056	75716	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISEsa1
+			locus_tag	ICPICNDC_00090
+			product	ISNCY family transposase ISEsa1
+77203	78276	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn28
+			locus_tag	ICPICNDC_00091
+			product	IS481 family transposase ISKpn28
+81118	78608	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00092
+			product	hypothetical protein
+82136	81096	CDS
+			EC_number	3.4.24.-
+			gene	ftsH_3
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01458
+			locus_tag	ICPICNDC_00093
+			product	ATP-dependent zinc metalloprotease FtsH
+83115	82306	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn8
+			locus_tag	ICPICNDC_00094
+			product	IS3 family transposase ISKpn8
+83681	83172	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS103
+			locus_tag	ICPICNDC_00095
+			product	IS3 family transposase IS103
+84256	83882	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00096
+			product	hypothetical protein
+84638	84312	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00097
+			product	hypothetical protein
+85363	84635	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00098
+			product	hypothetical protein
+85791	85360	CDS
+			gene	psiB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P10031
+			locus_tag	ICPICNDC_00099
+			product	Protein PsiB
+87893	85836	CDS
+			gene	noc
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_02015
+			locus_tag	ICPICNDC_00100
+			product	Nucleoid occlusion protein
+88211	87963	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P75677
+			locus_tag	ICPICNDC_00101
+			note	UPF0401 protein YkfF
+			product	hypothetical protein
+88802	88260	CDS
+			gene	ssb
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P28044
+			locus_tag	ICPICNDC_00102
+			product	Plasmid-derived single-stranded DNA-binding protein
+90156	89593	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00103
+			product	hypothetical protein
+91706	90204	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00104
+			product	hypothetical protein
+92025	91798	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00105
+			product	hypothetical protein
+93025	92705	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00106
+			product	hypothetical protein
+93314	93060	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00107
+			product	hypothetical protein
+93693	93502	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00108
+			product	hypothetical protein
+94242	93736	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00109
+			product	hypothetical protein
+94713	94285	CDS
+			gene	klcA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P52603
+			locus_tag	ICPICNDC_00110
+			product	Antirestriction protein KlcA
+96158	95394	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00111
+			product	hypothetical protein
+96634	96215	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00112
+			product	hypothetical protein
+96865	96644	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00113
+			product	hypothetical protein
+97566	96865	CDS
+			EC_number	2.1.1.72
+			db_xref	COG:COG0863
+			gene	yhdJ
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P28638
+			locus_tag	ICPICNDC_00114
+			product	DNA adenine methyltransferase YhdJ
+98233	98003	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00115
+			product	hypothetical protein
+98966	98295	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00116
+			product	hypothetical protein
+99940	98969	CDS
+			gene	parM
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P11904
+			locus_tag	ICPICNDC_00117
+			product	Plasmid segregation protein ParM
+101676	100189	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00118
+			product	hypothetical protein
+101885	101673	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00119
+			product	hypothetical protein
+102079	102504	CDS
+			EC_number	3.4.21.-
+			db_xref	COG:COG1974
+			gene	umuD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P22493
+			locus_tag	ICPICNDC_00120
+			product	Protein UmuD
+102504	103775	CDS
+			db_xref	COG:COG0389
+			gene	umuC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P04152
+			locus_tag	ICPICNDC_00121
+			product	Protein UmuC
+103854	104105	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00122
+			product	hypothetical protein
+104159	104464	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00123
+			product	hypothetical protein
+104490	104747	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00124
+			product	hypothetical protein
+106718	105747	CDS
+			gene	sopB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P62558
+			locus_tag	ICPICNDC_00125
+			product	Protein SopB
+107884	106718	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00126
+			product	hypothetical protein
+108635	109645	CDS
+			gene	repB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q57154
+			locus_tag	ICPICNDC_00127
+			product	RepFIB replication protein A
+111083	110343	CDS
+			gene	xerC_1
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01808
+			locus_tag	ICPICNDC_00128
+			product	Tyrosine recombinase XerC
+112711	111779	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISEc21
+			locus_tag	ICPICNDC_00129
+			product	IS110 family transposase ISEc21
+113523	112930	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISEc52
+			locus_tag	ICPICNDC_00130
+			product	IS3 family transposase ISEc52
+113852	113550	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISEc52
+			locus_tag	ICPICNDC_00131
+			product	IS3 family transposase ISEc52
+114206	114454	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00132
+			product	hypothetical protein
+114444	114659	CDS
+			EC_number	3.1.-.-
+			db_xref	COG:COG2026
+			gene	relE_2
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0C077
+			locus_tag	ICPICNDC_00133
+			product	mRNA interferase toxin RelE
+114882	115385	CDS
+			db_xref	COG:COG1662
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS1R
+			locus_tag	ICPICNDC_00134
+			product	IS1 family transposase IS1R
+115543	116208	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00135
+			product	hypothetical protein
+116883	116404	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00136
+			product	IS5 family transposase IS903
+117208	116867	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00137
+			product	hypothetical protein
+117774	117295	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00138
+			product	IS5 family transposase IS903
+118132	117758	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00139
+			product	IS5 family transposase IS903
+118431	119039	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00140
+			product	hypothetical protein
+119135	119836	CDS
+			gene	yadV
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P33128
+			locus_tag	ICPICNDC_00141
+			product	putative fimbrial chaperone YadV
+119848	122334	CDS
+			db_xref	COG:COG3188
+			gene	htrE
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P33129
+			locus_tag	ICPICNDC_00142
+			product	Outer membrane usher protein HtrE
+122325	123320	CDS
+			gene	mrkD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P21648
+			locus_tag	ICPICNDC_00143
+			product	Fimbria adhesin protein
+123334	123969	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00144
+			product	hypothetical protein
+124237	124004	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00145
+			product	hypothetical protein
+124722	124234	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00146
+			product	hypothetical protein
+124785	125006	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00147
+			product	hypothetical protein
+125227	125045	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn26
+			locus_tag	ICPICNDC_00148
+			product	IS5 family transposase ISKpn26
+125303	126328	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn43
+			locus_tag	ICPICNDC_00149
+			product	IS110 family transposase ISKpn43
+126630	126842	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00150
+			product	hypothetical protein
+126793	127305	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00151
+			product	IS5 family transposase IS903
+127855	127950	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00152
+			product	hypothetical protein
+128079	128336	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00153
+			product	hypothetical protein
+129173	128394	CDS
+			gene	xerC_2
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01808
+			locus_tag	ICPICNDC_00154
+			product	Tyrosine recombinase XerC
+129233	129376	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00155
+			product	hypothetical protein
+130387	129371	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00156
+			product	hypothetical protein
+130756	130421	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00157
+			product	hypothetical protein
+131117	130806	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00158
+			product	hypothetical protein
+131480	131175	CDS
+			gene	ccdB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P62554
+			locus_tag	ICPICNDC_00159
+			product	Toxin CcdB
+131700	131482	CDS
+			gene	ccdA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P62552
+			locus_tag	ICPICNDC_00160
+			product	Antitoxin CcdA
+132288	132518	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00161
+			product	hypothetical protein
+132515	132931	CDS
+			EC_number	3.1.-.-
+			db_xref	COG:COG1487
+			gene	vapC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q8ZM86
+			locus_tag	ICPICNDC_00162
+			product	tRNA(fMet)-specific endonuclease VapC
+133005	134567	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00163
+			product	hypothetical protein
+134552	135574	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00164
+			product	hypothetical protein
+136126	137034	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00165
+			product	hypothetical protein
+137035	137160	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00166
+			product	hypothetical protein
+137570	137220	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00167
+			product	hypothetical protein
+137712	138035	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00168
+			product	IS5 family transposase IS903
+138666	138235	CDS
+			gene	silE
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q9Z4N3
+			locus_tag	ICPICNDC_00169
+			product	Silver-binding protein SilE
+140387	138912	CDS
+			EC_number	2.7.13.3
+			db_xref	COG:COG0642
+			gene	cusS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77485
+			locus_tag	ICPICNDC_00170
+			product	Sensor histidine kinase CusS
+141060	140380	CDS
+			db_xref	COG:COG0745
+			gene	cusR
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0ACZ8
+			locus_tag	ICPICNDC_00171
+			product	Transcriptional regulatory protein CusR
+141250	142635	CDS
+			db_xref	COG:COG1538
+			gene	cusC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77211
+			locus_tag	ICPICNDC_00172
+			product	Cation efflux system protein CusC
+142664	143026	CDS
+			db_xref	COG:COG5569
+			gene	cusF
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77214
+			locus_tag	ICPICNDC_00173
+			product	Cation efflux system protein CusF
+143140	144432	CDS
+			gene	cusB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77239
+			locus_tag	ICPICNDC_00174
+			product	Cation efflux system protein CusB
+144443	147589	CDS
+			db_xref	COG:COG3696
+			gene	cusA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P38054
+			locus_tag	ICPICNDC_00175
+			product	Cation efflux system protein CusA
+147676	148116	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00176
+			product	hypothetical protein
+148243	150690	CDS
+			EC_number	7.2.2.15
+			gene	silP
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q9ZHC7
+			locus_tag	ICPICNDC_00177
+			product	Silver exporting P-type ATPase
+150731	150928	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00178
+			product	hypothetical protein
+151699	150962	CDS
+			EC_number	3.4.24.-
+			db_xref	COG:COG0739
+			gene	mepM
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0AFS9
+			locus_tag	ICPICNDC_00179
+			product	Murein DD-endopeptidase MepM
+152437	151988	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00180
+			product	hypothetical protein
+152671	154488	CDS
+			gene	copA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P12374
+			locus_tag	ICPICNDC_00181
+			product	Copper resistance protein A
+154494	155384	CDS
+			gene	copB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P12375
+			locus_tag	ICPICNDC_00182
+			product	Copper resistance protein B
+155424	155804	CDS
+			db_xref	COG:COG2372
+			gene	pcoC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q47454
+			locus_tag	ICPICNDC_00183
+			product	Copper resistance protein C
+155809	156738	CDS
+			gene	copD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P12377
+			locus_tag	ICPICNDC_00184
+			product	Copper resistance protein D
+156793	157473	CDS
+			gene	copR
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q02540
+			locus_tag	ICPICNDC_00185
+			product	Transcriptional activator protein CopR
+157470	158870	CDS
+			EC_number	2.7.-.-
+			gene	sasA
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01837
+			locus_tag	ICPICNDC_00186
+			product	Adaptive-response sensory-kinase SasA
+159086	159520	CDS
+			gene	pcoE
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q47459
+			locus_tag	ICPICNDC_00187
+			product	putative copper-binding protein PcoE
+159997	159899	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00188
+			product	hypothetical protein
+160163	159984	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00189
+			product	hypothetical protein
+160314	160718	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00190
+			product	hypothetical protein
+160715	161062	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00191
+			product	hypothetical protein
+161111	162649	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISEc22
+			locus_tag	ICPICNDC_00192
+			product	IS66 family transposase ISEc22
+162939	163202	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00193
+			product	hypothetical protein
+163199	163765	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00194
+			product	hypothetical protein
+163796	164290	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00195
+			product	hypothetical protein
+164334	164702	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00196
+			product	hypothetical protein
+164733	164936	CDS
+			gene	ymoA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0A3X0
+			locus_tag	ICPICNDC_00197
+			product	Modulating protein YmoA
+164985	165242	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00198
+			product	hypothetical protein
+165318	165572	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00199
+			product	hypothetical protein
+165748	166014	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00200
+			product	hypothetical protein
+166002	166484	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00201
+			product	hypothetical protein
+166998	166648	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn38
+			locus_tag	ICPICNDC_00202
+			product	IS3 family transposase ISKpn38
+167545	167123	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn38
+			locus_tag	ICPICNDC_00203
+			product	IS3 family transposase ISKpn38
+168698	167709	CDS
+			EC_number	3.4.24.-
+			db_xref	COG:COG0501
+			gene	htpX_2
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P9WHS5
+			locus_tag	ICPICNDC_00204
+			product	Protease HtpX 
+169407	168658	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00205
+			product	hypothetical protein
+170481	169645	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00206
+			product	hypothetical protein
+170834	170478	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00207
+			product	hypothetical protein
+171724	171470	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00208
+			product	hypothetical protein
+172188	172691	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00209
+			product	hypothetical protein
+173906	172899	CDS
+			EC_number	3.5.1.49
+			db_xref	COG:COG0388
+			gene	amiF
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:O25836
+			locus_tag	ICPICNDC_00210
+			product	Formamidase
+174631	173942	CDS
+			db_xref	COG:COG0410
+			gene	livF
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P22731
+			locus_tag	ICPICNDC_00211
+			product	High-affinity branched-chain amino acid transport ATP-binding protein LivF
+175391	174642	CDS
+			EC_number	3.6.3.-
+			db_xref	COG:COG1137
+			gene	lptB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P45073
+			locus_tag	ICPICNDC_00212
+			product	Lipopolysaccharide export system ATP-binding protein LptB
+176503	175388	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00213
+			product	hypothetical protein
+177439	176513	CDS
+			db_xref	COG:COG0559
+			gene	livH
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0AEX7
+			locus_tag	ICPICNDC_00214
+			product	High-affinity branched-chain amino acid transport system permease protein LivH
+178776	177496	CDS
+			gene	amiC_1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P27017
+			locus_tag	ICPICNDC_00215
+			product	Aliphatic amidase expression-regulating protein
+178991	182371	CDS
+			EC_number	2.7.13.3
+			gene	rcsC
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_00979
+			locus_tag	ICPICNDC_00216
+			product	Sensor histidine kinase RcsC
+182334	183254	CDS
+			gene	rssB
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_00958
+			locus_tag	ICPICNDC_00217
+			product	Regulator of RpoS
+183396	183821	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00218
+			product	hypothetical protein
+185219	184251	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISPan1
+			locus_tag	ICPICNDC_00219
+			product	IS5 family transposase ISPan1
+185381	185563	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:ISKpn26
+			locus_tag	ICPICNDC_00220
+			product	IS5 family transposase ISKpn26
+186157	185798	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00221
+			product	hypothetical protein
+186715	186602	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00222
+			product	hypothetical protein
+189131	187398	CDS
+			EC_number	7.4.2.10
+			db_xref	COG:COG1123
+			gene	gsiA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P75796
+			locus_tag	ICPICNDC_00223
+			product	Glutathione import ATP-binding protein GsiA
+190086	189139	CDS
+			EC_number	3.5.1.49
+			gene	fmdA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q50228
+			locus_tag	ICPICNDC_00224
+			product	Formamidase
+191738	190131	CDS
+			db_xref	COG:COG0747
+			gene	gsiB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P75797
+			locus_tag	ICPICNDC_00225
+			product	Glutathione-binding protein GsiB
+192668	191748	CDS
+			db_xref	COG:COG0601
+			gene	gsiC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P75798
+			locus_tag	ICPICNDC_00226
+			product	Glutathione transport system permease protein GsiC
+193516	192668	CDS
+			db_xref	COG:COG1173
+			gene	gsiD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P75799
+			locus_tag	ICPICNDC_00227
+			product	Glutathione transport system permease protein GsiD
+194106	193513	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00228
+			product	hypothetical protein
+195230	194103	CDS
+			gene	amiC_2
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P27017
+			locus_tag	ICPICNDC_00229
+			product	Aliphatic amidase expression-regulating protein
+195596	195823	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00230
+			product	hypothetical protein
+195854	196309	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00231
+			product	hypothetical protein
+196785	197306	CDS
+			db_xref	COG:COG1595
+			gene	fecI
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P23484
+			locus_tag	ICPICNDC_00232
+			product	putative RNA polymerase sigma factor FecI
+197303	198256	CDS
+			db_xref	COG:COG3712
+			gene	fecR
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P23485
+			locus_tag	ICPICNDC_00233
+			product	Protein FecR
+198349	200673	CDS
+			db_xref	COG:COG4772
+			gene	fecA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P13036
+			locus_tag	ICPICNDC_00234
+			product	Fe(3+) dicitrate transport protein FecA
+200718	201620	CDS
+			db_xref	COG:COG4594
+			gene	fecB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P15028
+			locus_tag	ICPICNDC_00235
+			product	Fe(3+) dicitrate-binding periplasmic protein
+201617	202615	CDS
+			db_xref	COG:COG0609
+			gene	fecC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P15030
+			locus_tag	ICPICNDC_00236
+			product	Fe(3+) dicitrate transport system permease protein FecC
+202612	203568	CDS
+			db_xref	COG:COG0609
+			gene	fecD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P15029
+			locus_tag	ICPICNDC_00237
+			product	Fe(3+) dicitrate transport system permease protein FecD
+203569	204336	CDS
+			db_xref	COG:COG1120
+			gene	fecE
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P15031
+			locus_tag	ICPICNDC_00238
+			product	Fe(3+) dicitrate transport ATP-binding protein FecE
+204321	204728	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00239
+			product	hypothetical protein
+205735	206883	CDS
+			db_xref	COG:COG1609
+			gene	lacI
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P03023
+			locus_tag	ICPICNDC_00240
+			product	Lactose operon repressor
+207005	210079	CDS
+			EC_number	3.2.1.23
+			db_xref	COG:COG3250
+			gene	lacZ
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P00722
+			locus_tag	ICPICNDC_00241
+			product	Beta-galactosidase
+210131	211384	CDS
+			gene	lacY
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P02920
+			locus_tag	ICPICNDC_00242
+			product	Lactose permease
+211450	211623	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00243
+			product	hypothetical protein
+211855	213237	CDS
+			gene	lamB
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01301
+			locus_tag	ICPICNDC_00244
+			product	Maltoporin
+214327	213368	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00245
+			product	hypothetical protein
+214875	214324	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00246
+			product	hypothetical protein
+215473	214994	CDS
+			db_xref	COG:COG3039
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS903
+			locus_tag	ICPICNDC_00247
+			product	IS5 family transposase IS903
+215930	215457	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00248
+			product	hypothetical protein
+216008	216520	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	ICPICNDC_00249
+			product	hypothetical protein

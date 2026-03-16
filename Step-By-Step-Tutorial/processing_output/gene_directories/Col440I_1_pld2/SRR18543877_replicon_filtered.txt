@@ -1,0 +1,4 @@
+qseqid	sseqid	qstart	qend	sstart	send	evalue	bitscore	pident	qcovs	slen	qlen	q_perc_aligned	overlapped_bases	coverage_percentage	bases_covered	gene_name
+85_R	LR890623.1	2248	3389	1	1142	0.0	2056.0	99.912	100	3549	3389	1.0	0	100.0	3549.0	Col440I_1_pld2
+198	LR890623.1	1	160	1143	1302	5.3e-76	289.0	100.0	100	3549	160	1.0	0	100.0	3549.0	Col440I_1_pld2
+85_R	LR890623.1	1	2247	1303	3549	0.0	4048.0	99.955	100	3549	3389	1.0	0	100.0	3549.0	Col440I_1_pld2

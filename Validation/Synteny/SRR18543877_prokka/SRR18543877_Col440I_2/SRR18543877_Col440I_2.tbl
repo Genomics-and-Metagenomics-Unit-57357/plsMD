@@ -1,0 +1,29 @@
+>Feature SRR18543877_Col440I_2
+585	268	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	MBLHKBAE_00001
+			product	hypothetical protein
+590	1210	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	MBLHKBAE_00002
+			product	hypothetical protein
+1212	1469	CDS
+			gene	imm
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P13479
+			locus_tag	MBLHKBAE_00003
+			product	Colicin-E9 immunity protein
+1577	1732	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	MBLHKBAE_00004
+			product	hypothetical protein
+2456	2647	CDS
+			gene	rop
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P03051
+			locus_tag	MBLHKBAE_00005
+			product	Regulatory protein rop
+2647	3069	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	MBLHKBAE_00006
+			product	hypothetical protein

@@ -1,0 +1,521 @@
+>Feature SRR18543877_IncR
+70	249	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00001
+			product	hypothetical protein
+236	334	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00002
+			product	hypothetical protein
+1147	713	CDS
+			gene	pcoE
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q47459
+			locus_tag	KIIOPODM_00003
+			product	putative copper-binding protein PcoE
+2763	1363	CDS
+			EC_number	2.7.-.-
+			gene	sasA
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01837
+			locus_tag	KIIOPODM_00004
+			product	Adaptive-response sensory-kinase SasA
+3440	2760	CDS
+			gene	copR
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q02540
+			locus_tag	KIIOPODM_00005
+			product	Transcriptional activator protein CopR
+4424	3495	CDS
+			gene	copD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P12377
+			locus_tag	KIIOPODM_00006
+			product	Copper resistance protein D
+4809	4429	CDS
+			db_xref	COG:COG2372
+			gene	pcoC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q47454
+			locus_tag	KIIOPODM_00007
+			product	Copper resistance protein C
+5739	4849	CDS
+			gene	copB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P12375
+			locus_tag	KIIOPODM_00008
+			product	Copper resistance protein B
+7562	5745	CDS
+			gene	copA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P12374
+			locus_tag	KIIOPODM_00009
+			product	Copper resistance protein A
+7796	8245	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00010
+			product	hypothetical protein
+8534	9271	CDS
+			EC_number	3.4.24.-
+			db_xref	COG:COG0739
+			gene	mepM
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0AFS9
+			locus_tag	KIIOPODM_00011
+			product	Murein DD-endopeptidase MepM
+9502	9305	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00012
+			product	hypothetical protein
+11990	9543	CDS
+			EC_number	7.2.2.15
+			gene	silP
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q9ZHC7
+			locus_tag	KIIOPODM_00013
+			product	Silver exporting P-type ATPase
+12557	12117	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00014
+			product	hypothetical protein
+15790	12644	CDS
+			db_xref	COG:COG3696
+			gene	cusA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P38054
+			locus_tag	KIIOPODM_00015
+			product	Cation efflux system protein CusA
+17093	15801	CDS
+			gene	cusB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77239
+			locus_tag	KIIOPODM_00016
+			product	Cation efflux system protein CusB
+17569	17207	CDS
+			db_xref	COG:COG5569
+			gene	cusF
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77214
+			locus_tag	KIIOPODM_00017
+			product	Cation efflux system protein CusF
+18983	17598	CDS
+			db_xref	COG:COG1538
+			gene	cusC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77211
+			locus_tag	KIIOPODM_00018
+			product	Cation efflux system protein CusC
+19173	19853	CDS
+			db_xref	COG:COG0745
+			gene	cusR
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0ACZ8
+			locus_tag	KIIOPODM_00019
+			product	Transcriptional regulatory protein CusR
+19846	21321	CDS
+			EC_number	2.7.13.3
+			db_xref	COG:COG0642
+			gene	cusS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P77485
+			locus_tag	KIIOPODM_00020
+			product	Sensor histidine kinase CusS
+21567	21998	CDS
+			gene	silE
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q9Z4N3
+			locus_tag	KIIOPODM_00021
+			product	Silver-binding protein SilE
+22216	22566	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00022
+			product	hypothetical protein
+22751	22626	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00023
+			product	hypothetical protein
+23660	22752	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00024
+			product	hypothetical protein
+23748	23650	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00025
+			product	hypothetical protein
+24449	26587	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00026
+			product	hypothetical protein
+27173	26757	CDS
+			EC_number	3.1.-.-
+			db_xref	COG:COG1487
+			gene	vapC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:O06662
+			locus_tag	KIIOPODM_00027
+			product	tRNA(fMet)-specific endonuclease VapC
+27400	27170	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00028
+			product	hypothetical protein
+29724	27763	CDS
+			gene	ycf3
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_00439
+			locus_tag	KIIOPODM_00029
+			product	Photosystem I assembly protein Ycf3
+31655	30408	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00030
+			product	hypothetical protein
+31803	32081	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00031
+			product	hypothetical protein
+32432	33136	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00032
+			product	hypothetical protein
+34128	33196	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00033
+			product	hypothetical protein
+34893	34312	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00034
+			product	hypothetical protein
+35202	36542	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00035
+			product	hypothetical protein
+37015	36593	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00036
+			product	hypothetical protein
+38556	37414	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00037
+			product	hypothetical protein
+39431	38649	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00038
+			product	hypothetical protein
+42215	40029	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00039
+			product	hypothetical protein
+43304	42216	CDS
+			gene	pifC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P10030
+			locus_tag	KIIOPODM_00040
+			product	Transcriptional repressor PifC
+43838	44146	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00041
+			product	hypothetical protein
+44182	44835	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00042
+			product	hypothetical protein
+44835	45617	CDS
+			gene	xerC
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01808
+			locus_tag	KIIOPODM_00043
+			product	Tyrosine recombinase XerC
+46262	47128	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00044
+			product	hypothetical protein
+47918	47229	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00045
+			product	hypothetical protein
+48531	49163	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00046
+			product	hypothetical protein
+49163	49537	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00047
+			product	hypothetical protein
+49777	50751	CDS
+			gene	parM
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P11904
+			locus_tag	KIIOPODM_00048
+			product	Plasmid segregation protein ParM
+50755	51147	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00049
+			product	hypothetical protein
+51797	52921	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00050
+			product	hypothetical protein
+53050	53886	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00051
+			product	hypothetical protein
+54466	54188	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00052
+			product	hypothetical protein
+54636	54487	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00053
+			product	hypothetical protein
+54930	54643	CDS
+			EC_number	3.1.-.-
+			db_xref	COG:COG2026
+			gene	relE
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P0C077
+			locus_tag	KIIOPODM_00054
+			product	mRNA interferase toxin RelE
+55178	54927	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00055
+			product	hypothetical protein
+56616	55345	CDS
+			db_xref	COG:COG0389
+			gene	umuC
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P04152
+			locus_tag	KIIOPODM_00056
+			product	Protein UmuC
+57041	56616	CDS
+			EC_number	3.4.21.-
+			db_xref	COG:COG1974
+			gene	umuD
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P22493
+			locus_tag	KIIOPODM_00057
+			product	Protein UmuD
+57254	57484	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00058
+			product	hypothetical protein
+58007	58432	CDS
+			gene	klcA_1
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P52603
+			locus_tag	KIIOPODM_00059
+			product	Antirestriction protein KlcA
+58669	58923	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00060
+			product	hypothetical protein
+58958	59275	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00061
+			product	hypothetical protein
+60005	60232	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00062
+			product	hypothetical protein
+60324	60554	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00063
+			product	hypothetical protein
+60606	61961	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00064
+			product	hypothetical protein
+62009	62572	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00065
+			product	hypothetical protein
+63378	63917	CDS
+			gene	ssb
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P28044
+			locus_tag	KIIOPODM_00066
+			product	Plasmid-derived single-stranded DNA-binding protein
+63966	64214	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P75677
+			locus_tag	KIIOPODM_00067
+			note	UPF0401 protein YkfF
+			product	hypothetical protein
+64283	66283	CDS
+			gene	noc
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_02015
+			locus_tag	KIIOPODM_00068
+			product	Nucleoid occlusion protein
+66328	66759	CDS
+			gene	psiB
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P10031
+			locus_tag	KIIOPODM_00069
+			product	Protein PsiB
+66756	67484	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00070
+			product	hypothetical protein
+67481	67807	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00071
+			product	hypothetical protein
+68025	68186	CDS
+			gene	flmA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P62670
+			locus_tag	KIIOPODM_00072
+			product	Stable plasmid inheritance protein
+68832	68347	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00073
+			product	hypothetical protein
+69022	69294	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00074
+			product	hypothetical protein
+69291	69641	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00075
+			product	hypothetical protein
+70158	70538	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00076
+			product	hypothetical protein
+70604	70951	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00077
+			product	hypothetical protein
+71039	71269	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00078
+			product	hypothetical protein
+71316	72149	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00079
+			product	hypothetical protein
+72774	73304	CDS
+			gene	klcA_2
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P52603
+			locus_tag	KIIOPODM_00080
+			product	Antirestriction protein KlcA
+73821	73342	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00081
+			product	hypothetical protein
+74256	74648	CDS
+			gene	traM
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P07294
+			locus_tag	KIIOPODM_00082
+			product	Relaxosome protein TraM
+74797	75039	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00083
+			product	hypothetical protein
+75059	75214	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00084
+			product	hypothetical protein
+78160	75191	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:TnShfr1
+			locus_tag	KIIOPODM_00085
+			product	Tn3 family transposase TnShfr1
+78319	78609	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00086
+			product	hypothetical protein
+78606	79007	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00087
+			product	hypothetical protein
+78997	79353	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00088
+			product	hypothetical protein
+79608	79934	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00089
+			product	hypothetical protein
+79931	80431	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00090
+			product	hypothetical protein
+80428	80799	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00091
+			product	hypothetical protein
+80793	81350	CDS
+			db_xref	COG:COG1961
+			gene	hin
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P03013
+			locus_tag	KIIOPODM_00092
+			product	DNA-invertase hin
+81429	82433	CDS
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:ISfinder:IS5075
+			locus_tag	KIIOPODM_00093
+			product	IS110 family transposase IS5075
+82713	85751	CDS
+			gene	traI
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P14565
+			locus_tag	KIIOPODM_00094
+			product	Multifunctional conjugation protein TraI
+85831	86556	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00095
+			product	hypothetical protein
+86712	87308	CDS
+			gene	finO
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:P29367
+			locus_tag	KIIOPODM_00096
+			product	Fertility inhibition protein
+87328	87675	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00097
+			product	hypothetical protein
+88146	88790	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00098
+			product	hypothetical protein
+88846	89496	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00099
+			product	hypothetical protein
+89493	89804	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00100
+			product	hypothetical protein
+89901	90458	CDS
+			EC_number	2.7.8.-
+			gene	clsB
+			inference	ab initio prediction:Prodigal:002006
+			inference	protein motif:HAMAP:MF_01917
+			locus_tag	KIIOPODM_00101
+			product	Cardiolipin synthase B
+90608	90868	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00102
+			product	hypothetical protein
+91164	91715	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00103
+			product	hypothetical protein
+91708	92721	CDS
+			gene	repA
+			inference	ab initio prediction:Prodigal:002006
+			inference	similar to AA sequence:UniProtKB:Q52221
+			locus_tag	KIIOPODM_00104
+			product	Replication initiation protein
+93404	93156	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00105
+			product	hypothetical protein
+93549	94052	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	KIIOPODM_00106
+			product	hypothetical protein

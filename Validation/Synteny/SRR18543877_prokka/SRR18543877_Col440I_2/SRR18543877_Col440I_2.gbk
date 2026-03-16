@@ -1,0 +1,133 @@
+LOCUS       SRR18543877_Col440I_2   3549 bp    DNA     linear       13-NOV-2025
+DEFINITION  Genus species strain strain.
+ACCESSION   
+VERSION
+KEYWORDS    .
+SOURCE      Genus species
+  ORGANISM  Genus species
+            Unclassified.
+COMMENT     Annotated using prokka 1.14.6 from
+            https://github.com/tseemann/prokka.
+FEATURES             Location/Qualifiers
+     source          1..3549
+                     /organism="Genus species"
+                     /mol_type="genomic DNA"
+                     /strain="strain"
+     CDS             complement(268..585)
+                     /locus_tag="MBLHKBAE_00001"
+                     /inference="ab initio prediction:Prodigal:002006"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MALNQEKYLDDFTWKELNDVINFIRKAEGSASDHSYALQLLEIN
+                     FKANPLDLIYHPDCWFNDEALFHARLTTEEIGGYLMKKSGRWLNDAPDIQLVYAIPQD
+                     VYD"
+     CDS             590..1210
+                     /locus_tag="MBLHKBAE_00002"
+                     /inference="ab initio prediction:Prodigal:002006"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MKSSALDAPGANGPLTLSGPVPLPERILHTGDQISAPQATDKTV
+                     TPVADDLDFDDIILVFPPESGLKPLYVMYRSPRNMPGTVSGKGQNVGNNWMGGASTGD
+                     GAPVPSQIADKLRGKTFGSFDSFRRAFWKAVADDSALSKQFSEADINQMKAGRAPTAD
+                     FLESVGKRVKIELHHEKEISQGGAVMDVDNIKALTPKNHIETHKGK"
+     CDS             1212..1469
+                     /gene="imm"
+                     /locus_tag="MBLHKBAE_00003"
+                     /inference="ab initio prediction:Prodigal:002006"
+                     /inference="similar to AA sequence:UniProtKB:P13479"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="Colicin-E9 immunity protein"
+                     /translation="MAGNKISDFTEEEFTAFVSKIIAADFPTDKENDDAIYSFAQLTE
+                     HPAGWNLIFKPKVGEDSSAKGIVKTVKEWRAANGKPGFKKA"
+     CDS             1577..1732
+                     /locus_tag="MBLHKBAE_00004"
+                     /inference="ab initio prediction:Prodigal:002006"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MKKLLFLGVVTVSVVLAACQVNNVRDTGGGAVSPSSTVTGVTLD
+                     SGTNGNP"
+     CDS             2456..2647
+                     /gene="rop"
+                     /locus_tag="MBLHKBAE_00005"
+                     /inference="ab initio prediction:Prodigal:002006"
+                     /inference="similar to AA sequence:UniProtKB:P03051"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="Regulatory protein rop"
+                     /translation="MTKQQKTALNMAKFIQNQSLLLLEKLNELDLDVEADLCEKLHDD
+                     AEHLFRTLSSRLDELQDGN"
+     CDS             2647..3069
+                     /locus_tag="MBLHKBAE_00006"
+                     /inference="ab initio prediction:Prodigal:002006"
+                     /codon_start=1
+                     /transl_table=11
+                     /product="hypothetical protein"
+                     /translation="MARVSISEAARLVKVSRPTIYKMINSGKLSYTSVVKHGKAIKVI
+                     DTSELIRVFGSLDGVIDTVKYDVKSDAESTSINSVGLHDLQHRIALLEAENDGLKGAV
+                     KARDEHIDSLRQAMQLLEHKREPSSPPHSPWWKFWKKS"
+ORIGIN      
+        1 ctcacggcca cgcaataaat tgcgtccccg ttcaccgttt tcggatcaga agaacgccgg
+       61 aaacaggact taccctggct gaatggcgtg aatttccgcg ctatgcactt gcgcgcatac
+      121 tcatgcatgc cgtaaaaaca gagcctgcgc gtttctggcg ggttttcggg tggtttgttg
+      181 cctgttttac cggtttcccg tcagaaacgt cctgaggccg ttttagcggt gcgtacaatt
+      241 aagggattat ggtaaatggt gacttggtta atcataaaca tcctggggga tggcatacac
+      301 cagttggata tccggtgcat cgttgagcca tcgacctgat tttttcatta agtagccacc
+      361 aatttcttcg gtagtcagcc gggcatgaaa caatgcttca tcattgaacc agcagtcagg
+      421 gtgatagatg agatccagtg ggtttgcctt gaaattaatc tccagtaact ggagtgcata
+      481 gctgtggtca gatgcactac cttctgcttt gcgtatgaag ttgataacgt cgttcagttc
+      541 tttccatgta aagtcatcga ggtatttttc ctgattaagc gccatcctgg tgaaatctag
+      601 tgcacttgac gcacctggtg caaacggacc actgacgcta agcgggccgg taccactacc
+      661 ggagcgtatt ctgcataccg gtgatcagat ttcggcgcca caggctacag ataaaaccgt
+      721 gacgccggta gcggatgacc tcgattttga cgatattatt ctggtgtttc ctccggaatc
+      781 cggcctaaaa ccgctgtatg tgatgtaccg tagccctcgt aacatgcccg gtacagtgag
+      841 cggcaaaggg cagaacgttg gcaataactg gatggggggg gccagtaccg gggatggtgc
+      901 tcctgttcct tcccagattg cggataaatt acgcgggaag actttcggta gttttgattc
+      961 tttccgtcgg gcgttctgga aagcggttgc tgacgattct gcactgagca agcaatttag
+     1021 tgaagctgat attaatcaga tgaaagctgg aagggcacct actgcggact ttttagaatc
+     1081 agtagggaaa cgtgttaaaa ttgaattaca ccacgaaaaa gaaatatctc aaggaggggc
+     1141 tgttatggat gtcgataaca ttaaggcgct aacacctaaa aatcatattg agacacataa
+     1201 aggaaaataa aatggctggt aataaaattt cagattttac ggaagaagaa tttactgctt
+     1261 ttgttagtaa aataatcgct gctgattttc caactgacaa agagaacgat gatgctattt
+     1321 attcgttcgc ccaactaaca gagcatcctg ctggttggaa cctcatcttc aagcctaagg
+     1381 taggcgaaga ttcttcggcg aaaggaattg ttaaaaccgt aaaggaatgg cgagctgcta
+     1441 acggtaagcc aggttttaaa aaagcgtgat tgaatttgcg ggttcaagtt atgagcccgc
+     1501 tcatttgtaa ctctggattt gaagaataat tactagatat ccatttgcct agaataataa
+     1561 aaataaaagg tgatatatga aaaaattact tttcctaggg gttgttaccg tttctgtggt
+     1621 tctggcagca tgtcaggtca ataatgttcg agacaccgga ggtggggctg tttcaccttc
+     1681 atcgacggtg accggagtca cgcttgatag cggtacgaac ggcaatccgt aaaggatctt
+     1741 cttgagatcc catttggatc gtcgtaatct cttgctctgt aaacgaaaaa accgccttgc
+     1801 agggcggttt ttccgaaggt tcaaacactt gcaggtgatt gaaccaaggt aactggcttg
+     1861 gaggagcgca gtcaccaaaa cttgttcttt cagtttagcc ttaacaggcg catgacttca
+     1921 agaccaactc ctctaaatcc gttaccagtg gctgctgcca gtggcgcttt gtcgtgtctt
+     1981 tccgggttgg actcaagatg atagttaccg gataagacgc agcagtcgga ctgaacgggg
+     2041 ggttcgtgca tacagtccag cttggagcga actgcctacc cggaactgag tgtcaggcgt
+     2101 ggaatgagac aaacgcggcc ataacagcgg aatgacaccg gtaaaccgaa tggcaggaac
+     2161 aggagagcgc acgagggagc catcaggggg aaacgcctgg tatctttata gtcctgtcgg
+     2221 gtttcgccac cactgatttg agcgtcaaat tctgtgatgc ttgtcagggg ggcggagcct
+     2281 atggaaaaac ggccgctgtg ctgccttctc cctctccgag ctgtctgctc tatgtcgtta
+     2341 tgtgcgcgtt gcgaccgctc gccgcagccg aacggcagga gcgtagcgac tgagtgagcg
+     2401 aggaagcgga aaagagatct gtctgacatt gagcactgac gctctgaggc cctttatgac
+     2461 gaaacaacag aaaacagcgc tgaacatggc taaattcatc cagaatcagt ctctgctcct
+     2521 gctggagaag cttaacgagc ttgatctcga tgttgaggcc gacctttgtg agaaactcca
+     2581 cgatgatgcg gagcatcttt tccgtacact gtcctcgaga ctggatgaat tacaggatgg
+     2641 taattgatgg ccagagtgtc tattagtgaa gcggcacggc ttgttaaggt tagccgtccc
+     2701 acaatttaca agatgattaa cagtgggaag ttaagttaca cctctgttgt aaagcacggg
+     2761 aaggctatta aagttattga tacttcagag cttattagag tgtttggttc tcttgatggt
+     2821 gtcatcgata ctgtaaaata tgatgtaaaa agtgacgcag aatctacaag tattaacagc
+     2881 gttggtttac atgatttaca acatagaatc gctctacttg aagctgaaaa cgatggtctt
+     2941 aaaggggctg ttaaggctcg agatgagcat attgattccc ttcgtcaggc tatgcagctt
+     3001 ctggagcaca agcgcgagcc ttcttcacca ccccattccc cgtggtggaa attctggaaa
+     3061 aaatcctgat cctgccatgc ttgagttttc ctctccggcc atcccaggga gttcctgaac
+     3121 cttcccaaaa atcgccagat ctctgaacgc tcctcacgac taaaaatacc cacacactac
+     3181 gcaaaattaa aattttgcag attccttatt taaaacaatt ggttaatgaa aaattaatgt
+     3241 gcagtgatgt gttacaaagt gcagatccaa gtcgtggacg actctatggc gaatcgttta
+     3301 cgaattgccc acgattcata tgtgaatcac gctttattat catgttgtta tgatgaatcg
+     3361 actcttgatt caattcatca atttgggcgt tttttgttca tggtgactct tgattcaatt
+     3421 cacgattcga atcgccggtg aatcgtgtgg tgagtcgtcc ggcgacttgc cataacgtga
+     3481 ttgccggccg tcgacgaacc cgattcctga acgtgctgaa aaccggtttt ccggctgcgc
+     3541 cggcaacgc
+//

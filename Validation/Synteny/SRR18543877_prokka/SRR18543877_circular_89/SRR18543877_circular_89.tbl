@@ -1,0 +1,17 @@
+>Feature SRR18543877_circular_89
+31	426	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NCLPKFPP_00001
+			product	hypothetical protein
+715	1263	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NCLPKFPP_00002
+			product	hypothetical protein
+1472	2140	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NCLPKFPP_00003
+			product	hypothetical protein
+2595	2182	CDS
+			inference	ab initio prediction:Prodigal:002006
+			locus_tag	NCLPKFPP_00004
+			product	hypothetical protein
