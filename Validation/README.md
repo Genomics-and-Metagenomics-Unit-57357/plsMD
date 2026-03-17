@@ -14,27 +14,48 @@ Each sample should have **two FASTA files**:
 For this tutorial, we include one **failed** and one **passed** sample:
 ```
 Validation/
-└── input/
-├── failed_sample/
-│ ├── assembly.fasta
-│ └── genome.fasta
-└── passed_sample/
-├── assembly.fasta
-└── genome.fasta
-
+└── Dataset-Validation/
+    └── failed_sample
+        └──Input/SRR1955549_assembly.fasta
+        └──Input/SRR1955549_complete_genome.fasta
+        └──SRR1955549_validation.txt 
+    └── passed_sample/
+        └──Input/SRR18543877_assembly.fasta
+        └──Input/SRR18543877_complete_genome.fasta
+        └──SRR18543877_validation.txt 
+    └── Scripts/Dataset_Validation.py
+└── Recall-Precision/
+        └──Input/SRR18543877_recall_presicion/
+        └──SRR18543877_recall_presicion.txt
+└── Sensitivity-Specificity/
+        └──Input/SRR18543877_FN/
+        └──Input/SRR18543877_FP/
+        └──Input/SRR18543877_TN/
+        └──Input/SRR18543877_TP/
+        └──SRR18543877_FN.txt
+        └──SRR18543877_FP.txt
+        └──SRR18543877_TN.txt
+        └──SRR18543877_TP.txt
+└── Synteny/
+        └── Reference_prokka/CP144990.1.fasta/CP144990.1.fasta.gff
+        └── SRR18543877_prokka/SRR18543877_IncFII_1_pKP91/SRR18543877_IncFII_1_pKP91.gff
+└── Scripts/
+    └── Recall_precesion_validation.py
+    └── Sensitivity_specificity_validation.py
+    └── best_matching_plasmids.py
+    └── synteny.py
 ```
-
 ---
 
 ## 1. Dataset Validation
 
 - **Goal:** Identify assemblies suitable for validation.  
 - **Method:** BLAST original assemblies against complete genomes. Samples with low alignment coverage are excluded.  
-- **Script:** `scripts/01_dataset_validation.sh`  
-- **Output:** `results/assembly_vs_genomes.tsv`  
+- **Script:** `scripts/dataset_validation.sh`  
+- **Output:** `Example of a failed sample/SRR1955549_validation.txt`  
 
 ```bash
-bash scripts/01_dataset_validation.sh --input input/ --output results/assembly_vs_genomes.tsv
+bash scripts/dataset_validation.sh --input input/ --output results/SRR1955549_validation.txt
 ```
 
 The TSV file will indicate which sample passed or failed. Failed samples are excluded from downstream steps.
@@ -46,12 +67,12 @@ The TSV file will indicate which sample passed or failed. Failed samples are exc
 
 - **Goal:** Evaluate how accurately reconstructed plasmids match reference plasmids.  
 - **Method:** BLAST reconstructed plasmids against complete plasmid genomes. The best-matching plasmid per reference is selected.  
-- **Script:** `scripts/02_recall_precision.sh`
+- **Script:** `scripts/recall_precision.sh`
 - **Input** Only passing samples.   
 - **Output:** `results/recall_precision.tsv`  
 
 ```bash
-bash scripts/02_recall_precision.sh --input input/passed_sample/ --output results/recall_precision.tsv
+bash scripts/recall_precision.sh --input input/passed_sample/ --output results/recall_precision.tsv
 ```
 ---
 
@@ -64,7 +85,7 @@ bash scripts/02_recall_precision.sh --input input/passed_sample/ --output result
 - **Output:** `results/sensitivity_specificity.tsv`  
 
 ```bash
-bash scripts/03_sensitivity_specificity.sh --input input/passed_sample/ --output results/sensitivity_specificity.tsv
+bash scripts/sensitivity_specificity.sh --input input/passed_sample/ --output results/sensitivity_specificity.tsv
 ```
 ---
 
@@ -77,7 +98,7 @@ bash scripts/03_sensitivity_specificity.sh --input input/passed_sample/ --output
 - **Output:** `results/synteny_comparison.tsv`  
 
 ```bash
-bash scripts/04_synteny_conservation.sh --input input/passed_sample/ --output results/synteny_comparison.tsv
+bash scripts/synteny_conservation.sh --input input/passed_sample/ --output results/synteny_comparison.tsv
 ```
 ---
 
