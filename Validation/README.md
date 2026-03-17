@@ -4,124 +4,130 @@ This folder contains scripts and example results to validate plsMD reconstructio
 
 ---
 
+## Table of Contents
+
+- [Input Structure](#input-structure)
+- [1. Dataset Validation](#1-dataset-validation)
+- [2. Recall and Precision](#2-recall-and-precision)
+- [3. Sensitivity and Specificity](#3-sensitivity-and-specificity)
+- [4. Synteny Conservation](#4-synteny-conservation)
+
+---
+
 ## Input Structure
-
-Each sample should have **two FASTA files**:
-
-1. `assembly.fasta` – The sample’s assembled genome (from Unicycler or similar).  
-2. `genome.fasta` – The corresponding complete reference genome.  
-
-For this tutorial, we include one **failed** and one **passed** sample:
 ```
 Validation/
-└── Dataset-Validation/
-    └── failed_sample
-        └──Input/SRR1955549_assembly.fasta
-        └──Input/SRR1955549_complete_genome.fasta
-        └──SRR1955549_validation.txt 
-    └── passed_sample/
-        └──Input/SRR18543877_assembly.fasta
-        └──Input/SRR18543877_complete_genome.fasta
-        └──SRR18543877_validation.txt 
-    └── Scripts/Dataset_Validation.py
-└── Recall-Precision/
-        └──Input/SRR18543877_recall_presicion/
-        └──SRR18543877_recall_presicion.txt
-└── Sensitivity-Specificity/
-        └──Input/SRR18543877_FN/
-        └──Input/SRR18543877_FP/
-        └──Input/SRR18543877_TN/
-        └──Input/SRR18543877_TP/
-        └──SRR18543877_FN.txt
-        └──SRR18543877_FP.txt
-        └──SRR18543877_TN.txt
-        └──SRR18543877_TP.txt
-└── Synteny/
-        └── Reference_prokka/CP144990.1.fasta/CP144990.1.fasta.gff
-        └── SRR18543877_prokka/SRR18543877_IncFII_1_pKP91/SRR18543877_IncFII_1_pKP91.gff
+├── Dataset-Validation/
+│   ├── Scripts/
+│   │   └── Dataset_Validation.py
+│   ├── failed_sample/
+│   │   ├── Input/
+│   │   │   ├── SRR1955549_assembly.fasta
+│   │   │   └── SRR1955549_complete_genome.fasta
+│   │   └── SRR1955549_validation.txt
+│   └── passed_sample/
+│       ├── Input/
+│       │   ├── SRR18543877_assembly.fasta
+│       │   └── SRR18543877_complete_genome.fasta
+│       └── SRR18543877_validation.txt
+├── Recall-Precision/
+│   ├── Input/
+│   │   └── SRR18543877_recall_precision/
+│   └── SRR18543877_recall_precision.txt
+├── Sensitivity-Specificity/
+│   ├── Input/
+│   │   ├── SRR18543877_FN/
+│   │   ├── SRR18543877_FP/
+│   │   ├── SRR18543877_TN/
+│   │   └── SRR18543877_TP/
+│   ├── SRR18543877_FN.txt
+│   ├── SRR18543877_FP.txt
+│   ├── SRR18543877_TN.txt
+│   └── SRR18543877_TP.txt
+├── Synteny/
+│   ├── Reference_prokka/
+│   │   └── CP144990.1.fasta/
+│   │       └── CP144990.1.fasta.gff
+│   └── SRR18543877_prokka/
+│       └── SRR18543877_IncFII_1_pKP91/
+│           └── SRR18543877_IncFII_1_pKP91.gff
 └── Scripts/
-    └── Recall_precesion_validation.py
-    └── Sensitivity_specificity_validation.py
-    └── best_matching_plasmids.py
+    ├── Recall_precision_validation.py
+    ├── Sensitivity_specificity_validation.py
+    ├── best_matching_plasmids.py
     └── synteny.py
 ```
+
 ---
 
 ## 1. Dataset Validation
 
-- **Goal:** Identify assemblies suitable for validation.  
-- **Method:** BLAST original assemblies against complete genomes. Samples with low alignment coverage are excluded.  
-- **Script:** `scripts/dataset_validation.sh`  
-- **Output:** `Example of a failed sample/SRR1955549_validation.txt`  
-
+- **Goal:** Identify assemblies suitable for validation
+- **Method:** BLAST original assemblies against complete genomes. Samples with low alignment coverage are excluded
+- **Script:** `Dataset-Validation/Scripts/Dataset_Validation.py`
+- **Output:** `Dataset-Validation/SRR1955549/SRR1955549_validation.txt`
 ```bash
-bash scripts/dataset_validation.sh --input input/ --output results/SRR1955549_validation.txt
+python Dataset-Validation/Scripts/Dataset_Validation.py \
+  --query Dataset-Validation/failed_sample/Input/SRR1955549_assembly.fasta \
+  --subject Dataset-Validation/failed_sample/Input/SRR1955549_complete_genome.fasta \
+  --output Dataset-Validation/failed_sample/SRR1955549_validation.txt
 ```
 
-The TSV file will indicate which sample passed or failed. Failed samples are excluded from downstream steps.
-
+> The output TSV indicates whether a sample passed or failed. Failed samples are excluded from all downstream steps.
 
 ---
 
 ## 2. Recall and Precision
 
-- **Goal:** Evaluate how accurately reconstructed plasmids match reference plasmids.  
-- **Method:** BLAST reconstructed plasmids against complete plasmid genomes. The best-matching plasmid per reference is selected.  
-- **Script:** `scripts/recall_precision.sh`
-- **Input** Only passing samples.   
-- **Output:** `results/recall_precision.tsv`  
-
+- **Goal:** Evaluate how accurately reconstructed plasmids match reference plasmids
+- **Method:** BLAST reconstructed plasmids against complete plasmid genomes. The best-matching plasmid per reference is selected
+- **Script:** `Scripts/Recall_precision_validation.py`
+- **Input:** Passing samples only — per-plasmid FASTA files in `Recall-Precision/Input/SRR18543877_recall_precision/`
+- **Output:** `Recall-Precision/SRR18543877_recall_precision.txt`
 ```bash
-bash scripts/recall_precision.sh --input input/passed_sample/ --output results/recall_precision.tsv
+python Scripts/Recall_precision_validation.py \
+  --query Recall-Precision/Input/SRR18543877_recall_precision/SRR18543877_IncFII_1_pKP91.fasta \
+  --subject Recall-Precision/Input/SRR18543877_recall_precision/SRR18543877_plasmid.fasta \
+  --output Recall-Precision/SRR18543877_recall_precision.txt
 ```
+
 ---
 
 ## 3. Sensitivity and Specificity
 
-- **Goal:** Assess overall plasmid vs non-plasmid classification.  
-- **Method:** BLAST reconstructed plasmids and non-plasmid contigs against complete genomes. Calculate TP, FP, TN, FN → derive sensitivity & specificity.  
-- **Script:** `scripts/03_sensitivity_specificity.sh`
-- **Input** Only passing samples.   
-- **Output:** `results/sensitivity_specificity.tsv`  
+- **Goal:** Assess overall plasmid vs. non-plasmid classification accuracy
+- **Method:** BLAST reconstructed plasmids and non-plasmid contigs against complete genomes. TP, FP, TN, FN are calculated to derive sensitivity and specificity
+- **Script:** `Scripts/Sensitivity_specificity_validation.py`
+- **Input:** Passing samples only — classified FASTA files in `Sensitivity-Specificity/Input/`
+- **Output:** Per-classification result files in `Sensitivity-Specificity/`
+
+| Input folder | Output file |
+|---|---|
+| `SRR18543877_TP/` | `SRR18543877_TP.txt` |
+| `SRR18543877_FP/` | `SRR18543877_FP.txt` |
+| `SRR18543877_TN/` | `SRR18543877_TN.txt` |
+| `SRR18543877_FN/` | `SRR18543877_FN.txt` |
 
 ```bash
-bash scripts/sensitivity_specificity.sh --input input/passed_sample/ --output results/sensitivity_specificity.tsv
+python Scripts/Sensitivity_specificity_validation.py \
+  --query Sensitivity-Specificity/Input/SRR18543877_FN/SRR18543877_nonplasmid_contigs.fasta \
+  --subject Sensitivity-Specificity/Input/SRR18543877_FN/SRR18543877_plasmid.fasta \
+  --output Sensitivity-Specificity/SRR18543877_TN.tx
 ```
+
 ---
 
 ## 4. Synteny Conservation
 
-- **Goal:** Compare gene order in reconstructed plasmids vs complete plasmid genomes.  
-- **Method:** Annotate complete genomes using Prokka, extract gene order in reconstructed plasmids, and compare for synteny conservation.  
-- **Script:** `scripts/04_synteny_conservation.sh`
-- **Input** Only passing samples.   
-- **Output:** `results/synteny_comparison.tsv`  
-
+- **Goal:** Compare gene order in reconstructed plasmids vs. complete plasmid genomes
+- **Method:** Prokka annotations are generated for both reconstructed and reference plasmids. Gene order is compared for synteny conservation
+- **Script:** `Scripts/synteny.py`
+- **Input:** Passing samples only — Prokka `.gff` files from `Synteny/SRR18543877_prokka/` and `Synteny/Reference_prokka/`
+- **Output:** Per-plasmid synteny comparison
 ```bash
-bash scripts/synteny_conservation.sh --input input/passed_sample/ --output results/synteny_comparison.tsv
-```
----
-
-
-### Folder Structure
-```
-Validation/
-├── README.md
-├── input/
-│   ├── failed_sample/
-│   │   ├── assembly.fasta
-│   │   └── genome.fasta
-│   └── passed_sample/
-│       ├── assembly.fasta
-│       └── genome.fasta
-├── scripts/
-│   ├── 01_dataset_validation.sh
-│   ├── 02_recall_precision.sh
-│   ├── 03_sensitivity_specificity.sh
-│   └── 04_synteny_conservation.sh
-└── results/
-    ├── assembly_vs_genomes.tsv
-    ├── recall_precision.tsv
-    ├── sensitivity_specificity.tsv
-    └── synteny_comparison.tsv
+python Scripts/synteny.py \
+  --gff Synteny/SRR18543877_prokka/SRR18543877_IncFII_1_pKP91/SRR18543877_IncFII_1_pKP91.gff \
+  --reference Synteny/Reference_prokka/CP144990.1.fasta/CP144990.1.fasta.gff \
+  --pairs_file Synteny/sseqid_pairs.txt
+  --output Synteny/SRR18543877_synteny.txt
 ```
