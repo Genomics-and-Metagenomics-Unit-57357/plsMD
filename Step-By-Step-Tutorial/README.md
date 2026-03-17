@@ -79,29 +79,34 @@ plsMD --processing \
 Processing_output/
 ├── SRR18543877_overlap.txt
 ├── SRR18543877_overlap_filtered.txt
-├── extracted_fasta
-    └── Col440I_1_pld1/SRR18543877_Col440I_1_pld1.fasta
-    └── Col440I_1_pld2/SRR18543877_Col440I_1_pld2.fasta
-    └── IncFIB_K__1_Kpn3_pld1/SRR18543877_IncFIB_K__1_Kpn3_pld1.fasta
-    └── IncFII_1_pKP91_pld1/SRR18543877_IncFII_1_pKP91_pld1.fasta
-    └── IncR_1_pld1/SRR18543877_IncR_1_pld1.fasta
-├── gene_directories
-    └── IncFII_1_pKP91_pld1/
-        └── SRR18543877_plasmid.txt 
-        └── SRR18543877_overlap_filtered.txt
-        └── SRR18543877_replicon_contigs.txt
-        └── SRR18543877_replicon_filtered.txt
-        └── SRR18543877_extracted.fasta   
-        └── SRR18543877_NZ_CP143284.1.fasta
-    └── Col440I_1_pld1/
-    └── Col440I_1_pld2/
-    └── IncFIB_K__1_Kpn3_pld1/
-    └── IncR_1_pld1/
+├── extracted_fasta/
+│   └── Col440I-1-pld1/
+│       └── SRR18543877_Col440I-1-pld1.fasta
+│   └── Col440I-1-pld2/
+│       └── SRR18543877_Col440I-1-pld2.fasta
+│   └── IncFIB-K-1-Kpn3-pld1/
+│       └── SRR18543877_IncFIB-K-1-Kpn3-pld1.fasta
+│   └── IncFII-1-pKP91-pld1/
+│       └── SRR18543877_IncFII-1-pKP91-pld1.fasta
+│   └── IncR-1-pld1/
+│       └── SRR18543877_IncR-1-pld1.fasta
+├── gene_directories/
+│   ├── IncFII-1-pKP91-pld1/
+│   │   ├── SRR18543877_plasmid.txt
+│   │   ├── SRR18543877_overlap_filtered.txt
+│   │   ├── SRR18543877_replicon_contigs.txt
+│   │   ├── SRR18543877_replicon_filtered.txt
+│   │   ├── SRR18543877_extracted.fasta
+│   │   └── SRR18543877_NZ_CP143284.1.fasta
+│   ├── Col440I-1-pld1/
+│   ├── Col440I-1-pld2/
+│   ├── IncFIB-K-1-Kpn3-pld1/
+│   └── IncR-1-pld1/
 ├── plasmid_files/
-    └── SRR18543877_plasmid_contigs.fasta
-    └── SRR18543877_plasmid_replicon_filtered.txt
-    └── SRR18543877_report.tsv
-├── nonplasmid_files/
+│   ├── SRR18543877_plasmid_contigs.fasta
+│   ├── SRR18543877_plasmid_replicon_filtered.txt
+│   └── SRR18543877_report.tsv
+└── nonplasmid_files/
     └── SRR18543877_nonplasmid_contigs.fasta
 ```
 ### Output Description
@@ -155,16 +160,24 @@ plsMD --annotation \
 ```
 Annotation_output/
 ├── plasmid_files/
-    └── AMR/SRR18543877_plasmid_contigs_AMR.txt
-    └── IS/SRR18543877_plasmid_contigs_IS.txt
-    └── PL/SRR18543877_plasmid_contigs_PL.txt
-    └── VF/SRR18543877_plasmid_contigs_VF.txt
-
-├── nonplasmid_files/
-    └── AMR/SRR18543877_nonplasmid_contigs_AMR.txt
-    └── IS/SRR18543877_nonplasmid_contigs_IS.txt
-    └── PL/SRR18543877_nonplasmid_contigs_PL.txt
-    └── VF/SRR18543877_nonplasmid_contigs_VF.txt
+│   ├── AMR/
+│   │   └── SRR18543877_plasmid-contigs-AMR.txt
+│   ├── IS/
+│   │   └── SRR18543877_plasmid-contigs-IS.txt
+│   ├── PL/
+│   │   └── SRR18543877_plasmid-contigs-PL.txt
+│   └── VF/
+│       └── SRR18543877_plasmid-contigs-VF.txt
+│
+└── nonplasmid_files/
+    ├── AMR/
+    │   └── SRR18543877_nonplasmid-contigs-AMR.txt
+    ├── IS/
+    │   └── SRR18543877_nonplasmid-contigs-IS.txt
+    ├── PL/
+    │   └── SRR18543877_nonplasmid-contigs-PL.txt
+    └── VF/
+        └── SRR18543877_nonplasmid-contigs-VF.txt
 ```
 
 ## Step 4: Phylogenetic analysis  
@@ -184,14 +197,17 @@ plsMD --phylogenetics \
 ```
 ### Phylogenetics Output Structure
 ```
-├── phylogenetics_output/
-    └── rotated_sequences/
-        └── Col440I_1_pld1/Col440I_1_pld1_concatenated.fasta
-        └── Col440I_1_pld1/Col440I_1_pld1_commn_seq.txt
-        └── Col440I_1_pld1/Col440I_1_pld1_rotated.fasta
-    └── Phylogenetic_analysis/
-        └── Col440I_1_pld1/Col440I_1_pld1_aligned.fasta
-        └── Col440I_1_pld1/Col440I_1.treefile
+phylogenetics_output/
+├── rotated_sequences/
+│   └── Col440I-1-pld1/
+│       ├── Col440I-1-pld1_concatenated.fasta
+│       ├── Col440I-1-pld1_common_seq.txt
+│       └── Col440I-1-pld1_rotated.fasta
+│
+└── Phylogenetic_analysis/
+    └── Col440I-1-pld1/
+        ├── Col440I-1-pld1_aligned.fasta
+        └── Col440I-1.treefile
  
    ```
 ### Output Description 
