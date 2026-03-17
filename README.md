@@ -127,7 +127,7 @@ plsMD --annotation --dir <input_directory> --output <annotation_output> --thread
 | Option | Description | 
 |---|---|
 | `--dir` | Input directory containing the processed data(plasmid_files/nonplasmid_files) (output from plsMD --processing) | 
-| `--dir` | Input directory containing the preprocessed data (output from plsMD --preprocessing) | 
+| `--output` | output directory containing the annotated files | 
 | `--threads` | Number of threads | 
 ------
 Phylogenetic Analysis - Batch Modality
