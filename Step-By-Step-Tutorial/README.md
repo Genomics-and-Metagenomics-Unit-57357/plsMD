@@ -37,8 +37,6 @@ Follow the [Installation guide](../README.md#installation) in the main README.md
 cd "Step-By-Step Tutorial/SRR18543877"
 ```
 
----
-
 ## Step 1: Preprocessing
 
 Run the preprocessing step to identify plasmid replicons and generate plasmid alignments.
@@ -67,8 +65,6 @@ Preprocessing_output/
 - Both outputs are combined, with redundant genes removed, producing `SRR18543877_plasmid.txt`.
 - All contigs are reversed, `_R` is appended to the contig name, and merged with the original contigs into `SRR18543877_merged.fasta`.
 - Unique replicon gene names from all samples are concatenated in a file `plasmid_list.txt`
-
---
 
 ## Step 2: Processing
 
@@ -146,7 +142,6 @@ Processing_output/
  
   12. All contigs from the original assembly that were not identified as plasmid-associated are extracted `nonplasmid_files/SRR18543877_nonplasmid_contigs.fasta`.
  
-  --
 
 ## Step 3: Annotation
 Run the annotation step to align the reconstructed and nonplasmid sequences against multiple databases `(amrfinderplus-vfdb-plasmidfinder-ISFinder)`.
@@ -171,7 +166,6 @@ Annotation_output/
     └── PL/SRR18543877_nonplasmid_contigs_PL.txt
     └── VF/SRR18543877_nonplasmid_contigs_VF.txt
 ```
---
 
 ## Step 4: Phylogenetic analysis  
 If multiple samples are processed together, this step allows the phylogenetic analysis of plasmids from different samples harboring the same replicon type.
