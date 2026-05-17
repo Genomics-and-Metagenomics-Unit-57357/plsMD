@@ -54,6 +54,8 @@ RUN conda install -n plsMD -y \
     mafft \
     iqtree \
     ncbi-amrfinderplus \
+    fastp \
+    unicycler \
     && conda clean -afy
 
 RUN /opt/conda/envs/plsMD/bin/amrfinder_update --force_update -d /opt/conda/envs/plsMD/share/amrfinderplus/data && \
@@ -136,7 +138,8 @@ Commands:\n\
   --help             Show this help message\n\
 \n\
 Examples:\n\
-  plsMD --preprocessing --dir /data/input\n\
+  plsMD --preprocessing --input fasta --dir /data/input --output /data/out --threads 8\n\
+  plsMD --preprocessing --input fastq --dir /data/reads --output /data/out --threads 16\n\
   plsMD --annotation --threads 8 --dir /data/results\n\
 \n\
 Note: All paths should be relative to /data or use absolute paths from mounted volumes\n\
@@ -152,6 +155,8 @@ esac\n' > /usr/local/bin/plsMD && \
 RUN /opt/conda/envs/plsMD/bin/python -c "import pandas, numpy, Bio; print('Dependencies verified')" && \
     /opt/conda/envs/plsMD/bin/abricate --version && \
     /opt/conda/envs/plsMD/bin/amrfinder --version && \
+    /opt/conda/envs/plsMD/bin/fastp --version && \
+    /opt/conda/envs/plsMD/bin/unicycler --version && \
     /opt/conda/envs/plsMD/bin/abricate --list && \
     ls ${IS_DB_DIR} && echo "IS database verified"
 
