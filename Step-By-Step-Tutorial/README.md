@@ -42,6 +42,7 @@ cd "Step-By-Step Tutorial/SRR18543877"
 Run the preprocessing step to identify plasmid replicons and generate plasmid alignments.
 ```bash
 plsMD --preprocessing \
+  --input <fastq/fasta>
   --dir <input_directory>/ \
   --output <output_directory> \
   [--db <plsdb_path>] \
