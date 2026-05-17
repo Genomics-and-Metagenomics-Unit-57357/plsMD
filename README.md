@@ -100,10 +100,11 @@ plsMD Pipeline
 Preprocessing 
 ------
 ```bash
-plsMD --preprocessing --dir <input_directory> --output <preprocessing_output> --threads <num_threads> --db <plsdb_path>
+plsMD --preprocessing --input <fasta/fastq> --dir <input_directory> --output <preprocessing_output> --threads <num_threads> --db <plsdb_path>
 ```
 | Option | Description | 
 |---|---|
+| `--input` | Input files type <fasta/fastq>  | 
 | `--dir` | Input directory containing unicylcer assembly FASTAs | 
 | `--output` | Output directory containing preprocessing results | 
 | `--threads` | Number of threads | 
