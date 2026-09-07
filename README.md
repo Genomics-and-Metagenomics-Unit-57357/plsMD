@@ -1,4 +1,4 @@
-<img src="https://github.com/user-attachments/assets/a167d5a7-fefb-468e-89fb-9cc3f0a3d010" width="200" align="right" alt="plsMD logo" />
+<img src="https://github.com/user-attachments/assets/a167d5a7-fefb-468e-89fb-9cc3f0a3d010" width="200" align="left" alt="plsMD logo" />
 
 
 plsMD: A plasmid reconstruction tool for short-read assemblies
