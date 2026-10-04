@@ -7,16 +7,19 @@ LABEL version="v1.0"
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
     LC_ALL=C.UTF-8 \
-    PATH="/opt/conda/envs/plsMD/bin:/opt/conda/bin:$PATH" \
+    PATH="/opt/conda/envs/plsMD/bin:/opt/conda/envs/mobsuite/bin:/opt/conda/bin:$PATH" \
     INSTALL_DIR=/opt/plsMD \
     DATA_DIR=/opt/plsMD/data \
     BLAST_DB_DIR=/opt/plsMD/data/blastdb \
     SCRIPT_DIR=/opt/plsMD/scripts \
     ABRICATE_DB_DIR=/opt/conda/envs/plsMD/db \
-    IS_DB_DIR=/opt/plsMD/data/blastdb/IS
+    IS_DB_DIR=/opt/plsMD/data/blastdb/IS \
+    MOBSUITE_DB_DIR=/opt/conda/envs/mobsuite/share/mob_suite/db
 
-
-RUN apt-get update -qq && \
+# Swapped main Ubuntu mirrors to Kernel.org to bypass blocked archive.ubuntu.com requests
+RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://mirrors.kernel.org/ubuntu/|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.ubuntu.com/ubuntu/|http://mirrors.kernel.org/ubuntu/|g' /etc/apt/sources.list && \
+    apt-get update -qq && \
     apt-get install -y --no-install-recommends \
     ca-certificates \
     wget \
@@ -25,6 +28,7 @@ RUN apt-get update -qq && \
     bzip2 \
     tar \
     unzip \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
 
@@ -61,8 +65,25 @@ RUN conda install -n plsMD -y \
 RUN /opt/conda/envs/plsMD/bin/amrfinder_update --force_update -d /opt/conda/envs/plsMD/share/amrfinderplus/data && \
     ln -sf /opt/conda/envs/plsMD/share/amrfinderplus/data /opt/conda/envs/plsMD/share/amrfinderplus/data/latest
 
+# mob-suite lives in its own env (different dependency set than plsMD's).
+# mob_init needs `mash` (installed alongside it in this env's bin/) on PATH,
+# so it and the verification step below run through `conda activate`
+# rather than by calling the binary at an absolute path.
+RUN conda create -n mobsuite -c conda-forge -c bioconda -y python=3.9 mob_suite && \
+    conda clean -afy
 
-RUN mkdir -p ${INSTALL_DIR} ${DATA_DIR} ${BLAST_DB_DIR} ${SCRIPT_DIR} ${ABRICATE_DB_DIR} ${IS_DB_DIR}
+RUN bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate mobsuite && \
+    mob_init --force && \
+    echo 'mob-suite database initialized'"
+
+RUN bash -c "source /opt/conda/etc/profile.d/conda.sh && \
+    conda activate mobsuite && \
+    mob_recon --version && \
+    echo 'mob-suite verified'"
+
+
+RUN mkdir -p ${INSTALL_DIR}${DATA_DIR} ${BLAST_DB_DIR}${SCRIPT_DIR} ${ABRICATE_DB_DIR}${IS_DB_DIR}
 
 ARG GITHUB_REPO=https://github.com/Genomics-and-Metagenomics-Unit-57357/plsMD
 RUN wget ${GITHUB_REPO}/raw/main/rep.mob.typer.tar.gz -O /tmp/rep.mob.typer.tar.gz && \
@@ -77,7 +98,7 @@ RUN wget ${GITHUB_REPO}/raw/main/IS.zip -O /tmp/IS.zip && \
 ARG DOWNLOAD_DB=false
 ARG PLSDB_URL=https://ccb-microbe.cs.uni-saarland.de/plsdb2025/download_fasta
 RUN if [ "${DOWNLOAD_DB}" = "true" ]; then \
-    wget --progress=dot:giga ${PLSDB_URL} -O ${DATA_DIR}/sequences.fasta && \
+    wget --progress=dot:giga ${PLSDB_URL} -O${DATA_DIR}/sequences.fasta && \
     makeblastdb -in ${DATA_DIR}/sequences.fasta \
         -dbtype nucl \
         -out ${BLAST_DB_DIR}/plsdb \
