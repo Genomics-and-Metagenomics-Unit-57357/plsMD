@@ -1,7 +1,7 @@
 FROM ubuntu:22.04
 
 LABEL maintainer="Maryam Lotfi <mariam.lotfi@57357.org>, Deena Jalal <deena.jalal@57357.org>"
-LABEL description="Containerized plsMD pipeline for plasmid analysis"
+LABEL description="plsMD pipeline for plasmid reconstruction"
 LABEL version="v1.2"
 
 ENV DEBIAN_FRONTEND=noninteractive \
