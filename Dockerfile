@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 LABEL maintainer="Maryam Lotfi <mariam.lotfi@57357.org>, Deena Jalal <deena.jalal@57357.org>"
 LABEL description="Containerized plsMD pipeline for plasmid analysis"
-LABEL version="v1.0"
+LABEL version="v1.2"
 
 ENV DEBIAN_FRONTEND=noninteractive \
     LANG=C.UTF-8 \
@@ -16,7 +16,6 @@ ENV DEBIAN_FRONTEND=noninteractive \
     IS_DB_DIR=/opt/plsMD/data/blastdb/IS \
     MOBSUITE_DB_DIR=/opt/conda/envs/mobsuite/share/mob_suite/db
 
-# Swapped main Ubuntu mirrors to Kernel.org to bypass blocked archive.ubuntu.com requests
 RUN sed -i 's|http://archive.ubuntu.com/ubuntu/|http://mirrors.kernel.org/ubuntu/|g' /etc/apt/sources.list && \
     sed -i 's|http://security.ubuntu.com/ubuntu/|http://mirrors.kernel.org/ubuntu/|g' /etc/apt/sources.list && \
     apt-get update -qq && \
