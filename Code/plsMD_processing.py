@@ -1,6 +1,9 @@
 import os
 import re
 import shutil
+import subprocess
+import glob
+import csv
 import pandas as pd
 import logging
 from Bio import SeqIO, Entrez
@@ -8,6 +11,7 @@ from concurrent.futures import ThreadPoolExecutor
 from collections import defaultdict
 import argparse
 import sys
+
 
 def setup_logging(log_file='log.txt'):
     logging.basicConfig(
@@ -872,6 +876,14 @@ def process_files_for_col_contigs(file1, file2, output_rows):
                     new_sseqid_with_pld = "_".join(parts[:-1])
                 except ValueError:
                     pass
+        # Special case: keep the cluster number for rep_cluster replicons
+        # (CP031286_00006_rep_cluster_2232 instead of CP031286_00006_rep_cluster)
+        if 'rep_cluster' in last_column:
+            rc = re.search(r'^(.*rep_cluster_\d+)', re.sub(r'_pld\d+', '', last_column))
+            if rc:
+                new_sseqid_with_pld = f"{sample_name}_{rc.group(1)}"
+                if pld_number > 1:
+                    new_sseqid_with_pld = f"{new_sseqid_with_pld}_{pld_number}"
         for item in data_list:
             row = item["row"]
             if len(row) >= len(header) + 2:
@@ -906,6 +918,70 @@ def process_files_for_col_contigs(file1, file2, output_rows):
             f2.write('\t'.join(row) + '\n')
     return x_sseqid_mapping
 
+# ----------------------------------------------------------------------
+# Reconstructed plasmid naming
+# ----------------------------------------------------------------------
+# Every distinct x_sseqid of a sample is one reconstructed plasmid and gets a
+# sequential name: <sample>_plsMD1, <sample>_plsMD2, ...  (numbered in order of
+# first appearance in the ORIGINAL table). All rows/replicons sharing an
+# x_sseqid get the same name. It is stored in the "reconstructed" column and
+# used as the header in <sample>_plasmid_contigs.fasta.
+
+def build_reconstructed_names(df, sample_name, start=1):
+    x_to_name = {}
+    n = start - 1
+    for x in df['x_sseqid']:
+        if x and x not in x_to_name:
+            n += 1
+            x_to_name[x] = f"{sample_name}_plsMD{n}"
+    return df['x_sseqid'].map(x_to_name).fillna('')
+
+def replicon_type_name(gene_name):
+    """Replicon name for the rep_type column: the text before the first '_'
+    ('IncFIC_FII_1_pld1' -> 'IncFIC', 'Col156_1_pld2' -> 'Col156').
+    Special case: rep_cluster names keep their number ('..._rep_cluster_2232_pld1' -> 'rep_cluster_2232')."""
+    g = str(gene_name).strip()
+    m = re.search(r'rep_cluster_(\d+)', g)
+    if m:
+        return f"rep_cluster_{m.group(1)}"
+    if 'rep_cluster' in g:
+        return 'rep_cluster'
+    parts = g.split('_')
+    # 'Col' directly followed by '_' keeps the next word (Col_MG828); 'Col156' etc. stay as they are
+    if parts[0] == 'Col' and len(parts) > 1 and parts[1] and not parts[1].isdigit() and not re.match(r'pld\d+$', parts[1]):
+        return f"Col_{parts[1]}"
+    return parts[0]
+
+def build_rep_types(df):
+    """Comma-separated replicon names (from gene_name) of every replicon that belongs to
+    each reconstructed plasmid, in order of first appearance, without repeats."""
+    per = {}
+    for rec, gene in zip(df['reconstructed'], df['gene_name']):
+        if not rec:
+            continue
+        name = replicon_type_name(gene)
+        lst = per.setdefault(rec, [])
+        if name not in lst:
+            lst.append(name)
+    return df['reconstructed'].map(lambda r: ",".join(per.get(r, [])))
+
+def add_reconstructed_column(replicon_file, sample_name):
+    df = pd.read_csv(replicon_file, sep='\t', dtype=str, keep_default_na=False)
+    if 'x_sseqid' not in df.columns:
+        logging.warning(f"Cannot name reconstructed plasmids for {replicon_file}: x_sseqid column missing")
+        return
+    df = df.drop(columns=['reconstructed'], errors='ignore')
+    df['reconstructed'] = build_reconstructed_names(df, sample_name)
+    df = df.drop(columns=['rep_type'], errors='ignore')
+    if 'gene_name' in df.columns:
+        df['rep_type'] = build_rep_types(df)
+    df.to_csv(replicon_file, sep='\t', index=False)
+    for x, name in df[['x_sseqid', 'reconstructed']].drop_duplicates().itertuples(index=False):
+        logging.info(f"{sample_name}: {name} <- {x}")
+
+def _mapping_column(header):
+    return "reconstructed" if "reconstructed" in header else "new_sseqid"
+
 def rename_files_in_gene_directories(extracted_fasta_dir, replicon_dir):
     logging.info(f"Renaming files in gene directories from {extracted_fasta_dir}")
     
@@ -914,6 +990,12 @@ def rename_files_in_gene_directories(extracted_fasta_dir, replicon_dir):
         os.makedirs(extracted_fasta_dir, exist_ok=True)
         return
     
+    known_samples = sorted(
+        {f[: -len("_plasmid_replicon_filtered.txt")] for f in os.listdir(replicon_dir)
+         if f.endswith("_plasmid_replicon_filtered.txt")},
+        key=len, reverse=True,
+    )
+
     for gene_dir in os.listdir(extracted_fasta_dir):
         gene_dir_path = os.path.join(extracted_fasta_dir, gene_dir)
         if not os.path.isdir(gene_dir_path):
@@ -926,12 +1008,12 @@ def rename_files_in_gene_directories(extracted_fasta_dir, replicon_dir):
             try:
                 file_basename = os.path.basename(file_path)
                 file_basename_without_ext, ext = os.path.splitext(file_basename)
-                parts = file_basename_without_ext.split('_')
-                if len(parts) < 2:
+                # file name is <sample>_<sseqid> == x_sseqid; sample names may contain '_'
+                x_sseqid = file_basename_without_ext
+                sample_name = next((sm for sm in known_samples if x_sseqid.startswith(sm + "_")), None)
+                if sample_name is None:
+                    logging.warning(f"Could not match {file_basename} to a sample with a replicon table; skipping.")
                     continue
-                sample_name = parts[0]
-                sseqid = '_'.join(parts[1:])
-                x_sseqid = f"{sample_name}_{sseqid}"
                 replicon_file = os.path.join(replicon_dir, f"{sample_name}_plasmid_replicon_filtered.txt")
                 if not os.path.exists(replicon_file):
                     logging.error(f"Error: Replicon file not found: {replicon_file}")
@@ -942,10 +1024,12 @@ def rename_files_in_gene_directories(extracted_fasta_dir, replicon_dir):
                     if "x_sseqid" not in header or "new_sseqid" not in header:
                         continue
                     x_idx = header.index("x_sseqid")
-                    new_idx = header.index("new_sseqid")
+                    new_idx = header.index(_mapping_column(header))
                     for line in f:
-                        line_parts = line.strip().split('\t')
+                        line_parts = line.rstrip("\r\n").split('\t')
                         if len(line_parts) <= max(x_idx, new_idx):
+                            continue
+                        if not line_parts[new_idx]:
                             continue
                         x_sseqid_mapping[line_parts[x_idx]] = line_parts[new_idx]
                 if x_sseqid not in x_sseqid_mapping:
@@ -965,13 +1049,17 @@ def rename_files_in_gene_directories(extracted_fasta_dir, replicon_dir):
                 logging.error(f"Error renaming file {file_path}: {e}")
 
 def rename_fasta_headers_in_replicon_dir(replicon_dir):
+    """Rename '>sample_sseqid' headers (x_sseqid) in *_plasmid_contigs.fasta to the
+    reconstructed name (<sample>_plsMD<N>)."""
     logging.info(f"Renaming FASTA headers in {replicon_dir}")
     for fasta_file in os.listdir(replicon_dir):
         if not fasta_file.endswith('_plasmid_contigs.fasta'):
             continue
-        sample_name = fasta_file.split('_')[0]
+        # sample names may contain '_' (e.g. CRE088_S16_L001), so strip the known suffix
+        sample_name = fasta_file[: -len('_plasmid_contigs.fasta')]
         replicon_file = os.path.join(replicon_dir, f"{sample_name}_plasmid_replicon_filtered.txt")
         if not os.path.exists(replicon_file):
+            logging.warning(f"Replicon table not found for {fasta_file}: {replicon_file}; headers not renamed")
             continue
         x_sseqid_mapping = {}
         with open(replicon_file, 'r') as f:
@@ -979,14 +1067,14 @@ def rename_fasta_headers_in_replicon_dir(replicon_dir):
             if "x_sseqid" not in header or "new_sseqid" not in header:
                 continue
             x_idx = header.index("x_sseqid")
-            new_idx = header.index("new_sseqid")
+            new_idx = header.index(_mapping_column(header))
             for line in f:
-                parts = line.strip().split('\t')
+                parts = line.rstrip("\r\n").split('\t')
                 if len(parts) < max(x_idx, new_idx) + 1:
                     continue
-                x_sseqid = parts[x_idx]
-                new_sseqid = parts[new_idx]
-                x_sseqid_mapping[x_sseqid] = new_sseqid
+                if not parts[new_idx]:
+                    continue
+                x_sseqid_mapping[parts[x_idx]] = parts[new_idx]
         fasta_path = os.path.join(replicon_dir, fasta_file)
         temp_path = os.path.join(replicon_dir, f"TEMP_{fasta_file}")
         with open(fasta_path, 'r') as infile, open(temp_path, 'w') as outfile:
@@ -1018,6 +1106,8 @@ def process_directories_for_col_contigs(plasmid_dir, replicon_dir, combined_outp
         if replicon_path:
             logging.info(f"Processing {plasmid_path} and {replicon_path}") 
             x_sseqid_mapping = process_files_for_col_contigs(plasmid_path, replicon_path, output_rows)
+            # Name each reconstructed plasmid <sample>_plsMD<N> by x_sseqid
+            add_reconstructed_column(replicon_path, base_sample_name)
         else:
             logging.warning(f"No replicon file found for {file_name}. Expected: {expected_replicon_file}") 
 
@@ -1082,6 +1172,22 @@ def process_all_circular_contigs(directory_path, fasta_directory, output_path=No
             
             logging.info(f"Found {len(circular_contigs)} circular contigs without replicons for {sample_name}: {list(circular_contigs.keys())}")
             
+            replicon_file = os.path.join(output_dir, f"{sample_name}_plasmid_replicon_filtered.txt")
+
+            # Circular contigs continue the <sample>_plsMD<N> numbering after the
+            # replicon-based plasmids already named in the table.
+            last_n = 0
+            if os.path.exists(replicon_file):
+                prev = pd.read_csv(replicon_file, sep="\t", dtype=str, keep_default_na=False)
+                if 'reconstructed' in prev.columns and 'x_sseqid' in prev.columns:
+                    prev = prev[~prev['x_sseqid'].isin(circular_contigs.keys())]
+                    nums = prev['reconstructed'].str.extract(r'_plsMD(\d+)$')[0].dropna().astype(int)
+                    last_n = int(nums.max()) if not nums.empty else 0
+            reconstructed_names = {
+                cid: f"{sample_name}_plsMD{last_n + i}"
+                for i, cid in enumerate(circular_contigs.keys(), start=1)
+            }
+
             circular_entries = []
             for contig_id, contig_info in circular_contigs.items():
                 new_sseqid = f"{sample_name}_circular_{contig_info['number']}"
@@ -1104,13 +1210,13 @@ def process_all_circular_contigs(directory_path, fasta_directory, output_path=No
                     'bases_covered': str(contig_info['length']),
                     'new_sseqid': new_sseqid,
                     'x_sseqid': contig_id,
-                    'gene_name': 'circular'
+                    'gene_name': 'circular',
+                    'reconstructed': reconstructed_names[contig_id],
+                    'rep_type': 'circular'
                 }
                 circular_entries.append(entry)
             
             circular_df = pd.DataFrame(circular_entries)
-            
-            replicon_file = os.path.join(output_dir, f"{sample_name}_plasmid_replicon_filtered.txt")
             
             if os.path.exists(replicon_file):
                 existing_df = pd.read_csv(replicon_file, sep="\t")
@@ -1128,7 +1234,7 @@ def process_all_circular_contigs(directory_path, fasta_directory, output_path=No
             circular_records = []
             for record in SeqIO.parse(fasta_file, "fasta"):
                 if record.id in circular_contigs:
-                    new_id = f"{sample_name}_circular_{circular_contigs[record.id]['number']}"
+                    new_id = reconstructed_names[record.id]
                     new_record = record
                     new_record.id = new_id
                     new_record.description = new_id
@@ -1148,20 +1254,383 @@ def process_all_circular_contigs(directory_path, fasta_directory, output_path=No
                 SeqIO.write(circular_records, combined_fasta_path, "fasta")
                 logging.info(f"Created new FASTA file with {len(circular_records)} circular contigs for {sample_name}")
 
-def generate_sample_report(output_directory, sample_name_or_directory):
+
+# ======================================================================
+# FINAL STAGES (run last): deduplicated table -> PCN -> mob-suite -> report
+# ======================================================================
+
+REPLICON_SUFFIX = "_plasmid_replicon_filtered.txt"
+REPLICON_DEDUP_SUFFIX = "_plasmid_replicon_filtered_dedup.txt"
+
+PCN_REPLICON_SUFFIX = REPLICON_SUFFIX
+PCN_CONTIGS_SUFFIX = "_plasmid_contigs.fasta"
+
+MOB_RECON_BIN = os.environ.get("MOB_RECON_BIN", "mob_recon")
+MOBTYPER_COLUMNS = [
+    "sample_id", "num_contigs", "size", "gc", "rep_type(s)",
+    "relaxase_type(s)", "mpf_type", "orit_type(s)", "predicted_mobility",
+]
+
+# ---------------- deduplicated copy of the replicon table ----------------
+
+def dedup_by_x_sseqid(df):
+    """Keep only rows belonging to the first new_sseqid encountered for each x_sseqid."""
+    first_label = df.groupby("x_sseqid")["new_sseqid"].transform("first")
+    return df[df["new_sseqid"] == first_label].copy()
+
+def write_dedup_replicon_files(replicon_dir):
+    """Keep BOTH versions of each replicon table:
+      <sample>_plasmid_replicon_filtered.txt        -> ALL entries (original, duplicated x_sseqid)
+      <sample>_plasmid_replicon_filtered_dedup.txt  -> one new_sseqid per x_sseqid
+    PCN / naming / report all use the original; the dedup file is just kept alongside."""
+    logging.info(f"Writing deduplicated replicon tables in {replicon_dir}")
+    for path in sorted(glob.glob(os.path.join(replicon_dir, f"*{REPLICON_SUFFIX}"))):
+        df = pd.read_csv(path, sep="\t", dtype=str, keep_default_na=False)
+        if not {"x_sseqid", "new_sseqid"}.issubset(df.columns):
+            logging.warning(f"Cannot deduplicate {path}: x_sseqid/new_sseqid columns missing")
+            continue
+        dedup = dedup_by_x_sseqid(df)
+        out = path[: -len(REPLICON_SUFFIX)] + REPLICON_DEDUP_SUFFIX
+        dedup.to_csv(out, sep="\t", index=False)
+        logging.info(f"Dedup table written: {out} ({len(df)} -> {len(dedup)} rows)")
+
+# ---------------- PCN ----------------
+
+def parse_fasta_lengths(fasta_path):
+    """Return an ordered {header_id: sequence_length} dict for a fasta file.
+    header_id = the text right after '>' up to the first whitespace."""
+    lengths = {}
+    header = None
+    seq_len = 0
+    with open(fasta_path) as fh:
+        for line in fh:
+            line = line.rstrip("\r\n")
+            if not line:
+                continue
+            if line.startswith(">"):
+                if header is not None:
+                    lengths[header] = seq_len
+                header = line[1:].strip().split()[0]
+                seq_len = 0
+            else:
+                seq_len += len(line.strip())
+        if header is not None:
+            lengths[header] = seq_len
+    return lengths
+
+def parse_unicycler_depths(fasta_path):
+    """Return {contig_id: depth(float)} parsed from Unicycler-style fasta headers."""
+    depths = {}
+    with open(fasta_path) as fh:
+        for line in fh:
+            if line.startswith(">"):
+                header = line[1:].strip()
+                tokens = header.split()
+                if not tokens:
+                    continue
+                contig_id = tokens[0]
+                depth_match = re.search(r"depth=([\d.]+)x?", header, flags=re.IGNORECASE)
+                depths[contig_id] = float(depth_match.group(1)) if depth_match else None
+    return depths
+
+def strip_R_suffix(qseqid):
+    """Strip a trailing '_R' so e.g. '28_R' and '28' are treated as the same
+    underlying assembly contig for depth lookup / grouping."""
+    return re.sub(r"_R$", "", str(qseqid))
+
+def find_assembly_fasta(assembly_dir, sample):
+    exact = os.path.join(assembly_dir, f"{sample}.fasta")
+    if os.path.exists(exact):
+        return exact
+    for fname in os.listdir(assembly_dir):
+        if fname.startswith(sample) and fname.endswith(".fasta"):
+            return os.path.join(assembly_dir, fname)
+    return None
+
+def calculate_pcn_for_sample(sample, replicon_dir, assembly_dir, out_dir):
+    """Calculate Plasmid Copy Number (PCN) for one sample from its ORIGINAL
+    (non-deduplicated) plasmid-replicon table, so every replicon gets a value.
+
+    PCN (per new_sseqid) = sum(qlen * avg_contig_depth over the replicon's distinct
+    contributing contigs) / plasmid_length, where avg_contig_depth de-repeats contigs
+    that span the circular origin.
+    plasmid_length is the length of the reconstructed plasmid (fasta header =
+    reconstructed) that the replicon belongs to.
+    """
+    replicon_path = os.path.join(replicon_dir, f"{sample}{PCN_REPLICON_SUFFIX}")
+    contigs_path = os.path.join(replicon_dir, f"{sample}{PCN_CONTIGS_SUFFIX}")
+    assembly_path = find_assembly_fasta(assembly_dir, sample)
+
+    missing = [p for p in (replicon_path, contigs_path) if not os.path.exists(p)]
+    if not assembly_path:
+        missing.append(os.path.join(assembly_dir, f"{sample}.fasta"))
+    if missing:
+        logging.warning(f"PCN [SKIP] {sample}: missing file(s): {', '.join(missing)}")
+        return None
+
+    df = pd.read_csv(replicon_path, sep="\t")
+
+    required_cols = {"qseqid", "sseqid", "qstart", "qend", "qlen", "new_sseqid", "x_sseqid"}
+    missing_cols = required_cols - set(df.columns)
+    if missing_cols:
+        logging.warning(f"PCN [SKIP] {sample}: missing column(s) in {replicon_path}: {missing_cols}")
+        return None
+
+    if "reconstructed" not in df.columns:
+        logging.warning(f"PCN {sample}: no reconstructed column, falling back to new_sseqid for fasta lookup")
+        df["reconstructed"] = df["new_sseqid"]
+
+    df = df[df["new_sseqid"].notna()].copy().reset_index(drop=True)
+    if df.empty:
+        logging.warning(f"PCN [SKIP] {sample}: no rows with a new_sseqid in {replicon_path}")
+        return None
+
+    df["_qseqid_base"] = df["qseqid"].apply(strip_R_suffix)
+
+    # plasmid length = length of the reconstructed plasmid this replicon belongs to
+    plasmid_lengths = parse_fasta_lengths(contigs_path)
+    df["plasmid_length"] = df["reconstructed"].map(plasmid_lengths)
+    no_len = df.loc[df["plasmid_length"].isna(), "reconstructed"].unique()
+    if len(no_len):
+        logging.warning(f"PCN {sample}: no plasmid_length (reconstructed not in {os.path.basename(contigs_path)}): {list(no_len)}")
+
+    contig_depths = parse_unicycler_depths(assembly_path)
+    df["contig_depth"] = df["_qseqid_base"].map(contig_depths)
+
+    unmatched_depths = df.loc[df["contig_depth"].isna(), "_qseqid_base"].unique()
+    if len(unmatched_depths):
+        logging.warning(f"PCN {sample}: no contig_depth found for contig(s): {list(unmatched_depths)}")
+
+    # repeat_count: raw count of a contig's rows within its replicon group, with the
+    # first==last wraparound pair (a contig split across the circular origin) counted
+    # once instead of twice. Only applies when the replicon has more than one row.
+    df["repeat_count"] = df.groupby(["new_sseqid", "_qseqid_base"])["_qseqid_base"].transform("count")
+
+    first_last = df.groupby("new_sseqid")["_qseqid_base"].agg(["first", "last"])
+    group_first = df["new_sseqid"].map(first_last["first"])
+    group_last = df["new_sseqid"].map(first_last["last"])
+    group_size = df.groupby("new_sseqid")["new_sseqid"].transform("size")
+    wraparound_mask = (group_first == group_last) & (df["_qseqid_base"] == group_first) & (group_size > 1)
+    df.loc[wraparound_mask, "repeat_count"] = df.loc[wraparound_mask, "repeat_count"] - 1
+
+    zero_repeat_mask = df["repeat_count"] <= 0
+    if zero_repeat_mask.any():
+        bad = df.loc[zero_repeat_mask, ["new_sseqid", "_qseqid_base", "repeat_count"]].drop_duplicates()
+        for _, row in bad.iterrows():
+            logging.warning(
+                f"PCN {sample}: repeat_count is {row['repeat_count']} for contig "
+                f"'{row['_qseqid_base']}' in replicon '{row['new_sseqid']}' -- treating as missing (NaN)."
+            )
+        df["repeat_count"] = df["repeat_count"].astype(float)
+        df.loc[zero_repeat_mask, "repeat_count"] = float("nan")
+
+    df["avg_contig_depth"] = df["contig_depth"] / df["repeat_count"]
+    df["contributing_depth"] = df["qlen"] * df["avg_contig_depth"]
+
+    distinct = df.drop_duplicates(subset=["new_sseqid", "_qseqid_base"])
+    pcn_summary = (
+        distinct.groupby("new_sseqid", sort=False)
+        .agg(
+            reconstructed=("reconstructed", "first"),
+            plasmid_length=("plasmid_length", "first"),
+            total_contributing_depth=("contributing_depth", "sum"),
+        )
+        .reset_index()
+    )
+
+    zero_length_mask = pcn_summary["plasmid_length"] == 0
+    if zero_length_mask.any():
+        bad_plasmids = pcn_summary.loc[zero_length_mask, "new_sseqid"].tolist()
+        logging.warning(
+            f"PCN {sample}: plasmid_length is 0 for {bad_plasmids} -- treating PCN as missing (NaN)."
+        )
+        pcn_summary.loc[zero_length_mask, "plasmid_length"] = float("nan")
+
+    pcn_summary["PCN"] = pcn_summary["total_contributing_depth"] / pcn_summary["plasmid_length"]
+    pcn_summary.insert(0, "sample", sample)
+
+    detail_out = os.path.join(out_dir, f"{sample}_plasmid_replicon_PCN_detail.txt")
+    summary_out = os.path.join(out_dir, f"{sample}_plasmid_replicon_PCN_summary.txt")
+
+    df.drop(columns=["_qseqid_base"]).to_csv(detail_out, sep="\t", index=False)
+    pcn_summary.to_csv(summary_out, sep="\t", index=False)
+
+    logging.info(f"PCN [OK] {sample}: {len(pcn_summary)} replicon(s); wrote {detail_out} and {summary_out}")
+    return pcn_summary
+
+def run_pcn_analysis(replicon_dir, assembly_dir, out_dir):
+    """Calculate PCN for every sample in replicon_dir and write per-sample and
+    combined summaries to out_dir. Returns a {new_sseqid: PCN} lookup dict."""
+    logging.info(f"Calculating plasmid copy number (PCN) for samples in {replicon_dir}")
+    os.makedirs(out_dir, exist_ok=True)
+
+    replicon_files = glob.glob(os.path.join(replicon_dir, f"*{PCN_REPLICON_SUFFIX}"))
+    if not replicon_files:
+        logging.warning(f"No files matching *{PCN_REPLICON_SUFFIX} found in {replicon_dir}; skipping PCN calculation.")
+        return {}
+
+    all_summaries = []
+    for path in sorted(replicon_files):
+        sample = os.path.basename(path)[: -len(PCN_REPLICON_SUFFIX)]
+        result = calculate_pcn_for_sample(sample, replicon_dir, assembly_dir, out_dir)
+        if result is not None:
+            all_summaries.append(result)
+
+    if not all_summaries:
+        return {}
+
+    combined = pd.concat(all_summaries, ignore_index=True)
+    combined_out = os.path.join(out_dir, "all_samples_PCN_summary.txt")
+    combined.to_csv(combined_out, sep="\t", index=False)
+    logging.info(f"Combined PCN summary written to {combined_out}")
+
+    return dict(zip(combined["new_sseqid"], combined["PCN"]))
+
+# ---------------- mob-suite ----------------
+
+def parse_contig_report_mapping(sample_dir):
+    """mob_recon reports each cluster's mobtyper row under an internal sample_id like
+    '<infile_basename>:<cluster_id>', not the original contig header. Its
+    contig_report.txt keeps the original header per cluster -- use it to map back."""
+    report_path = os.path.join(sample_dir, "contig_report.txt")
+    if not os.path.exists(report_path):
+        return {}
+
+    mapping = {}
+    with open(report_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f, delimiter="\t")
+        contig_col = next((c for c in ("contig_id", "contig_id(s)") if c in (reader.fieldnames or [])), None)
+        if not contig_col:
+            return {}
+        for row in reader:
+            cluster_key = row.get("sample_id")
+            contig_id = row.get(contig_col)
+            if cluster_key and contig_id:
+                mapping[cluster_key] = contig_id
+    return mapping
+
+def resolve_reconstructed(cluster_key, cluster_to_contig, size_value, length_to_header):
+    """Map a mob_recon cluster back to the reconstructed plasmid's fasta header
+    (reconstructed), first via contig_report.txt, falling back to matching
+    plasmid_contigs.fasta by sequence length."""
+    reconstructed = cluster_to_contig.get(cluster_key)
+    if reconstructed:
+        return reconstructed
+    try:
+        return length_to_header.get(int(float(size_value)))
+    except (TypeError, ValueError):
+        return None
+
+def run_mob_recon(plasmid_dir, mobsuite_dir, threads):
+    logging.info(f"Running mob_recon on plasmid contigs in {plasmid_dir}")
+    os.makedirs(mobsuite_dir, exist_ok=True)
+
+    for fname in sorted(os.listdir(plasmid_dir)):
+        if not fname.endswith(PCN_CONTIGS_SUFFIX):
+            continue
+        sample = fname[: -len(PCN_CONTIGS_SUFFIX)]
+        infile = os.path.join(plasmid_dir, fname)
+        outdir = os.path.join(mobsuite_dir, f"{sample}_mobsuite")
+        shutil.rmtree(outdir, ignore_errors=True)
+        try:
+            subprocess.run(
+                [MOB_RECON_BIN, "--infile", infile, "--outdir", outdir, "-n", str(threads)],
+                check=True, capture_output=True, text=True,
+            )
+            logging.info(f"mob_recon [OK] {sample}")
+        except subprocess.CalledProcessError as e:
+            logging.error(f"mob_recon [FAIL] {sample}: {e.stderr.strip() if e.stderr else e}")
+        except FileNotFoundError:
+            logging.error(f"mob_recon executable not found ({MOB_RECON_BIN}); skipping mob-suite typing.")
+            return
+
+def extract_mobtyper_summary(mobsuite_dir, plasmid_dir, summary_out_file):
+    logging.info(f"Extracting mob-typer results from {mobsuite_dir}")
+    result_files = glob.glob(os.path.join(mobsuite_dir, "**", "mobtyper_results.txt"), recursive=True)
+    if not result_files:
+        logging.warning("No mobtyper_results.txt files found; skipping mob-suite summary.")
+        return {}
+
+    mob_lookup = {}
+    rows = []
+    for file_path in sorted(result_files):
+        sample_dir = os.path.dirname(file_path)
+        sample = re.sub(r"_mobsuite$", "", os.path.basename(sample_dir))
+        cluster_to_contig = parse_contig_report_mapping(sample_dir)
+
+        contigs_fasta = os.path.join(plasmid_dir, f"{sample}{PCN_CONTIGS_SUFFIX}")
+        length_to_header = {}
+        if os.path.exists(contigs_fasta):
+            for header, length in parse_fasta_lengths(contigs_fasta).items():
+                length_to_header.setdefault(length, header)
+
+        with open(file_path, "r", encoding="utf-8") as f:
+            reader = csv.DictReader(f, delimiter="\t")
+            for row in reader:
+                cluster_key = row.get("sample_id", "")
+                reconstructed = resolve_reconstructed(cluster_key, cluster_to_contig, row.get("size"), length_to_header)
+                if not reconstructed:
+                    logging.warning(
+                        f"mob-suite {sample}: could not map cluster '{cluster_key}' to a "
+                        f"reconstructed plasmid header; dropping its row."
+                    )
+                    continue
+
+                extracted = {col: row.get(col, "-") for col in MOBTYPER_COLUMNS}
+                extracted["sample_id"] = reconstructed
+                rows.append(extracted)
+                mob_lookup[reconstructed] = extracted
+
+    with open(summary_out_file, "w", encoding="utf-8", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=MOBTYPER_COLUMNS, delimiter="\t")
+        writer.writeheader()
+        writer.writerows(rows)
+
+    logging.info(f"Extracted {len(rows)} rows from {len(result_files)} files into {summary_out_file}")
+    return mob_lookup
+
+def run_mobsuite_typing(plasmid_dir, working_dir, threads):
+    """Run mob_recon on every plasmid_contigs fasta, extract the mob-typer columns
+    into a combined summary, then discard the raw mob-suite output. Returns a
+    {reconstructed: {column: value}} lookup dict for merging into the sample report."""
+    mobsuite_dir = os.path.join(working_dir, "plsMD_mobsuite")
+    summary_out_file = os.path.join(working_dir, "combined_mobtyper_summary.txt")
+
+    run_mob_recon(plasmid_dir, mobsuite_dir, threads)
+    mob_lookup = extract_mobtyper_summary(mobsuite_dir, plasmid_dir, summary_out_file)
+
+    if os.path.isdir(mobsuite_dir):
+        shutil.rmtree(mobsuite_dir)
+        logging.info(f"Removed intermediate mob-suite output directory: {mobsuite_dir}")
+
+    return mob_lookup
+
+# ---------------- final per-sample report ----------------
+
+def generate_sample_report(output_directory, sample_name_or_directory, pcn_lookup=None, mob_lookup=None):
+    """One row per replicon (new_sseqid) from the DEDUPLICATED replicon table.
+      reconstructed : name of the reconstructed plasmid (= fasta header); replicons that
+                   share a plasmid share this value and its length / mob-suite typing
+      new_sseqid : the individual replicon
+      PCN        : per-replicon PCN (from the original, unfiltered table)"""
     if os.path.isdir(sample_name_or_directory):
         directory = sample_name_or_directory
         logging.info(f"Generating sample reports for all samples in {directory}")
         for filename in os.listdir(directory):
-            if filename.endswith('_plasmid_replicon_filtered.txt'):
-                sample_name = filename.replace('_plasmid_replicon_filtered.txt', '')
-                generate_sample_report(directory, sample_name)
+            if filename.endswith(REPLICON_SUFFIX):
+                sample_name = filename.replace(REPLICON_SUFFIX, '')
+                generate_sample_report(directory, sample_name, pcn_lookup, mob_lookup)
         return
     
     sample_name = sample_name_or_directory
     try:
         logging.info(f"Generating sample report for {sample_name}")
-        replicon_contigs_file = os.path.join(output_directory, f"{sample_name}_plasmid_replicon_filtered.txt")
+        # The report only lists the replicons kept in the deduplicated table
+        # (one new_sseqid per x_sseqid); PCN values still come from the original table.
+        replicon_contigs_file = os.path.join(output_directory, f"{sample_name}{REPLICON_DEDUP_SUFFIX}")
+        if not os.path.exists(replicon_contigs_file):
+            logging.warning(f"Dedup table not found for {sample_name}; falling back to the original table")
+            replicon_contigs_file = os.path.join(output_directory, f"{sample_name}{REPLICON_SUFFIX}")
         fasta_file = os.path.join(output_directory, f"{sample_name}_plasmid_contigs.fasta")
         output_report_file = os.path.join(output_directory, f"{sample_name}_report.tsv")
         
@@ -1175,18 +1644,24 @@ def generate_sample_report(output_directory, sample_name_or_directory):
             if 'qseqid' not in replicon_df.columns:
                 return
             replicon_df['new_sseqid'] = replicon_df['qseqid']
+        if 'reconstructed' not in replicon_df.columns:
+            replicon_df['reconstructed'] = replicon_df['new_sseqid']
+
+        if 'rep_type' not in replicon_df.columns:
+            replicon_df['rep_type'] = ''
+        report_cols = ['reconstructed', 'rep_type', 'new_sseqid', 'sseqid', 'coverage_percentage']
 
         circular_mask = replicon_df['gene_name'] == 'circular'
         circular_df = replicon_df[circular_mask].drop_duplicates('new_sseqid', keep='first')
         non_circular_df = replicon_df[~circular_mask]
         
         if not non_circular_df.empty:
-            unique_non_circular_df = non_circular_df[['new_sseqid', 'sseqid', 'coverage_percentage']].drop_duplicates()
+            unique_non_circular_df = non_circular_df[report_cols].drop_duplicates()
         else:
-            unique_non_circular_df = pd.DataFrame(columns=['new_sseqid', 'sseqid', 'coverage_percentage'])
+            unique_non_circular_df = pd.DataFrame(columns=report_cols)
         
         if not circular_df.empty:
-            circular_report_df = circular_df[['new_sseqid', 'sseqid', 'coverage_percentage']].copy()
+            circular_report_df = circular_df[report_cols].copy()
             combined_df = pd.concat([unique_non_circular_df, circular_report_df], ignore_index=True)
         else:
             combined_df = unique_non_circular_df
@@ -1199,12 +1674,29 @@ def generate_sample_report(output_directory, sample_name_or_directory):
         else:
             logging.warning(f"FASTA file not found: {fasta_file}")
 
-        combined_df['bases'] = combined_df['new_sseqid'].map(contig_lengths)
+        combined_df['bases'] = combined_df['reconstructed'].map(contig_lengths)
+        missing_bases = combined_df[combined_df['bases'].isna()]
+        if not missing_bases.empty:
+            logging.warning(
+                f"{sample_name}: {len(missing_bases)} replicon(s) dropped from report, reconstructed not in fasta: "
+                f"{missing_bases['reconstructed'].unique().tolist()}"
+            )
         combined_df = combined_df.dropna(subset=['bases'])
 
         combined_df['type'] = combined_df['new_sseqid'].apply(
             lambda x: 'circular' if 'circular' in x else 'replicon'
         )
+
+        pcn_lookup = pcn_lookup or {}
+        mob_lookup = mob_lookup or {}
+
+        combined_df['PCN'] = combined_df['new_sseqid'].map(pcn_lookup)
+
+        mob_columns = [col for col in MOBTYPER_COLUMNS if col != 'sample_id']
+        for col in mob_columns:
+            combined_df[col] = combined_df['reconstructed'].apply(
+                lambda x: mob_lookup.get(x, {}).get(col, '-')
+            )
 
         combined_df.to_csv(output_report_file, sep='\t', index=False)
         logging.info(f"Report generated successfully for {sample_name} with {len(combined_df)} entries") 
@@ -1215,6 +1707,7 @@ def main():
     parser = argparse.ArgumentParser(description="Process plasmid and replicon data.")
     parser.add_argument('--dir', required=True, help="Directory containing preprocessing outputs (PLSDB files, merged fastas, plasmid lists, etc.).")
     parser.add_argument('--output', required=True, help="Output directory for all processing results.")
+    parser.add_argument('--threads', type=int, default=4, help="Number of threads for mob_recon typing (default: 4).")
 
     args = parser.parse_args()
 
@@ -1286,13 +1779,24 @@ def main():
 
     process_nonplasmid_contigs(output_directory, fasta_directory, nonplasmid_output, working_dir)
 
-    # Both *_plasmid.txt and *_plasmid_replicon_filtered.txt are now
-    # in working_dir and output_directory respectively
+    # Adds new_sseqid / x_sseqid / reconstructed (<sample>_plsMD<N>) to
+    # *_plasmid_replicon_filtered.txt and renames the plasmid_contigs.fasta headers to it
     process_directories_for_col_contigs(working_dir, output_directory, combined_output_file, destination_directory)
 
     process_all_circular_contigs(working_dir, fasta_directory, working_dir)
 
-    generate_sample_report(output_directory, output_directory)
+    # ----------------------------------------------------------------
+    # Final stages (last things performed)
+    # ----------------------------------------------------------------
+    # Keep both versions of the replicon table: original (all entries) + dedup by x_sseqid
+    write_dedup_replicon_files(output_directory)
+
+    # PCN and mob-suite use the ORIGINAL table / plasmid_contigs.fasta so every replicon is covered
+    pcn_output_dir = os.path.join(working_dir, "plsMD_PCN")
+    pcn_lookup = run_pcn_analysis(output_directory, fasta_directory, pcn_output_dir)
+    mob_lookup = run_mobsuite_typing(output_directory, working_dir, args.threads)
+
+    generate_sample_report(output_directory, output_directory, pcn_lookup, mob_lookup)
 
     # ----------------------------------------------------------------
     # Cleanup: remove staged copies of preprocessing files.
@@ -1320,3 +1824,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
